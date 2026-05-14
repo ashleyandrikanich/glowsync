@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
-import { SiteHeader } from "./components/SiteHeader";
+import { SiteChrome } from "./components/SiteChrome";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,7 +35,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="flex min-h-dvh flex-col text-offblack selection:bg-dawn/80 selection:text-offblack">
-        <SiteHeader />
+        <SiteChrome />
         <div className="flex flex-1 flex-col">{children}</div>
       </body>
     </html>
