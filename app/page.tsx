@@ -6,14 +6,15 @@ import {
   evaluatePairing,
   type IngredientId,
 } from "@/src/lib/ingredients";
+import { BrandTitle } from "./components/BrandTitle";
 
 const empty = "" as const;
 
 const selectClassName =
   "w-full cursor-pointer appearance-none rounded-xl border border-sand/90 bg-white/60 px-4 py-3 pr-10 text-offblack shadow-sm outline-none transition " +
-  "hover:border-earth/40 hover:bg-white/80 focus:border-earth focus:ring-2 focus:ring-earth/20 " +
+  "hover:border-blossom/50 hover:bg-blush/20 focus:border-sage focus:ring-2 focus:ring-sage/25 " +
   "bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat " +
-  "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238D7B68'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
+  "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394B49C'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
 
 export default function Home() {
   const [first, setFirst] = useState<IngredientId | typeof empty>(empty);
@@ -29,15 +30,15 @@ export default function Home() {
     { panel: string; label: string }
   > = {
     safe: {
-      panel: "border-earth/25 bg-white/70",
+      panel: "border-sage/35 bg-sage/15",
       label: "text-earth",
     },
     caution: {
-      panel: "border-earth/50 bg-sand/50",
+      panel: "border-blossom/45 bg-dawn/50",
       label: "text-offblack",
     },
     avoid: {
-      panel: "border-earth/60 bg-earth/12",
+      panel: "border-blossom/55 bg-blossom/20",
       label: "text-offblack",
     },
   };
@@ -50,22 +51,26 @@ export default function Home() {
 
   return (
     <div className="flex min-h-dvh flex-1 flex-col">
-      <header className="relative px-6 pb-10 pt-14 sm:px-12 sm:pb-14 sm:pt-20">
-        <div className="mx-auto max-w-3xl">
-          <p className="mb-3 text-[0.65rem] font-medium uppercase tracking-[0.35em] text-earth/90">
+      <header className="relative px-6 pb-10 pt-10 sm:px-12 sm:pb-14 sm:pt-14">
+        <div className="pointer-events-none absolute right-0 top-1/4 h-64 w-64 -translate-y-1/2 rounded-full bg-sand/30 blur-3xl sm:right-8" />
+        <div className="relative mx-auto max-w-3xl">
+          <p className="mb-5 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-earth/80">
             Skincare pairing
           </p>
-          <h1 className="font-serif text-[clamp(2.5rem,6vw,3.75rem)] font-semibold leading-[1.05] tracking-tight text-offblack text-balance">
-            GlowSync
-          </h1>
-          <div className="mt-6 h-px w-14 bg-gradient-to-r from-earth/50 to-transparent" />
+          <BrandTitle as="h1" size="lg" className="block" />
+          <div className="mt-8 flex items-center gap-3">
+            <span className="h-px flex-1 max-w-[4.5rem] bg-gradient-to-r from-earth/50 to-transparent" />
+            <span className="text-[0.6rem] font-medium uppercase tracking-[0.28em] text-earth/50">
+              Est. routine clarity
+            </span>
+          </div>
         </div>
       </header>
 
-      <main className="flex flex-1 justify-center px-4 pb-20 sm:px-8">
+      <main className="relative flex flex-1 justify-center px-4 pb-20 sm:px-8">
         <div className="w-full max-w-xl">
-          <div className="rounded-3xl border border-sand/90 bg-white/50 p-8 shadow-[0_24px_80px_-32px_rgba(45,41,38,0.18)] backdrop-blur-sm sm:p-10">
-            <section className="mb-10 border-b border-sand/80 pb-10">
+          <div className="glow-card-sheen rounded-3xl border border-dawn/40 bg-white/55 p-8 backdrop-blur-sm sm:p-10">
+            <section className="mb-10 border-b border-dawn/60 pb-10">
               <h2 className="font-serif text-2xl font-medium tracking-tight text-offblack">
                 Routine Safety Checker
               </h2>
@@ -140,7 +145,7 @@ export default function Home() {
                 className={`rounded-2xl border px-5 py-5 transition-colors ${
                   result.verdict
                     ? verdictStyles[result.verdict].panel
-                    : "border-dashed border-sand bg-white/30 text-offblack/65"
+                    : "border-dashed border-dawn/70 bg-blush/25 text-offblack/65"
                 }`}
               >
                 {result.verdict && (
