@@ -134,17 +134,15 @@ export function RoutineTracker() {
   }, [cancelBlurClose]);
 
   useEffect(() => {
-    setActiveSuggestion(-1);
-  }, [name]);
-
-  useEffect(() => {
     return () => {
       if (blurTimeout.current) clearTimeout(blurTimeout.current);
     };
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time localStorage hydrate after mount
     setProducts(loadRoutineProducts());
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- gate persistence until after hydrate
     setHydrated(true);
   }, []);
 
@@ -245,6 +243,7 @@ export function RoutineTracker() {
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
+                setActiveSuggestion(-1);
                 setSuggestOpen(true);
               }}
               onFocus={() => {
