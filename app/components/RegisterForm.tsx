@@ -53,7 +53,7 @@ export function RegisterForm() {
           autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-xl border border-sand/90 bg-white/60 px-4 py-2.5 text-offblack shadow-sm outline-none transition focus:border-sage focus:ring-2 focus:ring-sage/25"
+          className="w-full rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 text-offblack shadow-sm outline-none transition focus:border-sage focus:ring-2 focus:ring-sage/25"
         />
       </div>
       <div className="space-y-2">
@@ -67,7 +67,7 @@ export function RegisterForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-xl border border-sand/90 bg-white/60 px-4 py-2.5 text-offblack shadow-sm outline-none transition focus:border-sage focus:ring-2 focus:ring-sage/25"
+          className="w-full rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 text-offblack shadow-sm outline-none transition focus:border-sage focus:ring-2 focus:ring-sage/25"
         />
       </div>
       <div className="space-y-2">
@@ -82,7 +82,7 @@ export function RegisterForm() {
           minLength={8}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-xl border border-sand/90 bg-white/60 px-4 py-2.5 text-offblack shadow-sm outline-none transition focus:border-sage focus:ring-2 focus:ring-sage/25"
+          className="w-full rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 text-offblack shadow-sm outline-none transition focus:border-sage focus:ring-2 focus:ring-sage/25"
         />
       </div>
       <button

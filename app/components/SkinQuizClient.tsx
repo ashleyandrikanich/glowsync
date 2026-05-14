@@ -18,7 +18,7 @@ import {
 } from "@/src/lib/skin-quiz";
 
 const choiceClass =
-  "flex w-full flex-col rounded-xl border border-sand/90 bg-white/55 px-4 py-3.5 text-left shadow-sm transition hover:border-earth/35 hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40";
+  "flex w-full flex-col rounded-xl border border-sand/90 bg-linen/60 px-4 py-3.5 text-left shadow-sm transition hover:border-earth/35 hover:bg-linen/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40";
 
 const choiceSelected =
   "border-earth bg-sand/25 ring-1 ring-earth/20";
@@ -94,7 +94,7 @@ export function SkinQuizClient() {
   if (isResults && result) {
     return (
       <div className="space-y-10">
-        <div className="rounded-2xl border border-sand/90 bg-white/50 p-6 sm:p-8">
+        <div className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/88 via-blush/32 to-dawn/22 p-6 sm:p-8">
           <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-earth/85">
             Your snapshot
           </p>
@@ -107,7 +107,7 @@ export function SkinQuizClient() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <section className="rounded-2xl border border-sand/90 bg-white/45 p-6">
+          <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/80 via-blush/28 to-dawn/18 p-6">
             <h3 className="font-serif text-lg font-medium text-offblack">Suggested AM flow</h3>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-offblack/80">
               {result.routineAm.map((line) => (
@@ -115,7 +115,7 @@ export function SkinQuizClient() {
               ))}
             </ol>
           </section>
-          <section className="rounded-2xl border border-sand/90 bg-white/45 p-6">
+          <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/80 via-blush/28 to-dawn/18 p-6">
             <h3 className="font-serif text-lg font-medium text-offblack">Suggested PM flow</h3>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-offblack/80">
               {result.routinePm.map((line) => (
@@ -125,7 +125,7 @@ export function SkinQuizClient() {
           </section>
         </div>
 
-        <section className="rounded-2xl border border-sand/90 bg-white/45 p-6 sm:p-8">
+        <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/82 via-blush/30 to-dawn/20 p-6 sm:p-8">
           <h3 className="font-serif text-xl font-medium text-offblack">Catalog picks to explore</h3>
           <p className="mt-2 text-sm text-offblack/65">
             Pulled from the same reference list as the routine builder. Not medical advice.
@@ -134,7 +134,7 @@ export function SkinQuizClient() {
             {products.map((p) => (
               <li
                 key={p.id}
-                className="rounded-xl border border-sand/80 bg-linen/40 px-4 py-3"
+                className="rounded-xl border border-sand/80 bg-gradient-to-br from-linen/75 to-blush/25 px-4 py-3"
               >
                 <p className="font-medium text-offblack">
                   {p.brand} — {p.name}

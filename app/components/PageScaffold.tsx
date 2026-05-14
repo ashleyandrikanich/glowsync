@@ -9,7 +9,7 @@ type PageScaffoldProps = {
 export function PageScaffold({ title, description, children }: PageScaffoldProps) {
   return (
     <main className="relative flex flex-1 justify-center px-4 pb-24 pt-8 sm:px-8 sm:pt-12">
-      <article className="glow-card-sheen relative w-full max-w-2xl rounded-3xl border border-sand/80 bg-white/55 p-8 backdrop-blur-sm sm:p-12">
+      <article className="glow-card-sheen relative w-full max-w-6xl rounded-3xl border border-sand/70 bg-gradient-to-br from-linen/92 via-blush/40 to-dawn/25 p-8 backdrop-blur-sm sm:p-12">
         <p className="text-[0.65rem] font-medium uppercase tracking-[0.32em] text-earth/75">
           GlowSync
         </p>
@@ -17,7 +17,7 @@ export function PageScaffold({ title, description, children }: PageScaffoldProps
           {title}
         </h1>
         {description ? (
-          <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-offblack/70">
+          <p className="mt-4 max-w-4xl text-[0.9375rem] leading-relaxed text-offblack/70">
             {description}
           </p>
         ) : null}

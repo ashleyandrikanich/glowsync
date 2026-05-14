@@ -104,6 +104,7 @@ function baseByFeel(feel: SkinFeel): string[] {
     case "dry":
       return [
         "philosophy-purity",
+        "anua-heartleaf-toner",
         "cosrx-snail",
         "cerave-moisturizing-cream",
         "paula-omega",
@@ -112,6 +113,7 @@ function baseByFeel(feel: SkinFeel): string[] {
     case "combo":
       return [
         "yttp-superfood-cleanser",
+        "anua-heartleaf-toner",
         "fenty-fat-water",
         "cerave-pm",
         "la-roche-toleriane",
@@ -136,14 +138,32 @@ function concernBoost(concern: Concern): string[] {
     case "texture":
       return ["to-glycolic-toner", "dermalogica-daily-microfoliant", "sunday-good-genes"];
     case "redness":
-      return ["origins-mega-mushroom", "drjart-cicapair", "tower28-sos", "vanicream-gentle"];
+      return [
+        "anua-heartleaf-toner",
+        "origins-mega-mushroom",
+        "drjart-cicapair",
+        "tower28-sos",
+        "vanicream-gentle",
+      ];
     case "lines":
       return ["el-anr", "murad-retinol-serum", "de-protini", "itc-confidence-cream"];
     case "tone":
-      return ["caudalie-vinoperfect", "to-vitamin-c-suspension", "ole-banana-bright", "glow-dew-drops"];
+      return [
+        "anua-niacinamide-serum",
+        "caudalie-vinoperfect",
+        "to-vitamin-c-suspension",
+        "ole-banana-bright",
+        "glow-dew-drops",
+      ];
     case "dehydration":
     default:
-      return ["fab-ultra-repair", "ptr-water-drench", "laneige-cream-skin", "cosrx-snail"];
+      return [
+        "anua-heartleaf-toner",
+        "fab-ultra-repair",
+        "ptr-water-drench",
+        "laneige-cream-skin",
+        "cosrx-snail",
+      ];
   }
 }
 
@@ -233,7 +253,13 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
     const filtered = ids.filter((id) => !STRONG_ACTIVES.has(id));
     ids.length = 0;
     ids.push(...filtered);
-    push(["vanicream-gentle", "la-roche-toleriane", "tower28-sos", "origins-mega-mushroom"]);
+    push([
+      "anua-heartleaf-toner",
+      "vanicream-gentle",
+      "la-roche-toleriane",
+      "tower28-sos",
+      "origins-mega-mushroom",
+    ]);
   }
 
   const unique = [...new Set(ids)].filter((id) => getCatalogProductById(id));

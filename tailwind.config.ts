@@ -4,18 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        linen: "#FAF9F6",
-        sand: "#E2D1C3",
-        earth: "#8D7B68",
-        offblack: "#2D2926",
-        /** Soft rose — accents, hovers, playful highlights */
-        blossom: "#C9A89E",
-        /** Muted sage — balance, secondary emphasis */
-        sage: "#94B49C",
-        /** Warm peach wash — backgrounds & gradients */
-        dawn: "#EDD4C8",
-        /** Light blush for fills */
-        blush: "#F0E0DC",
+        /** Warm cream — cards, header wash */
+        linen: "#FFFBF7",
+        /** Warm tan — borders & UI chrome */
+        sand: "#D4A574",
+        /** Deep orange-red — primary buttons & key actions */
+        earth: "#C2410C",
+        /** Warm charcoal — body text */
+        offblack: "#271E1A",
+        /** Bright orange — hovers, highlights */
+        blossom: "#EA580C",
+        /** Amber / golden — focus rings, secondary emphasis */
+        sage: "#CA8A04",
+        /** Soft peach — panels, selection washes */
+        dawn: "#FDBA74",
+        /** Pale yellow cream — subtle fills */
+        blush: "#FEF3C7",
       },
     },
   },

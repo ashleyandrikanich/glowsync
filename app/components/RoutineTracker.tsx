@@ -17,14 +17,14 @@ import {
 import { computeRoutineRating } from "@/src/lib/routine-rating";
 
 const inputClass =
-  "w-full rounded-xl border border-sand/90 bg-white/60 px-4 py-2.5 text-offblack shadow-sm outline-none transition placeholder:text-offblack/35 " +
-  "hover:border-blossom/35 hover:bg-blush/15 focus:border-sage focus:ring-2 focus:ring-sage/25";
+  "w-full rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 text-offblack shadow-sm outline-none transition placeholder:text-offblack/35 " +
+  "hover:border-blossom/35 hover:bg-linen/85 focus:border-sage focus:ring-2 focus:ring-sage/25";
 
 const selectClass =
-  "w-full cursor-pointer appearance-none rounded-xl border border-sand/90 bg-white/60 px-4 py-2.5 pr-10 text-offblack shadow-sm outline-none transition " +
-  "hover:border-blossom/35 hover:bg-blush/15 focus:border-sage focus:ring-2 focus:ring-sage/25 " +
+  "w-full cursor-pointer appearance-none rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 pr-10 text-offblack shadow-sm outline-none transition " +
+  "hover:border-blossom/35 hover:bg-linen/85 focus:border-sage focus:ring-2 focus:ring-sage/25 " +
   "bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat " +
-  "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394B49C'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
+  "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23CA8A04'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
 
 function slotLabel(slot: RoutineSlot): string {
   if (slot === "am") return "Morning";
@@ -46,21 +46,21 @@ function RoutineColumn({
   onRemove: (id: string) => void;
 }) {
   return (
-    <section className="flex flex-col rounded-2xl border border-dawn/35 bg-gradient-to-b from-white/50 to-sage/5 p-5 sm:p-6">
+    <section className="flex flex-col rounded-2xl border border-dawn/40 bg-gradient-to-b from-linen/75 via-blush/25 to-dawn/15 p-5 sm:p-6">
       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-earth/90">
         {eyebrow}
       </p>
       <h2 className="mt-2 font-serif text-xl font-medium text-offblack">{title}</h2>
       <ul className="mt-5 flex flex-1 flex-col gap-3">
         {products.length === 0 ? (
-          <li className="rounded-xl border border-dashed border-sand/90 bg-white/30 py-8 text-center text-sm text-offblack/55">
+          <li className="rounded-xl border border-dashed border-sand/90 bg-linen/40 py-8 text-center text-sm text-offblack/55">
             Nothing here yet.
           </li>
         ) : (
           products.map((p) => (
             <li
               key={`${p.id}-${columnId}`}
-              className="rounded-xl border border-sand/80 bg-white/50 px-4 py-3 shadow-sm"
+              className="rounded-xl border border-sand/80 bg-gradient-to-br from-linen/80 to-blush/30 px-4 py-3 shadow-sm"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -216,7 +216,7 @@ export function RoutineTracker() {
         when you are unsure.
       </p>
 
-      <div className="glow-card-sheen rounded-2xl border border-dawn/40 bg-gradient-to-br from-white/60 via-blush/10 to-dawn/20 p-6 sm:p-8">
+      <div className="glow-card-sheen rounded-2xl border border-dawn/45 bg-gradient-to-br from-linen/88 via-blush/35 to-dawn/22 p-6 sm:p-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
           Add a product
         </h2>
@@ -413,7 +413,7 @@ export function RoutineTracker() {
 
       {hydrated ? (
         <section
-          className="rounded-2xl border border-sand/80 bg-white/45 px-6 py-5 sm:px-8 sm:py-6"
+          className="rounded-2xl border border-sand/75 bg-gradient-to-br from-linen/70 via-blush/25 to-dawn/18 px-6 py-5 sm:px-8 sm:py-6"
           aria-labelledby="routine-rating-heading"
         >
           <div className="flex flex-wrap items-end justify-between gap-4">
