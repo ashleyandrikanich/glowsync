@@ -8,6 +8,7 @@ import {
   type IngredientId,
 } from "@/src/lib/ingredients";
 import { BrandTitle } from "./components/BrandTitle";
+import { HomeSideDressing } from "./components/HomeSideDressing";
 
 const empty = "" as const;
 
@@ -51,7 +52,21 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-dvh flex-1 flex-col">
+    <div className="relative flex min-h-dvh flex-1 flex-col">
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden w-[max(1.75rem,min(7rem,9vw))] select-none border-r border-sand/30 bg-gradient-to-r from-sand/[0.09] via-dawn/[0.06] to-transparent md:block"
+        aria-hidden
+      >
+        <HomeSideDressing side="left" />
+      </div>
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[max(1.75rem,min(7rem,9vw))] select-none border-l border-sand/30 bg-gradient-to-l from-sand/[0.09] via-dawn/[0.06] to-transparent md:block"
+        aria-hidden
+      >
+        <HomeSideDressing side="right" />
+      </div>
+
+      <div className="relative z-[1] flex min-h-dvh flex-1 flex-col">
       {/* Hero — typical homepage: headline, tagline, primary paths */}
       <header className="relative px-6 pb-12 pt-12 text-center sm:px-10 sm:pb-16 sm:pt-16">
         <div className="pointer-events-none absolute left-0 top-1/3 h-72 w-72 -translate-x-1/4 rounded-full bg-dawn/40 blur-3xl" />
@@ -307,6 +322,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      </div>
     </div>
   );
 }

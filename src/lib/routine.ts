@@ -49,3 +49,25 @@ export function newProductId(): string {
   }
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
+
+/** Remove saved routine from localStorage (browser only). */
+export function clearRoutineStorage(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(ROUTINE_STORAGE_KEY);
+}
+
+/**
+ * Parse exported JSON into routine rows. Returns null if JSON is invalid or
+ * nothing looks like a routine product list.
+ */
+export function parseRoutineProductsJson(text: string): RoutineProduct[] | null {
+  try {
+    const parsed: unknown = JSON.parse(text);
+    if (!Array.isArray(parsed)) return null;
+    const arr = parsed.filter(isRoutineProduct);
+    if (arr.length === 0) return null;
+    return arr;
+  } catch {
+    return null;
+  }
+}

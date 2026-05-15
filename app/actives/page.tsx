@@ -1,40 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { INGREDIENTS } from "@/src/lib/ingredients";
+import { ActivesExplorer } from "../components/ActivesExplorer";
 import { PageScaffold } from "../components/PageScaffold";
 
 export const metadata: Metadata = {
   title: "Actives library",
-  description: "Reference notes for the actives supported in GlowSync.",
+  description:
+    "Explore actives with search, playful filters, and expandable notes—then pair two on Home.",
 };
 
 export default function ActivesPage() {
   return (
     <PageScaffold
       title="Actives library"
-      description="Short context for each active in the checker. We will grow this list over time."
+      description="Meet the crew: search, tap a vibe, peek inside for facts, or hit “surprise me” when you want a random rabbit hole."
     >
-      <ul className="space-y-5">
-        {INGREDIENTS.map((ing) => (
-          <li
-            key={ing.id}
-            className="rounded-2xl border border-sand/90 bg-sand/15 px-5 py-4"
-          >
-            <h2 className="font-serif text-xl font-medium text-offblack">
-              {ing.name}
-            </h2>
-            <p className="mt-2 text-offblack/80">{ing.notes}</p>
-          </li>
-        ))}
-      </ul>
+      <ActivesExplorer ingredients={INGREDIENTS} />
 
-      <p className="border-t border-sand/80 pt-8 text-offblack/70">
-        Want to compare two of these? Use the{" "}
+      <p className="border-t border-sand/80 pt-8 text-sm text-offblack/65">
+        Prefer the short list in the checker dropdowns? Same ingredients—this
+        page is the cozy extended edition. Jump to the{" "}
         <Link
           href="/"
-          className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
+          className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
         >
-          Routine Safety Checker
+          pairing checker
         </Link>
         .
       </p>

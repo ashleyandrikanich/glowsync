@@ -14,7 +14,13 @@ import {
   searchCatalog,
   type CatalogProduct,
 } from "@/src/lib/product-catalog";
-import { computeRoutineRating } from "@/src/lib/routine-rating";
+import {
+  buildRoutineScorecard,
+  type ProductRoutineInsight,
+  type SessionPairingAlert,
+} from "@/src/lib/routine-rating";
+import type { IngredientId } from "@/src/lib/ingredients";
+import { INGREDIENTS } from "@/src/lib/ingredients";
 
 const inputClass =
   "w-full rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 text-offblack shadow-sm outline-none transition placeholder:text-offblack/35 " +
@@ -32,18 +38,25 @@ function slotLabel(slot: RoutineSlot): string {
   return "Morning & evening";
 }
 
+function chipLabel(id: IngredientId): string {
+  const full = INGREDIENTS.find((x) => x.id === id)?.name ?? id;
+  return full.length > 26 ? `${full.slice(0, 24)}…` : full;
+}
+
 function RoutineColumn({
   columnId,
   title,
   eyebrow,
   products,
   onRemove,
+  insightById,
 }: {
   columnId: "am" | "pm";
   title: string;
   eyebrow: string;
   products: RoutineProduct[];
   onRemove: (id: string) => void;
+  insightById: Map<string, ProductRoutineInsight>;
 }) {
   return (
     <section className="flex flex-col rounded-2xl border border-dawn/40 bg-gradient-to-b from-linen/75 via-blush/25 to-dawn/15 p-5 sm:p-6">
@@ -57,7 +70,9 @@ function RoutineColumn({
             Nothing here yet.
           </li>
         ) : (
-          products.map((p) => (
+          products.map((p) => {
+            const insight = insightById.get(p.id);
+            return (
             <li
               key={`${p.id}-${columnId}`}
               className="rounded-xl border border-sand/80 bg-gradient-to-br from-linen/80 to-blush/30 px-4 py-3 shadow-sm"
@@ -68,9 +83,27 @@ function RoutineColumn({
                   {p.brand ? (
                     <p className="mt-0.5 text-sm text-earth/90">{p.brand}</p>
                   ) : null}
+                  {insight && insight.detected.length > 0 ? (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {insight.detected.map((id) => (
+                        <span
+                          key={id}
+                          className="max-w-full truncate rounded-md bg-earth/10 px-2 py-0.5 text-[0.65rem] font-medium leading-snug text-earth"
+                          title={INGREDIENTS.find((x) => x.id === id)?.name}
+                        >
+                          {chipLabel(id)}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                   {p.notes ? (
                     <p className="mt-2 text-sm leading-relaxed text-offblack/70">
                       {p.notes}
+                    </p>
+                  ) : null}
+                  {insight?.tip ? (
+                    <p className="mt-2 rounded-lg border border-sage/30 bg-sage/10 px-3 py-2 text-xs leading-relaxed text-offblack/80">
+                      {insight.tip}
                     </p>
                   ) : null}
                   {p.slot === "both" ? (
@@ -89,7 +122,8 @@ function RoutineColumn({
                 </button>
               </div>
             </li>
-          ))
+            );
+          })
         )}
       </ul>
     </section>
@@ -165,10 +199,17 @@ export function RoutineTracker() {
       ? `routine-suggest-${suggestions[activeSuggestion].id}`
       : undefined;
 
-  const rating = useMemo(
-    () => computeRoutineRating(products),
+  const scorecard = useMemo(
+    () => buildRoutineScorecard(products),
     [products]
   );
+  const { rating, insights } = scorecard;
+
+  const insightById = useMemo(() => {
+    const m = new Map<string, ProductRoutineInsight>();
+    for (const row of insights.perProduct) m.set(row.productId, row);
+    return m;
+  }, [insights.perProduct]);
 
   const addProduct = useCallback(() => {
     const trimmed = name.trim();
@@ -206,14 +247,16 @@ export function RoutineTracker() {
     <div className="space-y-10">
       <p className="text-[0.9375rem] leading-relaxed text-offblack/75">
         Add the products you actually reach for. Everything stays in this
-        browser — nothing is sent to a server. Pair actives on the{" "}
+        browser — nothing is sent to a server. We scan names and notes for
+        common actives, score coverage (cleanser, SPF, moisture, notes), and
+        flag same-session combos using the same rules as the{" "}
         <Link
           href="/"
           className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
         >
-          safety checker
-        </Link>{" "}
-        when you are unsure.
+          safety checker on Home
+        </Link>
+        . For a deliberate two-ingredient check, open it anytime.
       </p>
 
       <div className="glow-card-sheen rounded-2xl border border-dawn/45 bg-gradient-to-br from-linen/88 via-blush/35 to-dawn/22 p-6 sm:p-8">
@@ -468,7 +511,103 @@ export function RoutineTracker() {
               ({products.length} product{products.length === 1 ? "" : "s"} logged)
             </span>
           </p>
+          <p className="mt-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-earth/80">
+            What moved the score
+          </p>
+          <ul className="mt-2 list-inside list-disc space-y-1.5 text-xs leading-relaxed text-offblack/70 sm:text-sm">
+            {insights.scoreFactors.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+          {insights.bullets.length > 0 ? (
+            <>
+              <p className="mt-5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-earth/80">
+                Routine coach notes
+              </p>
+              <ul className="mt-2 space-y-2 text-xs leading-relaxed text-offblack/75 sm:text-sm">
+                {insights.bullets.map((b) => (
+                  <li
+                    key={b}
+                    className="rounded-lg border border-sand/60 bg-linen/50 px-3 py-2"
+                  >
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </section>
+      ) : null}
+
+      {hydrated && products.length > 0 ? (
+        <div className="space-y-6">
+          {insights.sameSession.length > 0 ? (
+            <section
+              className="rounded-2xl border border-earth/25 bg-earth/[0.06] px-5 py-5 sm:px-6"
+              aria-labelledby="routine-pairings-heading"
+            >
+              <h2
+                id="routine-pairings-heading"
+                className="font-serif text-lg font-medium text-offblack"
+              >
+                Same-session layering (detected actives)
+              </h2>
+              <p className="mt-2 text-xs leading-relaxed text-offblack/65 sm:text-sm">
+                We scan product names and notes for ingredients, then apply the
+                same pairing rules as the{" "}
+                <Link
+                  href="/"
+                  className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
+                >
+                  Home checker
+                </Link>
+                . Misses are possible if notes are vague.
+              </p>
+              <ul className="mt-4 space-y-3">
+                {insights.sameSession.map((row: SessionPairingAlert) => (
+                  <li
+                    key={row.id}
+                    className={`rounded-xl border px-4 py-3 text-sm ${
+                      row.verdict === "avoid"
+                        ? "border-blossom/50 bg-blossom/15"
+                        : "border-dawn/55 bg-dawn/35"
+                    }`}
+                  >
+                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-earth/85">
+                      {row.slot === "am" ? "Morning" : "Evening"} ·{" "}
+                      {row.verdict === "avoid" ? "High caution" : "Heads-up"}
+                    </p>
+                    <p className="mt-1 font-medium text-offblack">
+                      {row.ingredientA} + {row.ingredientB}
+                    </p>
+                    <p className="mt-0.5 text-xs text-offblack/70">
+                      {row.productNames}
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed text-offblack/80">
+                      {row.summary}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
+          {insights.crossDay.length > 0 ? (
+            <section className="rounded-2xl border border-sand/80 bg-linen/60 px-5 py-5 sm:px-6">
+              <h2 className="font-serif text-lg font-medium text-offblack">
+                Same-day AM + PM rhythm
+              </h2>
+              <ul className="mt-3 space-y-3 text-sm leading-relaxed text-offblack/80">
+                {insights.crossDay.map((tip) => (
+                  <li key={tip.id} className="rounded-lg border border-sand/70 bg-white/45 px-3 py-2">
+                    <p className="font-medium text-offblack">{tip.title}</p>
+                    <p className="mt-1 text-xs text-offblack/75">{tip.detail}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+        </div>
       ) : null}
 
       {!hydrated ? (
@@ -484,6 +623,7 @@ export function RoutineTracker() {
             eyebrow="A.M."
             products={amProducts}
             onRemove={removeProduct}
+            insightById={insightById}
           />
           <RoutineColumn
             columnId="pm"
@@ -491,6 +631,7 @@ export function RoutineTracker() {
             eyebrow="P.M."
             products={pmProducts}
             onRemove={removeProduct}
+            insightById={insightById}
           />
         </div>
       )}

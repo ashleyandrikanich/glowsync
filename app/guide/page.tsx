@@ -1,57 +1,57 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageScaffold } from "../components/PageScaffold";
+import { RoutineGuideExplorer } from "../components/RoutineGuideExplorer";
 
 export const metadata: Metadata = {
   title: "Routine guide",
-  description: "How to layer actives thoughtfully and use the GlowSync checker.",
+  description:
+    "Interactive layering guide by skin type — oily, dry, combination, balanced — plus checker tips and patch-test reminders.",
 };
 
 export default function GuidePage() {
   return (
     <PageScaffold
       title="Routine guide"
-      description="A calm framework for reading your shelf — not a substitute for a dermatologist."
+      description="Pick a skin feel to see AM/PM templates, layering habits, and ingredient angles — then cross-check actives on Home. For learning only, not a diagnosis."
     >
-      <section className="space-y-4">
+      <RoutineGuideExplorer />
+
+      <section className="space-y-4 border-t border-sand/80 pt-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
-          How the checker works
+          How the pairing checker fits in
         </h2>
         <p>
-          Not sure where to start? Take the{" "}
-          <Link href="/skin-quiz" className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth">
-            skin type quiz
+          After you sketch a routine here, choose two ingredients from the{" "}
+          <Link
+            href="/"
+            className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
+          >
+            home page
           </Link>{" "}
-          for routine ideas and catalog suggestions, then choose two ingredients from the{" "}
-          <Link href="/" className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth">
-            home
+          dropdowns. GlowSync compares them against a small, conservative rule
+          set for same-day layering — not percentages, buffers, or prescriptions.
+          Prefer the cozy extended list? Browse{" "}
+          <Link
+            href="/actives"
+            className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
+          >
+            actives A–Z
           </Link>{" "}
-          page. GlowSync compares them against a small, conservative rule set
-          meant for same-day or same-routine layering — not for every product
-          nuance (buffers, percentages, or prescriptions).
+          first.
         </p>
       </section>
 
       <section className="space-y-4 border-t border-sand/80 pt-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
-          Layering habits
-        </h2>
-        <ul className="list-inside list-disc space-y-2 marker:text-earth/70">
-          <li>Introduce one new active at a time so you know what changed.</li>
-          <li>When combining strong actives, moisturizer can act as a buffer.</li>
-          <li>Morning antioxidant plus SPF pairs well; retinoids usually belong at night.</li>
-          <li>If skin stings, flakes, or feels tight, pull back before adding more.</li>
-        </ul>
-      </section>
-
-      <section className="space-y-4 border-t border-sand/80 pt-8">
-        <h2 className="font-serif text-xl font-medium text-offblack">
-          Patch tests
+          Patch tests still win
         </h2>
         <p>
-          A tool cannot replace your own patch test. Try new products on a small
-          area for several days before full-face use, especially with acids and
-          retinoids.
+          A guide cannot replace your own patch test. Try new products on a
+          small area for several days before full-face use, especially with
+          acids and retinoids — even more important when{" "}
+          <span className="font-medium text-earth">sensitive / reactive mode</span>{" "}
+          above is on.
         </p>
       </section>
     </PageScaffold>
