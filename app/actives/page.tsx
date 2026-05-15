@@ -5,7 +5,7 @@ import { ActivesExplorer } from "../components/ActivesExplorer";
 import { PageScaffold } from "../components/PageScaffold";
 
 export const metadata: Metadata = {
-  title: "Actives library",
+  title: "Actives Library",
   description:
     "Explore actives with search, playful filters, and expandable notes—then pair two on Home.",
 };
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function ActivesPage() {
   return (
     <PageScaffold
-      title="Actives library"
+      title="Actives Library"
       description="Meet the crew: search, tap a vibe, peek inside for facts, or hit “surprise me” when you want a random rabbit hole."
     >
       <ActivesExplorer ingredients={INGREDIENTS} />

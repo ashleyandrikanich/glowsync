@@ -84,7 +84,7 @@ export function SettingsPanel() {
     <div className="space-y-8">
       <section className="rounded-2xl border border-dawn/50 bg-gradient-to-br from-blush/35 via-linen/75 to-dawn/25 px-5 py-6 sm:px-7 sm:py-7">
         <h2 className="font-serif text-xl font-medium text-offblack sm:text-2xl">
-          Your data stays here
+          Your Data Stays Here
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-offblack/75 sm:text-[0.9375rem]">
           GlowSync routines and quiz-style answers live in{" "}
@@ -96,7 +96,7 @@ export function SettingsPanel() {
 
       <section className="rounded-2xl border border-sand/80 bg-gradient-to-br from-linen/85 to-blush/30 px-5 py-6 sm:px-6">
         <h2 className="font-serif text-lg font-medium text-offblack">
-          My routine backup
+          My Routine Backup
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-offblack/70">
           Current rows on this device:{" "}
@@ -105,7 +105,7 @@ export function SettingsPanel() {
             href="/routine"
             className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
           >
-            Open My routine
+            Open My Routine
           </Link>
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
@@ -135,7 +135,7 @@ export function SettingsPanel() {
             onClick={clearRoutine}
             className="inline-flex min-h-11 items-center justify-center rounded-xl border border-blossom/45 bg-blossom/10 px-5 py-2.5 text-sm font-semibold text-earth transition hover:border-blossom/70 hover:bg-blossom/20"
           >
-            Clear routine
+            Clear Routine
           </button>
         </div>
         {status ? (
@@ -150,7 +150,7 @@ export function SettingsPanel() {
 
       <section className="rounded-2xl border border-sand/80 bg-linen/60 px-5 py-6 sm:px-6">
         <h2 className="font-serif text-lg font-medium text-offblack">
-          Education & safety
+          Education & Safety
         </h2>
         <ul className="mt-4 space-y-3 text-sm leading-relaxed text-offblack/75">
           <li>
@@ -167,7 +167,7 @@ export function SettingsPanel() {
               href="/"
               className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
             >
-              Pairing checker
+              Pairing Checker
             </Link>{" "}
             — compare two actives when labels confuse you.
           </li>
@@ -176,7 +176,7 @@ export function SettingsPanel() {
               href="/guide"
               className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
             >
-              Routine guide
+              Routine Guide
             </Link>{" "}
             — layering habits by skin feel.
           </li>

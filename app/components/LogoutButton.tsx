@@ -20,7 +20,7 @@ export function LogoutButton({ tone = "light" }: LogoutButtonProps) {
         window.location.href = "/";
       }}
     >
-      Log out
+      Log Out
     </button>
   );
 }

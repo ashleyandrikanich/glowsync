@@ -202,7 +202,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
                     href="/"
                     className="inline-flex text-sm font-semibold text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
                   >
-                    Open the pairing checker on Home →
+                    Open the Pairing Checker on Home →
                   </Link>
                 </div>
               ) : null}

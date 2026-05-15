@@ -254,14 +254,14 @@ export function RoutineTracker() {
           href="/"
           className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
         >
-          safety checker on Home
+          Safety Checker on Home
         </Link>
         . For a deliberate two-ingredient check, open it anytime.
       </p>
 
       <div className="glow-card-sheen rounded-2xl border border-dawn/45 bg-gradient-to-br from-linen/88 via-blush/35 to-dawn/22 p-6 sm:p-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
-          Add a product
+          Add a Product
         </h2>
         <form
           className="mt-6 grid gap-4 sm:grid-cols-2"
@@ -463,9 +463,9 @@ export function RoutineTracker() {
             <div>
               <p
                 id="routine-rating-heading"
-                className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-earth/85"
+                className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/85"
               >
-                Routine rating
+                Routine Rating
               </p>
               <p className="mt-2 font-serif text-3xl font-medium tracking-tight text-offblack sm:text-4xl">
                 {rating.score}
@@ -511,8 +511,8 @@ export function RoutineTracker() {
               ({products.length} product{products.length === 1 ? "" : "s"} logged)
             </span>
           </p>
-          <p className="mt-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-earth/80">
-            What moved the score
+          <p className="mt-4 text-[0.65rem] font-semibold tracking-[0.06em] text-earth/80">
+            What Moved the Score
           </p>
           <ul className="mt-2 list-inside list-disc space-y-1.5 text-xs leading-relaxed text-offblack/70 sm:text-sm">
             {insights.scoreFactors.map((f) => (
@@ -521,8 +521,8 @@ export function RoutineTracker() {
           </ul>
           {insights.bullets.length > 0 ? (
             <>
-              <p className="mt-5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-earth/80">
-                Routine coach notes
+              <p className="mt-5 text-[0.65rem] font-semibold tracking-[0.06em] text-earth/80">
+                Routine Coach Notes
               </p>
               <ul className="mt-2 space-y-2 text-xs leading-relaxed text-offblack/75 sm:text-sm">
                 {insights.bullets.map((b) => (
@@ -550,7 +550,7 @@ export function RoutineTracker() {
                 id="routine-pairings-heading"
                 className="font-serif text-lg font-medium text-offblack"
               >
-                Same-session layering (detected actives)
+                Same-Session Layering (Detected Actives)
               </h2>
               <p className="mt-2 text-xs leading-relaxed text-offblack/65 sm:text-sm">
                 We scan product names and notes for ingredients, then apply the
@@ -595,7 +595,7 @@ export function RoutineTracker() {
           {insights.crossDay.length > 0 ? (
             <section className="rounded-2xl border border-sand/80 bg-linen/60 px-5 py-5 sm:px-6">
               <h2 className="font-serif text-lg font-medium text-offblack">
-                Same-day AM + PM rhythm
+                Same-Day AM + PM Rhythm
               </h2>
               <ul className="mt-3 space-y-3 text-sm leading-relaxed text-offblack/80">
                 {insights.crossDay.map((tip) => (

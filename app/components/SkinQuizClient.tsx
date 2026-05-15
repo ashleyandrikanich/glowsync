@@ -24,10 +24,10 @@ const choiceSelected =
   "border-earth bg-sand/25 ring-1 ring-earth/20";
 
 const STEPS = [
-  { key: "skinFeel" as const, title: "How does your skin feel most days?", subtitle: "Pick the closest match." },
-  { key: "concern" as const, title: "What do you want the most help with?", subtitle: "Choose your top priority right now." },
-  { key: "sensitivity" as const, title: "How does your skin react to new actives?", subtitle: "We will bias picks toward gentler options when needed." },
-  { key: "spfHabit" as const, title: "How often do you wear SPF on your face?", subtitle: "Honest answers shape your AM routine notes." },
+  { key: "skinFeel" as const, title: "How Does Your Skin Feel Most Days?", subtitle: "Pick the closest match." },
+  { key: "concern" as const, title: "What Do You Want the Most Help With?", subtitle: "Choose your top priority right now." },
+  { key: "sensitivity" as const, title: "How Does Your Skin React to New Actives?", subtitle: "We will bias picks toward gentler options when needed." },
+  { key: "spfHabit" as const, title: "How Often Do You Wear SPF on Your Face?", subtitle: "Honest answers shape your AM routine notes." },
 ];
 
 export function SkinQuizClient() {
@@ -95,8 +95,8 @@ export function SkinQuizClient() {
     return (
       <div className="space-y-10">
         <div className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/88 via-blush/32 to-dawn/22 p-6 sm:p-8">
-          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-earth/85">
-            Your snapshot
+          <p className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/85">
+            Your Snapshot
           </p>
           <h2 className="mt-2 font-serif text-2xl font-medium text-offblack sm:text-3xl">
             {result.profileTitle}
@@ -108,7 +108,7 @@ export function SkinQuizClient() {
 
         <div className="grid gap-6 lg:grid-cols-2">
           <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/80 via-blush/28 to-dawn/18 p-6">
-            <h3 className="font-serif text-lg font-medium text-offblack">Suggested AM flow</h3>
+            <h3 className="font-serif text-lg font-medium text-offblack">Suggested AM Flow</h3>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-offblack/80">
               {result.routineAm.map((line) => (
                 <li key={line}>{line}</li>
@@ -116,7 +116,7 @@ export function SkinQuizClient() {
             </ol>
           </section>
           <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/80 via-blush/28 to-dawn/18 p-6">
-            <h3 className="font-serif text-lg font-medium text-offblack">Suggested PM flow</h3>
+            <h3 className="font-serif text-lg font-medium text-offblack">Suggested PM Flow</h3>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-offblack/80">
               {result.routinePm.map((line) => (
                 <li key={line}>{line}</li>
@@ -126,7 +126,7 @@ export function SkinQuizClient() {
         </div>
 
         <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/82 via-blush/30 to-dawn/20 p-6 sm:p-8">
-          <h3 className="font-serif text-xl font-medium text-offblack">Catalog picks to explore</h3>
+          <h3 className="font-serif text-xl font-medium text-offblack">Catalog Picks to Explore</h3>
           <p className="mt-2 text-sm text-offblack/65">
             Pulled from the same reference list as the routine builder. Not medical advice.
           </p>
@@ -160,20 +160,20 @@ export function SkinQuizClient() {
             href="/routine"
             className="rounded-xl bg-earth px-5 py-2.5 text-sm font-medium text-linen transition hover:bg-offblack"
           >
-            Log picks in My routine
+            Log Picks in My Routine
           </Link>
           <Link
             href="/"
             className="rounded-xl border border-sand/90 px-5 py-2.5 text-sm font-medium text-earth transition hover:border-earth/40 hover:bg-sand/30"
           >
-            Check actives on Home
+            Check Actives on Home
           </Link>
           <button
             type="button"
             onClick={restart}
             className="rounded-xl px-4 py-2.5 text-sm font-medium text-earth/90 underline decoration-sand decoration-2 underline-offset-4 transition hover:text-offblack"
           >
-            Retake quiz
+            Retake Quiz
           </button>
         </div>
       </div>
@@ -183,7 +183,7 @@ export function SkinQuizClient() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-earth/80">
+        <p className="text-xs font-medium tracking-[0.08em] text-earth/80">
           Step {Math.min(step + 1, STEPS.length)} of {STEPS.length}
         </p>
         <div className="flex h-1.5 flex-1 max-w-xs gap-1">

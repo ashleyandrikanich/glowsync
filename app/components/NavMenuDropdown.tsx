@@ -70,7 +70,7 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
         aria-controls={menuId}
         aria-haspopup="true"
         onClick={toggle}
-        className="inline-flex items-center gap-2 rounded-xl border border-earth/25 bg-linen/80 px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-earth shadow-sm transition hover:border-earth/45 hover:bg-linen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40 sm:px-3.5 sm:py-2.5 sm:tracking-[0.2em]"
+        className="inline-flex items-center gap-2 rounded-xl border border-earth/25 bg-linen/80 px-3 py-2 text-[0.65rem] font-semibold tracking-[0.12em] text-earth shadow-sm transition hover:border-earth/45 hover:bg-linen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40 sm:px-3.5 sm:py-2.5 sm:tracking-[0.16em]"
       >
         <span className="flex flex-col gap-[3px]" aria-hidden>
           <span className="h-0.5 w-[1.1rem] rounded-full bg-earth/85" />
@@ -108,7 +108,7 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
             <nav className="flex-1 space-y-1 px-2 pt-3">
               {NAV_GROUPS.map((group, gi) => (
                 <div key={group.label} className="pb-2">
-                  <p className="px-3 pb-2 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-earth/65">
+                  <p className="px-3 pb-2 text-[0.65rem] font-semibold tracking-[0.06em] text-earth/70">
                     {group.label}
                   </p>
                   <ul className="space-y-0.5" role="none">
@@ -144,7 +144,7 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
             </nav>
 
             <div className="border-t border-sand/50 px-2 pt-4">
-              <p className="px-3 pb-2 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-earth/65">
+              <p className="px-3 pb-2 text-[0.65rem] font-semibold tracking-[0.06em] text-earth/70">
                 Account
               </p>
               {userEmail ? (
@@ -166,7 +166,7 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
                       onClick={close}
                       className={accountLinkClass}
                     >
-                      Log in
+                      Log In
                     </Link>
                   </li>
                   <li role="none">
@@ -189,7 +189,7 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
                 onClick={close}
                 className="text-xs font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
               >
-                Open pairing checker →
+                Open Pairing Checker →
               </Link>
             </div>
           </div>
