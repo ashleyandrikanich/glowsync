@@ -2,8 +2,8 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --background: #faf9f6;
-  --foreground: #2d2926;
+  --background: #fff7ed;
+  --foreground: #271e1a;
 }
 
 @theme inline {
@@ -15,20 +15,70 @@
 }
 
 body {
-  color: #2d2926;
+  color: #271e1a;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   min-height: 100dvh;
-  background-color: #faf9f6;
+  /* Soft warm wash + gentle “bubble” bokeh */
+  background-color: #ffedd5;
   background-image:
+    linear-gradient(168deg, #fffbeb 0%, #ffedd5 40%, #fed7aa 78%, #fff7ed 100%),
     radial-gradient(
-      ellipse 100% 60% at 50% -10%,
-      rgb(226 209 195 / 0.45),
-      transparent 55%
+      circle 4.5rem at 14% 22%,
+      rgba(255, 255, 255, 0.42),
+      transparent 68%
     ),
     radial-gradient(
-      circle at 100% 100%,
-      rgb(141 123 104 / 0.06),
-      transparent 45%
+      circle 3.2rem at 88% 16%,
+      rgba(255, 251, 235, 0.55),
+      transparent 62%
+    ),
+    radial-gradient(
+      circle 2.4rem at 72% 48%,
+      rgba(254, 215, 170, 0.38),
+      transparent 58%
+    ),
+    radial-gradient(
+      circle 5.5rem at 28% 72%,
+      rgba(253, 186, 116, 0.22),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle 1.8rem at 52% 36%,
+      rgba(255, 255, 255, 0.22),
+      transparent 52%
+    ),
+    radial-gradient(
+      circle 6rem at 92% 78%,
+      rgba(254, 243, 199, 0.4),
+      transparent 72%
+    ),
+    radial-gradient(
+      circle 2.8rem at 8% 88%,
+      rgba(255, 255, 255, 0.14),
+      transparent 56%
+    ),
+    radial-gradient(
+      circle 3.6rem at 64% 12%,
+      rgba(255, 237, 213, 0.35),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle 7rem at 44% 92%,
+      rgba(251, 146, 60, 0.12),
+      transparent 75%
+    ),
+    radial-gradient(
+      circle 2rem at 82% 52%,
+      rgba(255, 255, 255, 0.12),
+      transparent 50%
     );
   background-attachment: fixed;
+}
+
+.glow-card-sheen {
+  box-shadow:
+    0 0 0 1px rgb(212 165 116 / 0.5),
+    0 22px 70px -30px rgb(39 30 26 / 0.14),
+    0 -12px 40px -20px rgb(234 88 12 / 0.1),
+    inset 0 1px 0 rgb(255 251 247 / 0.9);
 }
