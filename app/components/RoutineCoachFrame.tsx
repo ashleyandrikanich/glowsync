@@ -37,8 +37,10 @@ export function RoutineCoachFrame() {
   }, []);
 
   useEffect(() => {
-    refreshProducts();
-    setHydrated(true);
+    queueMicrotask(() => {
+      refreshProducts();
+      setHydrated(true);
+    });
   }, [refreshProducts]);
 
   useEffect(() => {
@@ -55,10 +57,6 @@ export function RoutineCoachFrame() {
     };
     window.addEventListener("focus", onFocus);
     return () => window.removeEventListener("focus", onFocus);
-  }, [tab, refreshProducts]);
-
-  useEffect(() => {
-    if (tab === "review") refreshProducts();
   }, [tab, refreshProducts]);
 
   const block = ROUTINE_GUIDE_BY_SKIN[skin];
@@ -94,7 +92,10 @@ export function RoutineCoachFrame() {
               ? "bg-earth text-linen shadow-sm"
               : "border border-transparent text-earth/90 hover:bg-linen"
           }`}
-          onClick={() => setTab("review")}
+          onClick={() => {
+            setTab("review");
+            queueMicrotask(refreshProducts);
+          }}
         >
           Review my routine
         </button>

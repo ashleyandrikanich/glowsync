@@ -174,10 +174,10 @@ export function RoutineTracker() {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time localStorage hydrate after mount
-    setProducts(loadRoutineProducts());
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- gate persistence until after hydrate
-    setHydrated(true);
+    queueMicrotask(() => {
+      setProducts(loadRoutineProducts());
+      setHydrated(true);
+    });
   }, []);
 
   useEffect(() => {

@@ -19,7 +19,7 @@ export function SettingsPanel() {
   }, []);
 
   useEffect(() => {
-    refreshCount();
+    queueMicrotask(refreshCount);
   }, [refreshCount]);
 
   const exportRoutine = useCallback(() => {

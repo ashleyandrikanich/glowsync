@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import type { Ingredient, IngredientId } from "@/src/lib/ingredients";
-import { INGREDIENTS } from "@/src/lib/ingredients";
 
 type ActivesExplorerProps = {
   ingredients: readonly Ingredient[];

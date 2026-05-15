@@ -15,7 +15,13 @@ type NavMenuDropdownProps = {
   userEmail: string | null;
 };
 
-export function NavMenuDropdown({ userEmail }: NavMenuDropdownProps) {
+/** Remount on route change so the menu closes without syncing state in an effect. */
+export function NavMenuDropdown(props: NavMenuDropdownProps) {
+  const pathname = usePathname();
+  return <NavMenuDropdownInner key={pathname} {...props} />;
+}
+
+function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -42,10 +48,6 @@ export function NavMenuDropdown({ userEmail }: NavMenuDropdownProps) {
       document.body.style.overflow = prev;
     };
   }, [open]);
-
-  useEffect(() => {
-    close();
-  }, [pathname, close]);
 
   useEffect(() => {
     if (!open) return;
