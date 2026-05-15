@@ -10,16 +10,16 @@ export const NAV_GROUPS = [
   {
     label: "Learn",
     items: [
-      { href: "/skin-quiz", label: "Skin quiz" },
-      { href: "/guide", label: "Routine guide" },
-      { href: "/actives", label: "Actives library" },
+      { href: "/skin-quiz", label: "Skin Quiz" },
+      { href: "/guide", label: "Routine Guide" },
+      { href: "/actives", label: "Actives Library" },
     ],
   },
   {
     label: "Tools",
     items: [
-      { href: "/routine", label: "My routine" },
-      { href: "/routine-coach", label: "Routine coach" },
+      { href: "/routine", label: "My Routine" },
+      { href: "/routine-coach", label: "Routine Coach" },
     ],
   },
   {

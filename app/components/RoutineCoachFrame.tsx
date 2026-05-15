@@ -68,7 +68,7 @@ export function RoutineCoachFrame() {
       <div
         className="flex flex-wrap gap-2 border-b border-sand/50 bg-linen/50 px-4 py-3 sm:px-5"
         role="tablist"
-        aria-label="Routine coach modes"
+        aria-label="Routine Coach modes"
       >
         <button
           type="button"
@@ -81,7 +81,7 @@ export function RoutineCoachFrame() {
           }`}
           onClick={() => setTab("starter")}
         >
-          Build a starter routine
+          Build a Starter Routine
         </button>
         <button
           type="button"
@@ -97,7 +97,7 @@ export function RoutineCoachFrame() {
             queueMicrotask(refreshProducts);
           }}
         >
-          Review my routine
+          Review My Routine
         </button>
       </div>
 
@@ -105,8 +105,8 @@ export function RoutineCoachFrame() {
         {tab === "starter" ? (
           <div className="space-y-8">
             <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90">
-                Step 1 — how does your skin usually feel?
+              <p className="text-[0.7rem] font-semibold tracking-[0.08em] text-earth/90">
+                Step 1 — How does your skin usually feel?
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {SKIN_FEEL_OPTIONS.map((opt) => {
@@ -133,8 +133,8 @@ export function RoutineCoachFrame() {
             </div>
 
             <div className="rounded-2xl border border-sand/85 bg-gradient-to-br from-linen/85 to-blush/28 p-5 sm:p-6">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-earth/85">
-                Suggested starter frame
+              <p className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/85">
+                Suggested Starter Frame
               </p>
               <h2 className="mt-2 font-serif text-2xl font-medium text-offblack">
                 {block.headline}
@@ -172,21 +172,21 @@ export function RoutineCoachFrame() {
                   href="/routine"
                   className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
                 >
-                  My routine
+                  My Routine
                 </Link>{" "}
                 row by row, or refine further in the{" "}
                 <Link
                   href="/guide"
                   className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
                 >
-                  routine guide
+                  Routine Guide
                 </Link>{" "}
                 and{" "}
                 <Link
                   href="/skin-quiz"
                   className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
                 >
-                  skin quiz
+                  Skin Quiz
                 </Link>
                 .
               </p>
@@ -196,8 +196,8 @@ export function RoutineCoachFrame() {
           <div className="space-y-8">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90">
-                  Logged on this device
+                <p className="text-[0.7rem] font-semibold tracking-[0.08em] text-earth/90">
+                  Logged on This Device
                 </p>
                 <p className="mt-1 text-sm text-offblack/70">
                   We read the same list as{" "}
@@ -205,7 +205,7 @@ export function RoutineCoachFrame() {
                     href="/routine"
                     className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
                   >
-                    My routine
+                    My Routine
                   </Link>
                   . Switch tabs and come back — we refresh when you return.
                 </p>
@@ -214,7 +214,7 @@ export function RoutineCoachFrame() {
                 <button
                   type="button"
                   onClick={refreshProducts}
-                  className="shrink-0 rounded-xl border border-earth/30 bg-linen/80 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-earth transition hover:border-earth/50"
+                  className="shrink-0 rounded-xl border border-earth/30 bg-linen/80 px-3 py-2 text-xs font-semibold tracking-wide text-earth transition hover:border-earth/50"
                 >
                   Refresh
                 </button>
@@ -228,8 +228,8 @@ export function RoutineCoachFrame() {
                 <section className="rounded-2xl border border-sand/80 bg-linen/70 px-5 py-4 sm:px-6">
                   <div className="flex flex-wrap items-end justify-between gap-3">
                     <div>
-                      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-earth/85">
-                        Routine rating (same formula as My routine)
+                      <p className="text-[0.65rem] font-semibold tracking-[0.06em] text-earth/85">
+                        Routine Rating (Same Formula as My Routine)
                       </p>
                       <p className="mt-1 font-serif text-3xl font-medium text-offblack">
                         {rating.score}
@@ -252,7 +252,7 @@ export function RoutineCoachFrame() {
                 {products.length > 0 ? (
                   <section>
                     <h3 className="font-serif text-lg font-medium text-offblack">
-                      What we see
+                      What We See
                     </h3>
                     <ul className="mt-3 divide-y divide-sand/70 rounded-xl border border-sand/80 bg-white/50">
                       {products.map((p) => (

@@ -3,7 +3,7 @@ import { PageScaffold } from "../components/PageScaffold";
 import { SkinQuizClient } from "../components/SkinQuizClient";
 
 export const metadata: Metadata = {
-  title: "Skin quiz",
+  title: "Skin Quiz",
   description:
     "Short quiz to explore skin type and concerns, with routine ideas and catalog product suggestions.",
 };
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function SkinQuizPage() {
   return (
     <PageScaffold
-      title="What’s my skin type?"
-      description="Four quick questions — then a tailored snapshot with AM/PM routine ideas and product ideas from our reference catalog. For learning only, not a diagnosis."
+      title="What's My Skin Type?"
+      description="A short quiz on skin feel, priorities, sensitivity, SPF, and optional favorite brands — then AM/PM ideas and catalog picks matched to your answers. For learning only, not a diagnosis."
     >
       <SkinQuizClient />
     </PageScaffold>

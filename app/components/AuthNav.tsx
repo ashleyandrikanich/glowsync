@@ -24,7 +24,7 @@ export async function AuthNav({
     return (
       <div className={guestWrap}>
         <Link href="/login" className={linkClass}>
-          Log in
+          Log In
         </Link>
         <Link href="/register" className={linkClass}>
           Register

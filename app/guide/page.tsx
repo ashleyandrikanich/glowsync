@@ -4,7 +4,7 @@ import { PageScaffold } from "../components/PageScaffold";
 import { RoutineGuideExplorer } from "../components/RoutineGuideExplorer";
 
 export const metadata: Metadata = {
-  title: "Routine guide",
+  title: "Routine Guide",
   description:
     "Interactive layering guide by skin type — oily, dry, combination, balanced — plus checker tips and patch-test reminders.",
 };
@@ -12,14 +12,14 @@ export const metadata: Metadata = {
 export default function GuidePage() {
   return (
     <PageScaffold
-      title="Routine guide"
+      title="Routine Guide"
       description="Pick a skin feel to see AM/PM templates, layering habits, and ingredient angles — then cross-check actives on Home. For learning only, not a diagnosis."
     >
       <RoutineGuideExplorer />
 
       <section className="space-y-4 border-t border-sand/80 pt-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
-          How the pairing checker fits in
+          How the Pairing Checker Fits In
         </h2>
         <p>
           After you sketch a routine here, choose two ingredients from the{" "}
@@ -44,7 +44,7 @@ export default function GuidePage() {
 
       <section className="space-y-4 border-t border-sand/80 pt-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
-          Patch tests still win
+          Patch Tests Still Win
         </h2>
         <p>
           A guide cannot replace your own patch test. Try new products on a

@@ -209,7 +209,7 @@ export function RoutineGuideExplorer() {
             href="/"
             className="inline-flex text-sm font-semibold text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
           >
-            Open pairing checker on Home →
+            Open Pairing Checker on Home →
           </Link>
           <Link
             href="/routine"

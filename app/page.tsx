@@ -18,6 +18,9 @@ const selectClassName =
   "bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat " +
   "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23CA8A04'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
 
+const heroPrimaryCtaClass =
+  "inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-dawn hover:text-offblack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/45 sm:min-w-[10.5rem]";
+
 export default function Home() {
   const [first, setFirst] = useState<IngredientId | typeof empty>(empty);
   const [second, setSecond] = useState<IngredientId | typeof empty>(empty);
@@ -72,7 +75,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-0 top-1/3 h-72 w-72 -translate-x-1/4 rounded-full bg-dawn/40 blur-3xl" />
         <div className="pointer-events-none absolute right-0 top-1/4 h-64 w-64 translate-x-1/4 rounded-full bg-sand/35 blur-3xl" />
         <div className="relative mx-auto max-w-3xl">
-          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-earth/85">
+          <p className="text-[0.65rem] font-semibold tracking-[0.14em] text-earth/85">
             GlowSync
           </p>
           <BrandTitle as="h1" size="lg" className="mx-auto mt-4 block" />
@@ -81,23 +84,14 @@ export default function Home() {
             learn how common actives play together—all in one place.
           </p>
           <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:mx-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
-            <Link
-              href="/skin-quiz"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-offblack sm:min-w-[10.5rem]"
-            >
-              Take the skin quiz
+            <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
+              Take the Skin Quiz
             </Link>
-            <Link
-              href="/routine"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-earth/35 bg-linen/80 px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:border-earth/60 hover:bg-linen sm:min-w-[10.5rem]"
-            >
-              Build your routine
+            <Link href="/routine" className={heroPrimaryCtaClass}>
+              Build Your Routine
             </Link>
-            <Link
-              href="/actives"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-earth/35 bg-linen/80 px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:border-earth/60 hover:bg-linen sm:min-w-[10.5rem]"
-            >
-              {"Ingredients & actives"}
+            <Link href="/actives" className={heroPrimaryCtaClass}>
+              Ingredients & Actives
             </Link>
           </div>
           <p className="mx-auto mt-8 max-w-md text-sm leading-relaxed text-offblack/55">
@@ -105,7 +99,7 @@ export default function Home() {
               href="#routine-safety-checker"
               className="font-medium text-earth underline decoration-sand/70 underline-offset-4 transition hover:decoration-earth"
             >
-              Jump to the pairing checker
+              Jump to the Pairing Checker
             </a>{" "}
             when you are ready to compare two actives.
           </p>
@@ -122,7 +116,7 @@ export default function Home() {
             id="home-features-heading"
             className="text-center font-serif text-2xl font-medium text-offblack sm:text-3xl"
           >
-            What you can do here
+            What You Can Do Here
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-offblack/65">
             Pick a starting point—everything runs in your browser unless you sign
@@ -134,11 +128,11 @@ export default function Home() {
                 href="/skin-quiz"
                 className="group flex h-full flex-col rounded-2xl border border-sand/60 bg-gradient-to-br from-linen/90 to-blush/40 p-6 text-left shadow-sm transition hover:border-earth/30 hover:shadow-md"
               >
-                <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-earth/80">
+                <span className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/80">
                   Quiz
                 </span>
                 <span className="mt-3 font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                  Skin profile snapshot
+                  Skin Profile Snapshot
                 </span>
                 <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/70">
                   Four questions and starter AM/PM ideas from our reference
@@ -154,11 +148,11 @@ export default function Home() {
                 href="/routine"
                 className="group flex h-full flex-col rounded-2xl border border-sand/60 bg-gradient-to-br from-linen/90 to-blush/40 p-6 text-left shadow-sm transition hover:border-earth/30 hover:shadow-md"
               >
-                <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-earth/80">
+                <span className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/80">
                   Routine
                 </span>
                 <span className="mt-3 font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                  Your product log
+                  Your Product Log
                 </span>
                 <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/70">
                   Add what you use morning and night, with notes—saved on this
@@ -174,7 +168,7 @@ export default function Home() {
                 href="/actives"
                 className="group flex h-full flex-col rounded-2xl border border-sand/60 bg-gradient-to-br from-linen/90 to-blush/40 p-6 text-left shadow-sm transition hover:border-earth/30 hover:shadow-md"
               >
-                <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-earth/80">
+                <span className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/80">
                   Learn
                 </span>
                 <span className="mt-3 font-serif text-xl font-medium text-offblack group-hover:text-earth">
@@ -195,7 +189,7 @@ export default function Home() {
               href="/guide"
               className="text-sm font-medium text-earth/90 underline decoration-sand/80 underline-offset-4 transition hover:text-offblack hover:decoration-earth"
             >
-              Read the layering guide
+              Read the Layering Guide
             </Link>
           </p>
         </div>
@@ -205,14 +199,14 @@ export default function Home() {
       <main className="relative flex flex-1 flex-col px-4 pb-20 pt-14 sm:px-8 sm:pt-16">
         <div className="mx-auto w-full max-w-6xl">
           <div className="mb-8 text-center sm:mb-10">
-            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-earth/80">
+            <p className="text-[0.65rem] font-semibold tracking-[0.1em] text-earth/80">
               Tool
             </p>
             <h2
               id="routine-safety-checker"
               className="mt-2 scroll-mt-28 font-serif text-3xl font-medium tracking-tight text-offblack sm:text-4xl"
             >
-              Routine safety checker
+              Routine Safety Checker
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-[0.9375rem] leading-relaxed text-offblack/70">
               Choose two actives for conservative layering notes. For education
