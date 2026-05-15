@@ -2,9 +2,15 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { formatProductNotes, getCatalogProductById } from "@/src/lib/product-catalog";
+import { QuizRoutinePlanner } from "./QuizRoutinePlanner";
+import {
+  formatProductNotes,
+  getCatalogBrands,
+  getCatalogProductById,
+} from "@/src/lib/product-catalog";
 import {
   CONCERN_OPTIONS,
+  MAX_FAVORITE_BRANDS,
   MAX_QUIZ_PRIORITIES,
   QUIZ_SKIN_PROFILE_OPTIONS,
   SENSITIVITY_OPTIONS,
@@ -23,6 +29,12 @@ const choiceClass =
 /** Selected answer — warm orange fill + ring */
 const choiceSelected =
   "border-earth bg-gradient-to-br from-dawn/75 via-dawn/55 to-blossom/20 ring-2 ring-earth/40 shadow-md";
+
+const brandChipClass =
+  "rounded-full border border-sand/90 bg-linen/60 px-3 py-1.5 text-sm font-medium text-offblack shadow-sm transition hover:border-earth/40 hover:bg-linen/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40";
+
+const brandChipSelected =
+  "border-earth bg-gradient-to-br from-dawn/75 via-dawn/55 to-blossom/20 text-offblack ring-2 ring-earth/35";
 
 const STEPS = [
   {
@@ -45,7 +57,14 @@ const STEPS = [
     title: "How Often Do You Wear SPF on Your Face?",
     subtitle: "Honest answers shape your AM routine notes.",
   },
+  {
+    key: "favoriteBrands" as const,
+    title: "Any Favorite Brands?",
+    subtitle: `Optional — pick up to ${MAX_FAVORITE_BRANDS} brands you already trust. We will favor them in catalog picks when they still fit your skin profile.`,
+  },
 ];
+
+const ALL_CATALOG_BRANDS = getCatalogBrands();
 
 export function SkinQuizClient() {
   const [step, setStep] = useState(0);
@@ -54,9 +73,19 @@ export function SkinQuizClient() {
     concerns: [],
     sensitivity: null,
     spfHabit: null,
+    favoriteBrands: [],
   });
+  const [brandQuery, setBrandQuery] = useState("");
+  const [plannerKey, setPlannerKey] = useState(0);
 
   const result = useMemo(() => buildQuizResult(answers), [answers]);
+
+  const filteredBrands = useMemo(() => {
+    const q = brandQuery.trim().toLowerCase();
+    if (!q) return ALL_CATALOG_BRANDS;
+    return ALL_CATALOG_BRANDS.filter((b) => b.toLowerCase().includes(q));
+  }, [brandQuery]);
+
   const allAnswered =
     answers.skinProfile &&
     answers.concerns.length > 0 &&
@@ -85,6 +114,16 @@ export function SkinQuizClient() {
   function selectSpf(v: SpfHabit) {
     setAnswers((a) => ({ ...a, spfHabit: v }));
   }
+  function toggleFavoriteBrand(brand: string) {
+    setAnswers((a) => {
+      const cur = a.favoriteBrands;
+      if (cur.includes(brand)) {
+        return { ...a, favoriteBrands: cur.filter((b) => b !== brand) };
+      }
+      if (cur.length >= MAX_FAVORITE_BRANDS) return a;
+      return { ...a, favoriteBrands: [...cur, brand] };
+    });
+  }
 
   function next() {
     setStep((s) => Math.min(s + 1, STEPS.length));
@@ -101,14 +140,18 @@ export function SkinQuizClient() {
       concerns: [],
       sensitivity: null,
       spfHabit: null,
+      favoriteBrands: [],
     });
+    setBrandQuery("");
+    setPlannerKey((k) => k + 1);
   }
 
   const canNext =
     (current?.key === "skinProfile" && answers.skinProfile) ||
     (current?.key === "concern" && answers.concerns.length > 0) ||
     (current?.key === "sensitivity" && answers.sensitivity) ||
-    (current?.key === "spfHabit" && answers.spfHabit);
+    (current?.key === "spfHabit" && answers.spfHabit) ||
+    current?.key === "favoriteBrands";
 
   if (isResults && result) {
     return (
@@ -125,30 +168,14 @@ export function SkinQuizClient() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/80 via-blush/28 to-dawn/18 p-6">
-            <h3 className="font-serif text-lg font-medium text-offblack">Suggested AM Flow</h3>
-            <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-offblack/80">
-              {result.routineAm.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ol>
-          </section>
-          <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/80 via-blush/28 to-dawn/18 p-6">
-            <h3 className="font-serif text-lg font-medium text-offblack">Suggested PM Flow</h3>
-            <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-offblack/80">
-              {result.routinePm.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ol>
-          </section>
-        </div>
+        <QuizRoutinePlanner key={plannerKey} steps={result.routineSteps} />
 
         <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/82 via-blush/30 to-dawn/20 p-6 sm:p-8">
           <h3 className="font-serif text-xl font-medium text-offblack">Catalog Picks to Explore</h3>
           <p className="mt-2 text-sm text-offblack/65">
-            Each row lists which quiz answers nudged it in—Step 1 is skin feel, Step 2
-            priorities, Step 3 sensitivity, Step 4 SPF. Not medical advice.
+            Each row lists which quiz answers nudged it in—Steps 1–4 are skin feel,
+            priorities, sensitivity, and SPF; Step 5 is favorite brands when you picked
+            any. Not medical advice.
           </p>
           <ul className="mt-6 space-y-4">
             {result.catalogPicks.map((pick) => {
@@ -189,10 +216,10 @@ export function SkinQuizClient() {
 
         <div className="flex flex-wrap gap-3">
           <Link
-            href="/routine"
+            href="/actives"
             className="rounded-xl bg-earth px-5 py-2.5 text-sm font-medium text-linen transition hover:bg-offblack"
           >
-            Log Picks in My Routine
+            Browse Actives Library
           </Link>
           <Link
             href="/"
@@ -252,8 +279,57 @@ export function SkinQuizClient() {
                   : ""}
               </p>
             ) : null}
+            {current.key === "favoriteBrands" ? (
+              <p className="mt-2 text-xs font-medium text-earth/90">
+                {answers.favoriteBrands.length} of {MAX_FAVORITE_BRANDS} selected
+                {answers.favoriteBrands.length === 0
+                  ? " — skip is fine; tap Continue"
+                  : answers.favoriteBrands.length >= MAX_FAVORITE_BRANDS
+                    ? " — remove one to pick another"
+                    : ""}
+              </p>
+            ) : null}
           </div>
 
+          {current.key === "favoriteBrands" ? (
+            <div className="space-y-4">
+              <label htmlFor="brand-search" className="sr-only">
+                Search brands
+              </label>
+              <input
+                id="brand-search"
+                type="search"
+                value={brandQuery}
+                onChange={(e) => setBrandQuery(e.target.value)}
+                placeholder="Search brands in our catalog…"
+                className="w-full rounded-xl border border-sand/90 bg-linen/65 px-4 py-2.5 text-sm text-offblack shadow-sm outline-none transition placeholder:text-offblack/40 hover:border-blossom/35 focus:border-sage focus:ring-2 focus:ring-sage/25"
+              />
+              <div
+                className="flex max-h-64 flex-wrap gap-2 overflow-y-auto rounded-xl border border-sand/70 bg-linen/40 p-3 sm:max-h-80"
+                role="group"
+                aria-label="Favorite brands"
+              >
+                {filteredBrands.length === 0 ? (
+                  <p className="text-sm text-offblack/60">No brands match that search.</p>
+                ) : (
+                  filteredBrands.map((brand) => {
+                    const on = answers.favoriteBrands.includes(brand);
+                    return (
+                      <button
+                        key={brand}
+                        type="button"
+                        aria-pressed={on}
+                        className={`${brandChipClass} ${on ? brandChipSelected : ""}`}
+                        onClick={() => toggleFavoriteBrand(brand)}
+                      >
+                        {brand}
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          ) : (
           <div className={gridColsForStep}>
             {current.key === "skinProfile" &&
               QUIZ_SKIN_PROFILE_OPTIONS.map((o) => (
@@ -316,6 +392,7 @@ export function SkinQuizClient() {
                 </button>
               ))}
           </div>
+          )}
 
           <div className="flex flex-wrap gap-3">
             <button

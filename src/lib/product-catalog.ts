@@ -1375,6 +1375,17 @@ export function getCatalogProductById(
   return PRODUCT_CATALOG.find((p) => p.id === id);
 }
 
+/** Distinct brand names in the reference catalog (sorted), for quiz / filters. */
+export function getCatalogBrands(): string[] {
+  const skip = new Set(["various"]);
+  const brands = new Set<string>();
+  for (const p of PRODUCT_CATALOG) {
+    const b = p.brand.trim();
+    if (b && !skip.has(b.toLowerCase())) brands.add(b);
+  }
+  return [...brands].sort((a, b) => a.localeCompare(b));
+}
+
 export function formatProductNotes(p: CatalogProduct): string {
   const actives = p.keyActives.join(", ");
   const mains = p.mainIngredients.join(", ");

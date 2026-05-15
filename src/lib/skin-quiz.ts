@@ -6,7 +6,13 @@
  * `QuizSkinProfile` adds finer quiz-only options that tune picks and copy.
  */
 
-import { getCatalogProductById, type CatalogProduct } from "./product-catalog";
+import {
+  getCatalogProductById,
+  PRODUCT_CATALOG,
+  type CatalogProduct,
+} from "./product-catalog";
+import { buildQuizRoutineSteps, expandProductPool } from "./quiz-routine-steps";
+import type { QuizRoutineStep } from "./quiz-routine-steps";
 
 /** Four buckets — shared with routine guide & coach picker */
 export type SkinFeel = "oily" | "dry" | "combo" | "balanced";
@@ -46,12 +52,17 @@ export type SpfHabit = "always" | "most_days" | "sometimes" | "rare" | "never";
 /** Max priorities selectable on the quiz concern step */
 export const MAX_QUIZ_PRIORITIES = 3;
 
+/** Max favorite brands on the quiz (optional step) */
+export const MAX_FAVORITE_BRANDS = 5;
+
 export type QuizAnswers = {
   skinProfile: QuizSkinProfile | null;
   /** One to three top priorities, in pick order */
   concerns: Concern[];
   sensitivity: Sensitivity | null;
   spfHabit: SpfHabit | null;
+  /** Optional — biases catalog picks toward these brands */
+  favoriteBrands: string[];
 };
 
 export type QuizCatalogPick = {
@@ -65,8 +76,12 @@ export type QuizResult = {
   profileBody: string;
   routineAm: string[];
   routinePm: string[];
+  /** Step-by-step AM/PM plan with a catalog product per step */
+  routineSteps: QuizRoutineStep[];
   catalogPicks: QuizCatalogPick[];
 };
+
+export type { QuizRoutineStep } from "./quiz-routine-steps";
 
 export const SKIN_FEEL_OPTIONS: {
   value: SkinFeel;
@@ -383,6 +398,64 @@ function sortPickReasons(reasons: string[]): string[] {
   return [...reasons].sort((a, b) => stepRank(a) - stepRank(b) || a.localeCompare(b));
 }
 
+function normalizeBrandKey(brand: string): string {
+  return brand.trim().toLowerCase();
+}
+
+function productMatchesFavoriteBrands(
+  productId: string,
+  favoriteBrands: readonly string[]
+): boolean {
+  if (favoriteBrands.length === 0) return false;
+  const p = getCatalogProductById(productId);
+  if (!p) return false;
+  const key = normalizeBrandKey(p.brand);
+  return favoriteBrands.some((b) => normalizeBrandKey(b) === key);
+}
+
+function relevantCatalogIdsForQuiz(
+  skinProfile: QuizSkinProfile,
+  concerns: Concern[],
+  coarseFeel: SkinFeel,
+  spfHabit: SpfHabit
+): Set<string> {
+  const ids = new Set<string>();
+  const add = (arr: readonly string[]) => {
+    for (const id of arr) {
+      if (getCatalogProductById(id)) ids.add(id);
+    }
+  };
+  add(baseByFeel(coarseFeel));
+  add(profileProductBoost(skinProfile));
+  for (const c of concerns) add(concernBoost(c));
+  if (spfHabit === "rare" || spfHabit === "never" || spfHabit === "sometimes") {
+    add(["supergoop-unseen", "la-roche-anthelios", "fenty-hydra-vizor"]);
+  }
+  return ids;
+}
+
+function prioritizeByFavoriteBrands(
+  order: string[],
+  favoriteBrands: readonly string[]
+): string[] {
+  if (favoriteBrands.length === 0) return order;
+  const fav: string[] = [];
+  const rest: string[] = [];
+  for (const id of order) {
+    if (productMatchesFavoriteBrands(id, favoriteBrands)) fav.push(id);
+    else rest.push(id);
+  }
+  return [...fav, ...rest];
+}
+
+function formatFavoriteBrandsReason(brands: readonly string[]): string {
+  const list =
+    brands.length <= 3
+      ? brands.join(", ")
+      : `${brands.slice(0, 3).join(", ")} +${brands.length - 3} more`;
+  return `Step 5 — Favorite brands: we prioritized ${list} where they fit your profile`;
+}
+
 const CONCERN_LABEL: Record<Concern, string> = {
   breakouts: "active breakouts",
   hormonal_acne: "hormonal or jawline breakouts",
@@ -558,7 +631,7 @@ function routineLines(
 }
 
 export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
-  const { skinProfile, concerns, sensitivity, spfHabit } = answers;
+  const { skinProfile, concerns, sensitivity, spfHabit, favoriteBrands } = answers;
   if (
     !skinProfile ||
     concerns.length === 0 ||
@@ -645,6 +718,47 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
     );
   }
 
+  if (favoriteBrands.length > 0) {
+    const brandReason = formatFavoriteBrandsReason(favoriteBrands);
+    const relevant = relevantCatalogIdsForQuiz(
+      skinProfile,
+      concerns,
+      coarseFeel,
+      spfHabit
+    );
+    for (const brand of favoriteBrands) {
+      const brandKey = normalizeBrandKey(brand);
+      const candidates = PRODUCT_CATALOG.filter(
+        (p) =>
+          normalizeBrandKey(p.brand) === brandKey &&
+          relevant.has(p.id) &&
+          (!isHighSensitivity(sensitivity) || !STRONG_ACTIVES.has(p.id))
+      );
+      let added = 0;
+      for (const p of candidates) {
+        if (added >= 2) break;
+        if (!order.includes(p.id)) {
+          touch(p.id, brandReason);
+          added++;
+        }
+      }
+    }
+
+    for (let i = 0; i < order.length; i++) {
+      const id = order[i]!;
+      if (productMatchesFavoriteBrands(id, favoriteBrands)) {
+        pickReasons.get(id)?.add(brandReason);
+      }
+    }
+
+    const prioritized = prioritizeByFavoriteBrands(order, favoriteBrands);
+    order.length = 0;
+    order.push(...prioritized);
+  }
+
+  const productPool = expandProductPool(order, answers);
+  const routineSteps = buildQuizRoutineSteps(am, pm, productPool, favoriteBrands);
+
   const catalogPicks: QuizCatalogPick[] = order.slice(0, 8).map((productId) => ({
     productId,
     reasons: sortPickReasons([...(pickReasons.get(productId) ?? [])]),
@@ -655,6 +769,7 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
     profileBody: body,
     routineAm: am,
     routinePm: pm,
+    routineSteps,
     catalogPicks,
   };
 }

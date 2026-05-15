@@ -12,7 +12,7 @@ export default function SkinQuizPage() {
   return (
     <PageScaffold
       title="What's My Skin Type?"
-      description="Four quick questions — then a tailored snapshot with AM/PM routine ideas and product ideas from our reference catalog. For learning only, not a diagnosis."
+      description="A short quiz on skin feel, priorities, sensitivity, SPF, and optional favorite brands — then AM/PM ideas and catalog picks matched to your answers. For learning only, not a diagnosis."
     >
       <SkinQuizClient />
     </PageScaffold>
