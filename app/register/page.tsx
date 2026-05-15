@@ -9,10 +9,7 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <PageScaffold
-      title="Create an Account"
-      description="We store a hashed password in the database. Copy .env.example to .env, set DATABASE_URL and AUTH_SECRET, then run npm run db:push. Use a strong password — not medical advice."
-    >
+    <PageScaffold title="Create an Account">
       <RegisterForm />
     </PageScaffold>
   );

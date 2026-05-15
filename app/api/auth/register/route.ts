@@ -1,7 +1,11 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { prisma } from "@/src/lib/prisma";
 import { createSessionToken, setSessionCookie } from "@/src/lib/auth";
+import {
+  passwordMeetsAllRules,
+  passwordPolicyErrorMessage,
+} from "@/src/lib/password-policy";
+import { prisma } from "@/src/lib/prisma";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -19,9 +23,9 @@ export async function POST(req: Request) {
     if (!emailRaw || !EMAIL_RE.test(emailRaw)) {
       return NextResponse.json({ error: "Valid email required." }, { status: 400 });
     }
-    if (password.length < 8) {
+    if (!passwordMeetsAllRules(password)) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters." },
+        { error: passwordPolicyErrorMessage() },
         { status: 400 }
       );
     }

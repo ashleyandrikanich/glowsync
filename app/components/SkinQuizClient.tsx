@@ -2,63 +2,82 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { formatProductNotes } from "@/src/lib/product-catalog";
+import { formatProductNotes, getCatalogProductById } from "@/src/lib/product-catalog";
 import {
   CONCERN_OPTIONS,
+  MAX_QUIZ_PRIORITIES,
+  QUIZ_SKIN_PROFILE_OPTIONS,
   SENSITIVITY_OPTIONS,
-  SKIN_FEEL_OPTIONS,
   SPF_OPTIONS,
   buildQuizResult,
-  resolveQuizProducts,
   type Concern,
   type QuizAnswers,
+  type QuizSkinProfile,
   type Sensitivity,
-  type SkinFeel,
   type SpfHabit,
 } from "@/src/lib/skin-quiz";
 
 const choiceClass =
-  "flex w-full flex-col rounded-xl border border-sand/90 bg-linen/60 px-4 py-3.5 text-left shadow-sm transition hover:border-earth/35 hover:bg-linen/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40";
+  "flex w-full flex-col rounded-xl border border-sand/90 bg-linen/60 px-4 py-3.5 text-left shadow-sm transition hover:border-earth/40 hover:bg-linen/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40";
 
+/** Selected answer — warm orange fill + ring */
 const choiceSelected =
-  "border-earth bg-sand/25 ring-1 ring-earth/20";
+  "border-earth bg-gradient-to-br from-dawn/75 via-dawn/55 to-blossom/20 ring-2 ring-earth/40 shadow-md";
 
 const STEPS = [
-  { key: "skinFeel" as const, title: "How Does Your Skin Feel Most Days?", subtitle: "Pick the closest match." },
-  { key: "concern" as const, title: "What Do You Want the Most Help With?", subtitle: "Choose your top priority right now." },
-  { key: "sensitivity" as const, title: "How Does Your Skin React to New Actives?", subtitle: "We will bias picks toward gentler options when needed." },
-  { key: "spfHabit" as const, title: "How Often Do You Wear SPF on Your Face?", subtitle: "Honest answers shape your AM routine notes." },
+  {
+    key: "skinProfile" as const,
+    title: "How Does Your Skin Feel Most Days?",
+    subtitle: "Pick the closest match—finer choices help us shape AM/PM ideas.",
+  },
+  {
+    key: "concern" as const,
+    title: "What Do You Want the Most Help With?",
+    subtitle: `Choose up to ${MAX_QUIZ_PRIORITIES} top priorities (at least one). Tap again to remove.`,
+  },
+  {
+    key: "sensitivity" as const,
+    title: "How Does Your Skin React to New Actives?",
+    subtitle: "We will bias picks toward gentler options when needed.",
+  },
+  {
+    key: "spfHabit" as const,
+    title: "How Often Do You Wear SPF on Your Face?",
+    subtitle: "Honest answers shape your AM routine notes.",
+  },
 ];
 
 export function SkinQuizClient() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({
-    skinFeel: null,
-    concern: null,
+    skinProfile: null,
+    concerns: [],
     sensitivity: null,
     spfHabit: null,
   });
 
   const result = useMemo(() => buildQuizResult(answers), [answers]);
-  const products = useMemo(
-    () => (result ? resolveQuizProducts(result.productIds) : []),
-    [result]
-  );
-
   const allAnswered =
-    answers.skinFeel &&
-    answers.concern &&
+    answers.skinProfile &&
+    answers.concerns.length > 0 &&
     answers.sensitivity &&
     answers.spfHabit;
 
   const current = STEPS[step];
   const isResults = step >= STEPS.length && allAnswered;
 
-  function selectSkinFeel(v: SkinFeel) {
-    setAnswers((a) => ({ ...a, skinFeel: v }));
+  function selectSkinProfile(v: QuizSkinProfile) {
+    setAnswers((a) => ({ ...a, skinProfile: v }));
   }
-  function selectConcern(v: Concern) {
-    setAnswers((a) => ({ ...a, concern: v }));
+  function toggleConcern(v: Concern) {
+    setAnswers((a) => {
+      const cur = a.concerns;
+      if (cur.includes(v)) {
+        return { ...a, concerns: cur.filter((x) => x !== v) };
+      }
+      if (cur.length >= MAX_QUIZ_PRIORITIES) return a;
+      return { ...a, concerns: [...cur, v] };
+    });
   }
   function selectSensitivity(v: Sensitivity) {
     setAnswers((a) => ({ ...a, sensitivity: v }));
@@ -78,16 +97,16 @@ export function SkinQuizClient() {
   function restart() {
     setStep(0);
     setAnswers({
-      skinFeel: null,
-      concern: null,
+      skinProfile: null,
+      concerns: [],
       sensitivity: null,
       spfHabit: null,
     });
   }
 
   const canNext =
-    (current?.key === "skinFeel" && answers.skinFeel) ||
-    (current?.key === "concern" && answers.concern) ||
+    (current?.key === "skinProfile" && answers.skinProfile) ||
+    (current?.key === "concern" && answers.concerns.length > 0) ||
     (current?.key === "sensitivity" && answers.sensitivity) ||
     (current?.key === "spfHabit" && answers.spfHabit);
 
@@ -128,30 +147,43 @@ export function SkinQuizClient() {
         <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/82 via-blush/30 to-dawn/20 p-6 sm:p-8">
           <h3 className="font-serif text-xl font-medium text-offblack">Catalog Picks to Explore</h3>
           <p className="mt-2 text-sm text-offblack/65">
-            Pulled from the same reference list as the routine builder. Not medical advice.
+            Each row lists which quiz answers nudged it in—Step 1 is skin feel, Step 2
+            priorities, Step 3 sensitivity, Step 4 SPF. Not medical advice.
           </p>
           <ul className="mt-6 space-y-4">
-            {products.map((p) => (
-              <li
-                key={p.id}
-                className="rounded-xl border border-sand/80 bg-gradient-to-br from-linen/75 to-blush/25 px-4 py-3"
-              >
-                <p className="font-medium text-offblack">
-                  {p.brand} — {p.name}
-                </p>
-                <p className="mt-1 text-xs text-earth/90">
-                  {p.keyActives.join(" · ")}
-                </p>
-                <details className="mt-2">
-                  <summary className="cursor-pointer text-xs font-medium text-earth">
-                    Sample notes for your routine log
-                  </summary>
-                  <pre className="mt-2 whitespace-pre-wrap font-sans text-[0.7rem] leading-relaxed text-offblack/70">
-                    {formatProductNotes(p)}
-                  </pre>
-                </details>
-              </li>
-            ))}
+            {result.catalogPicks.map((pick) => {
+              const p = getCatalogProductById(pick.productId);
+              if (!p) return null;
+              return (
+                <li
+                  key={pick.productId}
+                  className="rounded-xl border border-sand/80 bg-gradient-to-br from-linen/75 to-blush/25 px-4 py-3"
+                >
+                  <p className="font-medium text-offblack">
+                    {p.brand} — {p.name}
+                  </p>
+                  <p className="mt-1 text-xs text-earth/90">
+                    {p.keyActives.join(" · ")}
+                  </p>
+                  <p className="mt-3 text-[0.65rem] font-semibold tracking-[0.06em] text-earth/85">
+                    Why this showed up
+                  </p>
+                  <ul className="mt-1.5 list-disc space-y-1 pl-4 text-xs leading-relaxed text-offblack/75">
+                    {pick.reasons.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                  <details className="mt-2">
+                    <summary className="cursor-pointer text-xs font-medium text-earth">
+                      Sample notes for your routine log
+                    </summary>
+                    <pre className="mt-2 whitespace-pre-wrap font-sans text-[0.7rem] leading-relaxed text-offblack/70">
+                      {formatProductNotes(p)}
+                    </pre>
+                  </details>
+                </li>
+              );
+            })}
           </ul>
         </section>
 
@@ -180,6 +212,13 @@ export function SkinQuizClient() {
     );
   }
 
+  const gridColsForStep =
+    current?.key === "skinProfile"
+      ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-2"
+      : current?.key === "concern"
+        ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-2"
+        : "grid gap-3 sm:grid-cols-2";
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4">
@@ -205,18 +244,27 @@ export function SkinQuizClient() {
               {current.title}
             </h2>
             <p className="mt-2 text-sm text-offblack/65">{current.subtitle}</p>
+            {current.key === "concern" ? (
+              <p className="mt-2 text-xs font-medium text-earth/90">
+                {answers.concerns.length} of {MAX_QUIZ_PRIORITIES} selected
+                {answers.concerns.length >= MAX_QUIZ_PRIORITIES
+                  ? " — remove one to pick another"
+                  : ""}
+              </p>
+            ) : null}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            {current.key === "skinFeel" &&
-              SKIN_FEEL_OPTIONS.map((o) => (
+          <div className={gridColsForStep}>
+            {current.key === "skinProfile" &&
+              QUIZ_SKIN_PROFILE_OPTIONS.map((o) => (
                 <button
                   key={o.value}
                   type="button"
+                  aria-pressed={answers.skinProfile === o.value}
                   className={`${choiceClass} ${
-                    answers.skinFeel === o.value ? choiceSelected : ""
+                    answers.skinProfile === o.value ? choiceSelected : ""
                   }`}
-                  onClick={() => selectSkinFeel(o.value)}
+                  onClick={() => selectSkinProfile(o.value)}
                 >
                   <span className="font-medium text-offblack">{o.label}</span>
                   <span className="mt-1 text-xs text-offblack/60">{o.hint}</span>
@@ -227,10 +275,11 @@ export function SkinQuizClient() {
                 <button
                   key={o.value}
                   type="button"
+                  aria-pressed={answers.concerns.includes(o.value)}
                   className={`${choiceClass} ${
-                    answers.concern === o.value ? choiceSelected : ""
+                    answers.concerns.includes(o.value) ? choiceSelected : ""
                   }`}
-                  onClick={() => selectConcern(o.value)}
+                  onClick={() => toggleConcern(o.value)}
                 >
                   <span className="font-medium text-offblack">{o.label}</span>
                   <span className="mt-1 text-xs text-offblack/60">{o.hint}</span>
@@ -241,6 +290,7 @@ export function SkinQuizClient() {
                 <button
                   key={o.value}
                   type="button"
+                  aria-pressed={answers.sensitivity === o.value}
                   className={`${choiceClass} ${
                     answers.sensitivity === o.value ? choiceSelected : ""
                   }`}
@@ -255,6 +305,7 @@ export function SkinQuizClient() {
                 <button
                   key={o.value}
                   type="button"
+                  aria-pressed={answers.spfHabit === o.value}
                   className={`${choiceClass} ${
                     answers.spfHabit === o.value ? choiceSelected : ""
                   }`}

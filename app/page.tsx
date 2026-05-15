@@ -18,6 +18,9 @@ const selectClassName =
   "bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat " +
   "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23CA8A04'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
 
+const heroPrimaryCtaClass =
+  "inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-dawn hover:text-offblack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/45 sm:min-w-[10.5rem]";
+
 export default function Home() {
   const [first, setFirst] = useState<IngredientId | typeof empty>(empty);
   const [second, setSecond] = useState<IngredientId | typeof empty>(empty);
@@ -81,23 +84,14 @@ export default function Home() {
             learn how common actives play together—all in one place.
           </p>
           <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:mx-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
-            <Link
-              href="/skin-quiz"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-offblack sm:min-w-[10.5rem]"
-            >
+            <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
               Take the Skin Quiz
             </Link>
-            <Link
-              href="/routine"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-earth/35 bg-linen/80 px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:border-earth/60 hover:bg-linen sm:min-w-[10.5rem]"
-            >
-              Build your routine
+            <Link href="/routine" className={heroPrimaryCtaClass}>
+              Build Your Routine
             </Link>
-            <Link
-              href="/actives"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-earth/35 bg-linen/80 px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:border-earth/60 hover:bg-linen sm:min-w-[10.5rem]"
-            >
-              {"Ingredients & actives"}
+            <Link href="/actives" className={heroPrimaryCtaClass}>
+              Ingredients & Actives
             </Link>
           </div>
           <p className="mx-auto mt-8 max-w-md text-sm leading-relaxed text-offblack/55">
