@@ -1,4 +1,5 @@
 export type RoutineSlot = "am" | "pm" | "both";
+export type RoutineProductStatus = "using" | "love" | "irritating" | "finished";
 
 export type RoutineProduct = {
   id: string;
@@ -6,12 +7,18 @@ export type RoutineProduct = {
   brand: string;
   notes: string;
   slot: RoutineSlot;
+  status?: RoutineProductStatus;
+  lastUsedDate?: string;
 };
 
 export const ROUTINE_STORAGE_KEY = "glowsync-routine-products-v1";
 
 function isRoutineSlot(x: unknown): x is RoutineSlot {
   return x === "am" || x === "pm" || x === "both";
+}
+
+function isRoutineProductStatus(x: unknown): x is RoutineProductStatus {
+  return x === "using" || x === "love" || x === "irritating" || x === "finished";
 }
 
 function isRoutineProduct(x: unknown): x is RoutineProduct {
@@ -22,7 +29,9 @@ function isRoutineProduct(x: unknown): x is RoutineProduct {
     typeof o.name === "string" &&
     typeof o.brand === "string" &&
     typeof o.notes === "string" &&
-    isRoutineSlot(o.slot)
+    isRoutineSlot(o.slot) &&
+    (o.status === undefined || isRoutineProductStatus(o.status)) &&
+    (o.lastUsedDate === undefined || typeof o.lastUsedDate === "string")
   );
 }
 

@@ -277,10 +277,10 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
         Build Your Routine Step by Step
       </h3>
       <p className="mt-2 text-sm leading-relaxed text-offblack/70">
-        For each step, choose whether to keep the suggested product in{" "}
-        <strong className="font-medium text-offblack">My routine</strong> or explore a
-        different pick for that same step. You can skip steps you are not ready to commit
-        to yet.
+        Start with the steps that match your biggest concern, then save only the
+        products you actually want in{" "}
+        <strong className="font-medium text-offblack">My routine</strong>. Use swap when
+        the step feels right but the product does not.
       </p>
 
       {amSteps.length > 0 ? (

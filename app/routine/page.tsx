@@ -12,7 +12,7 @@ export default function RoutinePage() {
   return (
     <PageScaffold
       title="My Routine"
-      description="Log what you use, when you use it, and keep notes in one place. Your routine rating rises as you add products (and small bonuses for AM+PM balance and notes). Stored only on this device."
+      description="Track what you use, tune your AM/PM order, and keep quick notes. Stored only on this device."
     >
       <RoutineTracker />
     </PageScaffold>

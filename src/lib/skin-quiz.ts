@@ -71,9 +71,15 @@ export type QuizCatalogPick = {
   reasons: string[];
 };
 
+export type QuizActionCard = {
+  title: string;
+  body: string;
+};
+
 export type QuizResult = {
   profileTitle: string;
   profileBody: string;
+  actionCards: QuizActionCard[];
   routineAm: string[];
   routinePm: string[];
   /** Step-by-step AM/PM plan with a catalog product per step */
@@ -487,6 +493,59 @@ function profileCopy(
   };
 }
 
+function sensitivityAction(sensitivity: Sensitivity): string {
+  if (isHighSensitivity(sensitivity)) {
+    return "Keep changes slow: one new product at a time, more recovery nights, and avoid stacking exfoliants with retinoids early.";
+  }
+  if (sensitivity === "mixed") {
+    return "Use a steady ramp: try new treatments a few nights weekly before making them daily.";
+  }
+  return "Your answers suggest more tolerance, but strong actives still work best when introduced gradually.";
+}
+
+function spfAction(spfHabit: SpfHabit): string {
+  if (spfHabit === "always" || spfHabit === "most_days") {
+    return "Your SPF habit supports brighter-tone and texture goals, so the routine can focus on consistency and smart active timing.";
+  }
+  if (spfHabit === "sometimes") {
+    return "Make SPF the easiest morning step first; tone, texture, and retinoid goals depend on that baseline.";
+  }
+  return "Start with an SPF texture you actually like before adding ambitious brightening or resurfacing steps.";
+}
+
+function buildActionCards(answers: {
+  skinProfile: QuizSkinProfile;
+  sensitivity: Sensitivity;
+  spfHabit: SpfHabit;
+  concerns: Concern[];
+  favoriteBrands: string[];
+}): QuizActionCard[] {
+  const topConcern = answers.concerns[0]!;
+  const favoriteCopy =
+    answers.favoriteBrands.length > 0
+      ? ` Favorite brands were used as a tie-breaker where they matched your skin goals.`
+      : "";
+
+  return [
+    {
+      title: "What We Heard",
+      body: `${quizProfileDisplayLabel(answers.skinProfile)} with ${formatConcernPhrase(
+        answers.concerns
+      )} as your main focus.${favoriteCopy}`,
+    },
+    {
+      title: "Start Here",
+      body: `${concernDisplayLabel(
+        topConcern
+      )} is your first priority, so save the matching routine steps before adding extras.`,
+    },
+    {
+      title: "Go Slow With",
+      body: `${sensitivityAction(answers.sensitivity)} ${spfAction(answers.spfHabit)}`,
+    },
+  ];
+}
+
 function pmLinesForConcern(concern: Concern): string[] {
   switch (concern) {
     case "breakouts":
@@ -643,6 +702,13 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
   }
 
   const { title, body } = profileCopy(skinProfile, concerns);
+  const actionCards = buildActionCards({
+    skinProfile,
+    concerns,
+    sensitivity,
+    spfHabit,
+    favoriteBrands,
+  });
   const { am, pm } = routineLines(skinProfile, concerns, spfHabit);
   const coarseFeel = quizProfileToGuideFeel(skinProfile);
 
@@ -767,6 +833,7 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
   return {
     profileTitle: title,
     profileBody: body,
+    actionCards,
     routineAm: am,
     routinePm: pm,
     routineSteps,

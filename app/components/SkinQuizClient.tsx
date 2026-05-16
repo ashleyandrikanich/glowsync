@@ -168,6 +168,22 @@ export function SkinQuizClient() {
           </p>
         </div>
 
+        <section className="grid gap-4 md:grid-cols-3" aria-label="Personalized next steps">
+          {result.actionCards.map((card) => (
+            <article
+              key={card.title}
+              className="rounded-2xl border border-dawn/45 bg-gradient-to-br from-linen/82 via-blush/25 to-dawn/18 p-5"
+            >
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-earth/80">
+                {card.title}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-offblack/72">
+                {card.body}
+              </p>
+            </article>
+          ))}
+        </section>
+
         <QuizRoutinePlanner key={plannerKey} steps={result.routineSteps} />
 
         <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/82 via-blush/30 to-dawn/20 p-6 sm:p-8">

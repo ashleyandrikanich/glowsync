@@ -65,10 +65,15 @@ function classifyProductKind(p: CatalogProduct): RoutineStepKind[] {
   return kinds;
 }
 
-function inferKindFromGuidance(line: string): RoutineStepKind {
+function inferKindFromGuidance(
+  line: string,
+  session: RoutineStepSession
+): RoutineStepKind {
   const l = line.toLowerCase();
-  if (l.includes("spf") || l.includes("sunscreen")) return "protect";
   if (l.includes("cleanse") || l.includes("double cleanse")) return "cleanse";
+  if (session === "am" && (l.includes("spf") || l.includes("sunscreen"))) {
+    return "protect";
+  }
   if (
     l.includes("bha") ||
     l.includes("retinoid") ||
@@ -83,6 +88,26 @@ function inferKindFromGuidance(line: string): RoutineStepKind {
   }
   if (l.includes("toner") || l.includes("essence") || l.includes("humectant")) return "hydrate";
   return "moisturize";
+}
+
+function compactRoutineLines(
+  session: RoutineStepSession,
+  lines: string[]
+): { guidance: string; kind: RoutineStepKind }[] {
+  const out: { guidance: string; kind: RoutineStepKind }[] = [];
+  const counts = new Map<RoutineStepKind, number>();
+  const limitForKind = (kind: RoutineStepKind) =>
+    kind === "treat" && session === "pm" ? 2 : 1;
+
+  for (const guidance of lines) {
+    const kind = inferKindFromGuidance(guidance, session);
+    const current = counts.get(kind) ?? 0;
+    if (current >= limitForKind(kind)) continue;
+    counts.set(kind, current + 1);
+    out.push({ guidance, kind });
+  }
+
+  return out;
 }
 
 function titleForKind(kind: RoutineStepKind, session: RoutineStepSession): string {
@@ -185,10 +210,11 @@ export function buildQuizRoutineSteps(
   const steps: QuizRoutineStep[] = [];
 
   const addSession = (session: RoutineStepSession, lines: string[]) => {
-    lines.forEach((guidance, i) => {
-      const kind = inferKindFromGuidance(guidance);
+    compactRoutineLines(session, lines).forEach(({ guidance, kind }, i) => {
       const productId =
-        pickProductForKind(kind, productPool, used, favoriteBrands) ?? productPool[0];
+        pickProductForKind(kind, productPool, used, favoriteBrands) ??
+        productPool.find((id) => !used.has(id)) ??
+        productPool[0];
       if (!productId) return;
       used.add(productId);
 
