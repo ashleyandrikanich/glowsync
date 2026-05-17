@@ -173,6 +173,7 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
         brand: p.brand,
         notes: formatProductNotes(p),
         slot,
+        frequency: "daily",
       });
     }
 

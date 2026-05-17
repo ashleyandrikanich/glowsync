@@ -1,5 +1,10 @@
 export type RoutineSlot = "am" | "pm" | "both";
 export type RoutineProductStatus = "using" | "love" | "irritating" | "finished";
+export type RoutineFrequency =
+  | "daily"
+  | "every_other_day"
+  | "weekly"
+  | "as_needed";
 
 export type RoutineProduct = {
   id: string;
@@ -7,6 +12,7 @@ export type RoutineProduct = {
   brand: string;
   notes: string;
   slot: RoutineSlot;
+  frequency?: RoutineFrequency;
   status?: RoutineProductStatus;
   lastUsedDate?: string;
 };
@@ -21,6 +27,15 @@ function isRoutineProductStatus(x: unknown): x is RoutineProductStatus {
   return x === "using" || x === "love" || x === "irritating" || x === "finished";
 }
 
+function isRoutineFrequency(x: unknown): x is RoutineFrequency {
+  return (
+    x === "daily" ||
+    x === "every_other_day" ||
+    x === "weekly" ||
+    x === "as_needed"
+  );
+}
+
 function isRoutineProduct(x: unknown): x is RoutineProduct {
   if (typeof x !== "object" || x === null) return false;
   const o = x as Record<string, unknown>;
@@ -30,6 +45,7 @@ function isRoutineProduct(x: unknown): x is RoutineProduct {
     typeof o.brand === "string" &&
     typeof o.notes === "string" &&
     isRoutineSlot(o.slot) &&
+    (o.frequency === undefined || isRoutineFrequency(o.frequency)) &&
     (o.status === undefined || isRoutineProductStatus(o.status)) &&
     (o.lastUsedDate === undefined || typeof o.lastUsedDate === "string")
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandTitle } from "./components/BrandTitle";
+import { BubbleDivider } from "./components/BubbleDivider";
 import { HomeRoutineTeaser } from "./components/HomeRoutineTeaser";
 import { HomeSideDressing } from "./components/HomeSideDressing";
 
@@ -7,7 +8,7 @@ const heroPrimaryCtaClass =
   "inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-dawn hover:text-offblack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/45 sm:min-w-[10.5rem]";
 
 const heroSecondaryCtaClass =
-  "inline-flex min-h-12 items-center justify-center rounded-xl border border-earth/30 bg-linen/70 px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:border-earth/50 hover:bg-linen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/35 sm:min-w-[10.5rem]";
+  heroPrimaryCtaClass;
 
 const howItWorks = [
   {
@@ -23,7 +24,7 @@ const howItWorks = [
   {
     step: "03",
     title: "Learn the Actives",
-    body: "Use the library and guide to understand ingredients without turning skincare into homework.",
+    body: "Use the library and guide to understand ingredients in clear, practical language.",
   },
 ];
 
@@ -68,6 +69,21 @@ export default function Home() {
         <header className="relative px-6 pb-12 pt-12 text-center sm:px-10 sm:pb-16 sm:pt-16">
           <div className="pointer-events-none absolute left-0 top-1/3 h-72 w-72 -translate-x-1/4 rounded-full bg-dawn/40 blur-3xl" />
           <div className="pointer-events-none absolute right-0 top-1/4 h-64 w-64 translate-x-1/4 rounded-full bg-sand/35 blur-3xl" />
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-full overflow-hidden"
+            aria-hidden
+          >
+            <span className="absolute left-[8%] top-12 h-10 w-10 rounded-full border border-dawn/50 bg-gradient-to-br from-linen/80 to-dawn/35 shadow-sm sm:h-14 sm:w-14" />
+            <span className="absolute right-[12%] top-8 h-7 w-7 rounded-full border border-sand/70 bg-gradient-to-br from-linen/85 to-blush/35 shadow-sm sm:h-10 sm:w-10" />
+            <span className="absolute left-[18%] top-48 h-5 w-5 rounded-full bg-dawn/45 shadow-sm sm:h-8 sm:w-8" />
+            <span className="absolute right-[20%] top-52 h-12 w-12 rounded-full border border-blossom/30 bg-gradient-to-br from-blush/40 to-linen/75 shadow-sm sm:h-16 sm:w-16" />
+            <span className="absolute bottom-6 left-[30%] h-6 w-6 rounded-full border border-sage/20 bg-sage/15 shadow-sm sm:h-9 sm:w-9" />
+            <span className="absolute bottom-14 right-[32%] h-4 w-4 rounded-full bg-sand/45 shadow-sm sm:h-6 sm:w-6" />
+            <span className="absolute left-[7%] bottom-20 hidden h-4 w-4 rounded-full bg-blossom/30 shadow-sm sm:block" />
+            <span className="absolute right-[8%] bottom-24 hidden h-8 w-8 rounded-full border border-dawn/40 bg-linen/65 shadow-sm sm:block" />
+            <span className="absolute left-[38%] top-8 hidden h-3 w-3 rounded-full bg-sage/20 shadow-sm sm:block" />
+            <span className="absolute right-[42%] bottom-8 hidden h-5 w-5 rounded-full bg-dawn/35 shadow-sm sm:block" />
+          </div>
           <div className="relative mx-auto max-w-3xl">
             <p className="text-[0.65rem] font-semibold tracking-[0.14em] text-earth/85">
               GlowSync
@@ -130,9 +146,13 @@ export default function Home() {
             </ol>
           </section>
 
+          <BubbleDivider />
+
           <section className="mx-auto max-w-6xl">
             <HomeRoutineTeaser />
           </section>
+
+          <BubbleDivider />
 
           <section
             className="mx-auto max-w-6xl rounded-3xl border border-sand/60 bg-linen/50 px-5 py-8 backdrop-blur-sm sm:px-8"
@@ -170,6 +190,8 @@ export default function Home() {
               ))}
             </ul>
           </section>
+
+          <BubbleDivider />
 
           <section className="mx-auto max-w-6xl rounded-3xl border border-dawn/50 bg-gradient-to-br from-blush/42 via-linen/78 to-dawn/28 px-6 py-8 text-center shadow-sm sm:px-10 sm:py-10">
             <p className="font-serif text-2xl font-medium text-offblack sm:text-3xl">

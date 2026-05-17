@@ -24,7 +24,7 @@ export default function GuidePage() {
         <p>
           After you sketch a routine here, use ingredient notes as a second
           pass: strong actives usually deserve slower ramps, recovery nights,
-          and sunscreen support. Prefer the cozy extended list? Browse{" "}
+          and sunscreen support. For more ingredient context, browse{" "}
           <Link
             href="/actives"
             className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"

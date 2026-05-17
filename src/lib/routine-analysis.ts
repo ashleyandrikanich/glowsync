@@ -34,11 +34,20 @@ export type CrossDayTip = {
   detail: string;
 };
 
+export type ActiveLoadAlert = {
+  id: string;
+  slot: "am" | "pm";
+  title: string;
+  productNames: string;
+  detail: string;
+};
+
 export type RoutineInsights = {
   bullets: string[];
   perProduct: ProductRoutineInsight[];
   sameSession: SessionPairingAlert[];
   crossDay: CrossDayTip[];
+  activeLoad: ActiveLoadAlert[];
   /** Short lines for “what helped / hurt the score” */
   scoreFactors: string[];
 };
@@ -119,6 +128,26 @@ export function inferIngredientSignals(text: string): IngredientId[] {
 
   if (/\bceramide\b/i.test(t)) out.add("ceramides");
 
+  if (/\bpanthenol\b|pro-?vitamin\s*b5|\bvitamin\s*b5\b/i.test(t)) out.add("panthenol");
+
+  if (/\ballantoin\b/i.test(t)) out.add("allantoin");
+
+  if (/\blicorice\b|glycyrrhiza|dipotassium\s*glycyrrhizate/i.test(t)) {
+    out.add("licorice-root");
+  }
+
+  if (/\bsqualane\b/i.test(t)) out.add("squalane");
+
+  if (/\burea\b|carbamide/i.test(t)) out.add("urea");
+
+  if (/\bsulfur\b|sulphur/i.test(t)) out.add("sulfur");
+
+  if (/\bcolloidal\s*oat\b|\boat\b|avena\s*sativa/i.test(t)) out.add("oat");
+
+  if (/\bzinc\s*oxide\b/i.test(t)) out.add("zinc-oxide");
+
+  if (/\bcaffeine\b|guarana|guaraná/i.test(t)) out.add("caffeine");
+
   return [...out];
 }
 
@@ -157,7 +186,7 @@ function perProductTip(
   }
 
   if (detected.length >= 4) {
-    tips.push("Many actives flagged in one row — check Home checker if anything here also appears in another step.");
+    tips.push("Many actives flagged in one row — check whether any also appear in another step.");
   }
 
   return tips.length ? tips.join(" ") : null;
@@ -210,6 +239,74 @@ function collectSessionPairings(
   return [...best.values()].sort((a, b) => rank(b.verdict) - rank(a.verdict));
 }
 
+const HARSH_ACTIVE_IDS = new Set<IngredientId>([
+  "retinol",
+  "adapalene",
+  "tretinoin",
+  "ahas",
+  "bha",
+  "pha",
+  "benzoyl-peroxide",
+  "sulfur",
+]);
+
+function frequencyWeight(p: RoutineProduct): number {
+  if (p.frequency === "weekly") return 0.3;
+  if (p.frequency === "every_other_day") return 0.6;
+  if (p.frequency === "as_needed") return 0.35;
+  return 1;
+}
+
+function harshSignalsForProduct(p: RoutineProduct): IngredientId[] {
+  return inferIngredientSignals(productHaystack(p)).filter((id) =>
+    HARSH_ACTIVE_IDS.has(id)
+  );
+}
+
+function collectActiveLoadAlerts(products: RoutineProduct[]): ActiveLoadAlert[] {
+  const alerts: ActiveLoadAlert[] = [];
+
+  for (const slot of ["am", "pm"] as const) {
+    const rows = sessionProducts(products, slot)
+      .map((p) => ({ product: p, signals: harshSignalsForProduct(p) }))
+      .filter((row) => row.signals.length > 0);
+
+    if (rows.length === 0) continue;
+
+    const productNames = rows.map((row) => row.product.name).join(" · ");
+    const uniqueSignals = new Set(rows.flatMap((row) => row.signals));
+    const weightedLoad = rows.reduce(
+      (sum, row) => sum + frequencyWeight(row.product) * Math.max(1, row.signals.length),
+      0
+    );
+    const dailyStrongCount = rows.filter(
+      (row) => (row.product.frequency ?? "daily") === "daily"
+    ).length;
+
+    if (uniqueSignals.size >= 3 || rows.length >= 3 || weightedLoad >= 2.4) {
+      alerts.push({
+        id: `active-load-${slot}`,
+        slot,
+        title: `${slot === "am" ? "Morning" : "Evening"} active load looks high`,
+        productNames,
+        detail:
+          "Several stronger actives appear in the same session. Consider alternating days, moving one active to a different session, or adding more recovery nights.",
+      });
+    } else if (dailyStrongCount >= 2) {
+      alerts.push({
+        id: `active-load-daily-${slot}`,
+        slot,
+        title: `${slot === "am" ? "Morning" : "Evening"} has multiple daily strong actives`,
+        productNames,
+        detail:
+          "Two or more stronger actives are marked daily in this session. If your skin gets dry, tight, or stingy, reduce one to every other day or weekly.",
+      });
+    }
+  }
+
+  return alerts;
+}
+
 function collectCrossDayTips(products: RoutineProduct[]): CrossDayTip[] {
   const amSigs = new Set<IngredientId>();
   const pmSigs = new Set<IngredientId>();
@@ -252,7 +349,8 @@ function collectCrossDayTips(products: RoutineProduct[]): CrossDayTip[] {
 
 function completenessScore(
   products: RoutineProduct[],
-  sameSession?: SessionPairingAlert[]
+  sameSession?: SessionPairingAlert[],
+  activeLoad?: ActiveLoadAlert[]
 ): {
   score: number;
   factors: string[];
@@ -330,6 +428,13 @@ function completenessScore(
     s -= penalty;
   }
 
+  const loadAlerts = activeLoad ?? collectActiveLoadAlerts(products);
+  if (loadAlerts.length > 0) {
+    const loadPenalty = Math.min(24, loadAlerts.length * 12);
+    factors.push(`Strong-active load looks high (−${loadPenalty})`);
+    s -= loadPenalty;
+  }
+
   return { score: Math.max(0, Math.min(92, s)), factors };
 }
 
@@ -365,7 +470,7 @@ function tierFromScore(score: number, n: number): Pick<RoutineRating, "tier" | "
       stars,
       tier: "Balanced cadence",
       blurb:
-        "Solid routine on paper. Scan “same session” alerts — they use the same rules as the Home checker.",
+        "Solid routine on paper. Scan same-session and active-intensity alerts before adding more treatments.",
     };
   }
   if (score < 85) {
@@ -387,14 +492,21 @@ function tierFromScore(score: number, n: number): Pick<RoutineRating, "tier" | "
 function insightBullets(
   products: RoutineProduct[],
   sessionAlerts: SessionPairingAlert[],
-  crossDay: CrossDayTip[]
+  crossDay: CrossDayTip[],
+  activeLoad: ActiveLoadAlert[]
 ): string[] {
   const bullets: string[] = [];
   if (products.length === 0) return bullets;
 
-  if (sessionAlerts.length === 0) {
+  if (sessionAlerts.length === 0 && activeLoad.length === 0) {
     bullets.push(
       "No major same-session conflicts surfaced from detected actives — introduce new bottles one at a time anyway."
+    );
+  }
+
+  if (activeLoad.length > 0) {
+    bullets.push(
+      `${activeLoad.length} active-intensity check${activeLoad.length === 1 ? "" : "s"} flagged a potentially harsh stack — reduce frequency or alternate strong treatments if skin feels stressed.`
     );
   }
 
@@ -414,7 +526,7 @@ function insightBullets(
 
   if (crossDay.length > 0 && avoid.length === 0) {
     bullets.push(
-      "Same-day AM + PM signals worth a second look — open the pairing checker if you stack strong actives."
+      "Same-day AM + PM signals are worth a second look if you stack strong actives."
     );
   }
 
@@ -446,21 +558,28 @@ export function buildRoutineInsights(products: RoutineProduct[]): RoutineInsight
   ];
 
   const crossDay = collectCrossDayTips(products);
-  const { factors: scoreFactors } = completenessScore(products, sameSession);
-  const bullets = insightBullets(products, sameSession, crossDay);
+  const activeLoad = collectActiveLoadAlerts(products);
+  const { factors: scoreFactors } = completenessScore(products, sameSession, activeLoad);
+  const bullets = insightBullets(products, sameSession, crossDay, activeLoad);
 
   return {
     bullets,
     perProduct,
     sameSession,
     crossDay,
+    activeLoad,
     scoreFactors,
   };
 }
 
 export function computeRoutineRating(products: RoutineProduct[]): RoutineRating {
   const n = products.length;
-  const { score: baseScore } = completenessScore(products);
+  const sameSession = [
+    ...collectSessionPairings(products, "am"),
+    ...collectSessionPairings(products, "pm"),
+  ];
+  const activeLoad = collectActiveLoadAlerts(products);
+  const { score: baseScore } = completenessScore(products, sameSession, activeLoad);
   const score = n === 0 ? 0 : Math.min(100, Math.round(baseScore * 1.08));
   const { stars, tier, blurb } = tierFromScore(score, n);
 
