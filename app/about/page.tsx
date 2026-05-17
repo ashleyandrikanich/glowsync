@@ -111,9 +111,9 @@ export default function AboutPage() {
               ✓
             </span>
             <span>
-              <strong className="text-offblack">Conservative pairing notes.</strong>{" "}
-              When in doubt, we nudge you toward caution so you can adjust with a
-              pro if you use prescriptions or have tricky skin.
+              <strong className="text-offblack">Conservative routine nudges.</strong>{" "}
+              When in doubt, we favor slower ramps, fewer stacked actives, and
+              room for a pro if you use prescriptions or have tricky skin.
             </span>
           </li>
           <li className="flex gap-3">

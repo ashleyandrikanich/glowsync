@@ -1,9 +1,52 @@
 import Link from "next/link";
 import { BrandTitle } from "./components/BrandTitle";
+import { HomeRoutineTeaser } from "./components/HomeRoutineTeaser";
 import { HomeSideDressing } from "./components/HomeSideDressing";
 
 const heroPrimaryCtaClass =
   "inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-dawn hover:text-offblack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/45 sm:min-w-[10.5rem]";
+
+const heroSecondaryCtaClass =
+  "inline-flex min-h-12 items-center justify-center rounded-xl border border-earth/30 bg-linen/70 px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:border-earth/50 hover:bg-linen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/35 sm:min-w-[10.5rem]";
+
+const howItWorks = [
+  {
+    step: "01",
+    title: "Take the Skin Quiz",
+    body: "Answer a few questions about skin feel, goals, sensitivity, SPF, and favorite brands.",
+  },
+  {
+    step: "02",
+    title: "Save a Routine",
+    body: "Keep the suggested steps you like, swap products you do not, and build your AM/PM order.",
+  },
+  {
+    step: "03",
+    title: "Learn the Actives",
+    body: "Use the library and guide to understand ingredients without turning skincare into homework.",
+  },
+];
+
+const startHere = [
+  {
+    title: "New to Skincare?",
+    body: "Start with the quiz and let GlowSync suggest a simple AM/PM shape.",
+    href: "/skin-quiz",
+    cta: "Take the quiz",
+  },
+  {
+    title: "Already Have Products?",
+    body: "Log your shelf, arrange the order, and track what you used today.",
+    href: "/routine",
+    cta: "Open My Routine",
+  },
+  {
+    title: "Confused by Ingredients?",
+    body: "Browse actives first, then use the guide to understand layering habits.",
+    href: "/actives",
+    cta: "Browse Actives",
+  },
+];
 
 export default function Home() {
   return (
@@ -22,122 +65,130 @@ export default function Home() {
       </div>
 
       <div className="relative z-[1] flex min-h-dvh flex-1 flex-col">
-      {/* Hero — typical homepage: headline, tagline, primary paths */}
-      <header className="relative px-6 pb-12 pt-12 text-center sm:px-10 sm:pb-16 sm:pt-16">
-        <div className="pointer-events-none absolute left-0 top-1/3 h-72 w-72 -translate-x-1/4 rounded-full bg-dawn/40 blur-3xl" />
-        <div className="pointer-events-none absolute right-0 top-1/4 h-64 w-64 translate-x-1/4 rounded-full bg-sand/35 blur-3xl" />
-        <div className="relative mx-auto max-w-3xl">
-          <p className="text-[0.65rem] font-semibold tracking-[0.14em] text-earth/85">
-            GlowSync
-          </p>
-          <BrandTitle as="h1" size="lg" className="mx-auto mt-4 block" />
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-offblack/80 sm:text-xl">
-            Explore your skin with a quick quiz, keep a simple routine log, and
-            learn the basics of common actives—all in one place.
-          </p>
-          <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:mx-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
-            <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
-              Take the Skin Quiz
-            </Link>
-            <Link href="/routine" className={heroPrimaryCtaClass}>
-              Build Your Routine
-            </Link>
-            <Link href="/actives" className={heroPrimaryCtaClass}>
-              Ingredients & Actives
-            </Link>
+        <header className="relative px-6 pb-12 pt-12 text-center sm:px-10 sm:pb-16 sm:pt-16">
+          <div className="pointer-events-none absolute left-0 top-1/3 h-72 w-72 -translate-x-1/4 rounded-full bg-dawn/40 blur-3xl" />
+          <div className="pointer-events-none absolute right-0 top-1/4 h-64 w-64 translate-x-1/4 rounded-full bg-sand/35 blur-3xl" />
+          <div className="relative mx-auto max-w-3xl">
+            <p className="text-[0.65rem] font-semibold tracking-[0.14em] text-earth/85">
+              GlowSync
+            </p>
+            <BrandTitle as="h1" size="lg" className="mx-auto mt-4 block" />
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-offblack/80 sm:text-xl">
+              Build a skincare routine that actually makes sense for your skin:
+              quiz your skin, save your products, and learn what belongs in AM
+              vs PM.
+            </p>
+            <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:mx-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
+              <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
+                Take the Skin Quiz
+              </Link>
+              <Link href="/routine" className={heroSecondaryCtaClass}>
+                Open My Routine
+              </Link>
+              <Link href="/actives" className={heroSecondaryCtaClass}>
+                Browse Actives
+              </Link>
+            </div>
+            <p className="mx-auto mt-6 max-w-lg text-xs leading-relaxed text-offblack/55 sm:text-sm">
+              Educational only. Stored locally unless you sign in. No diagnosis,
+              no fear-mongering.
+            </p>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Feature strip — scannable “what you can do” */}
-      <section
-        className="border-y border-sand/40 bg-linen/50 px-6 py-12 backdrop-blur-sm sm:px-10"
-        aria-labelledby="home-features-heading"
-      >
-        <div className="mx-auto max-w-6xl">
-          <h2
-            id="home-features-heading"
-            className="text-center font-serif text-2xl font-medium text-offblack sm:text-3xl"
+        <main className="space-y-16 px-6 pb-20 sm:px-10">
+          <section
+            className="mx-auto max-w-6xl"
+            aria-labelledby="home-flow-heading"
           >
-            What You Can Do Here
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-offblack/65">
-            Pick a starting point—everything runs in your browser unless you sign
-            in for account features.
-          </p>
-          <ul className="mt-10 grid gap-6 sm:grid-cols-3">
-            <li>
-              <Link
-                href="/skin-quiz"
-                className="group flex h-full flex-col rounded-2xl border border-sand/60 bg-gradient-to-br from-linen/90 to-blush/40 p-6 text-left shadow-sm transition hover:border-earth/30 hover:shadow-md"
+            <div className="text-center">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-earth/80">
+                How GlowSync Works
+              </p>
+              <h2
+                id="home-flow-heading"
+                className="mt-2 font-serif text-2xl font-medium text-offblack sm:text-3xl"
               >
-                <span className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/80">
-                  Quiz
-                </span>
-                <span className="mt-3 font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                  Skin Profile Snapshot
-                </span>
-                <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/70">
-                  Four questions and starter AM/PM ideas from our reference
-                  catalog.
-                </span>
-                <span className="mt-5 text-sm font-semibold text-earth">
-                  Start quiz →
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/routine"
-                className="group flex h-full flex-col rounded-2xl border border-sand/60 bg-gradient-to-br from-linen/90 to-blush/40 p-6 text-left shadow-sm transition hover:border-earth/30 hover:shadow-md"
-              >
-                <span className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/80">
-                  Routine
-                </span>
-                <span className="mt-3 font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                  Your Product Log
-                </span>
-                <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/70">
-                  Add what you use morning and night, with notes—saved on this
-                  device.
-                </span>
-                <span className="mt-5 text-sm font-semibold text-earth">
-                  Open routine →
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/actives"
-                className="group flex h-full flex-col rounded-2xl border border-sand/60 bg-gradient-to-br from-linen/90 to-blush/40 p-6 text-left shadow-sm transition hover:border-earth/30 hover:shadow-md"
-              >
-                <span className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/80">
-                  Learn
-                </span>
-                <span className="mt-3 font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                  Actives A–Z
-                </span>
-                <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/70">
-                  Short explainers on common ingredients so labels feel less
-                  mysterious.
-                </span>
-                <span className="mt-5 text-sm font-semibold text-earth">
-                  Browse actives →
-                </span>
-              </Link>
-            </li>
-          </ul>
-          <p className="mt-10 text-center">
-            <Link
-              href="/guide"
-              className="text-sm font-medium text-earth/90 underline decoration-sand/80 underline-offset-4 transition hover:text-offblack hover:decoration-earth"
-            >
-              Read the Layering Guide
-            </Link>
-          </p>
-        </div>
-      </section>
+                From quiz answers to a routine you can use
+              </h2>
+            </div>
+            <ol className="mt-8 grid gap-4 md:grid-cols-3">
+              {howItWorks.map((item) => (
+                <li
+                  key={item.step}
+                  className="rounded-2xl border border-sand/70 bg-gradient-to-br from-linen/88 to-blush/32 p-5 shadow-sm"
+                >
+                  <p className="font-serif text-2xl text-earth/70">{item.step}</p>
+                  <h3 className="mt-3 font-serif text-xl font-medium text-offblack">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-offblack/68">
+                    {item.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
 
+          <section className="mx-auto max-w-6xl">
+            <HomeRoutineTeaser />
+          </section>
+
+          <section
+            className="mx-auto max-w-6xl rounded-3xl border border-sand/60 bg-linen/50 px-5 py-8 backdrop-blur-sm sm:px-8"
+            aria-labelledby="home-start-heading"
+          >
+            <div className="text-center">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-earth/80">
+                Start Here
+              </p>
+              <h2
+                id="home-start-heading"
+                className="mt-2 font-serif text-2xl font-medium text-offblack sm:text-3xl"
+              >
+                Choose the best starting point
+              </h2>
+            </div>
+            <ul className="mt-8 grid gap-4 md:grid-cols-3">
+              {startHere.map((item) => (
+                <li key={item.title}>
+                  <Link
+                    href={item.href}
+                    className="group flex h-full flex-col rounded-2xl border border-sand/70 bg-gradient-to-br from-linen/88 to-blush/32 p-5 text-left shadow-sm transition hover:border-earth/35 hover:shadow-md"
+                  >
+                    <span className="font-serif text-xl font-medium text-offblack group-hover:text-earth">
+                      {item.title}
+                    </span>
+                    <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/68">
+                      {item.body}
+                    </span>
+                    <span className="mt-5 text-sm font-semibold text-earth">
+                      {item.cta} -&gt;
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mx-auto max-w-6xl rounded-3xl border border-dawn/50 bg-gradient-to-br from-blush/42 via-linen/78 to-dawn/28 px-6 py-8 text-center shadow-sm sm:px-10 sm:py-10">
+            <p className="font-serif text-2xl font-medium text-offblack sm:text-3xl">
+              Ready to build your routine?
+            </p>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-offblack/68">
+              Start with the quiz if you want guidance, or jump straight into
+              My Routine if you already know what is on your shelf.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
+                Take the Skin Quiz
+              </Link>
+              <Link href="/routine" className={heroSecondaryCtaClass}>
+                Build Your Routine
+              </Link>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );

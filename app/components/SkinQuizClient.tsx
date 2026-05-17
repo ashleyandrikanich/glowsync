@@ -218,7 +218,9 @@ export function SkinQuizClient() {
           <p className="mt-2 text-sm text-offblack/65">
             Each row lists which quiz answers nudged it in—Steps 1–4 are skin feel,
             priorities, sensitivity, and SPF; Step 5 is favorite brands when you picked
-            any. Not medical advice.
+            any. Treat picks as starting points: patch test, introduce one change at a
+            time, and confirm prescriptions, pregnancy, allergies, or painful irritation
+            with a clinician.
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
             <label className="sr-only" htmlFor="catalog-picks-search">

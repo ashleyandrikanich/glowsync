@@ -387,6 +387,11 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
         <strong className="font-medium text-offblack">My routine</strong>. Use swap when
         the step feels right but the product does not.
       </p>
+      <p className="mt-4 rounded-xl border border-sand/70 bg-linen/60 px-4 py-3 text-xs leading-relaxed text-offblack/65">
+        Safety note: these are routine ideas, not treatment instructions. Start new
+        actives slowly, keep SPF in the morning, and pause anything that burns or
+        worsens irritation.
+      </p>
 
       {amSteps.length > 0 ? (
         <div className="mt-8">
