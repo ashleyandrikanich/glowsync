@@ -164,12 +164,12 @@ export function SettingsPanel() {
           </li>
           <li>
             <Link
-              href="/"
+              href="/actives"
               className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
             >
-              Pairing Checker
+              Actives Library
             </Link>{" "}
-            — compare two actives when labels confuse you.
+            — look up common ingredients when labels confuse you.
           </li>
           <li>
             <Link

@@ -76,9 +76,34 @@ export function SkinQuizClient() {
     favoriteBrands: [],
   });
   const [brandQuery, setBrandQuery] = useState("");
+  const [catalogQuery, setCatalogQuery] = useState("");
+  const [catalogRetailer, setCatalogRetailer] = useState<"all" | "ulta" | "sephora">("all");
   const [plannerKey, setPlannerKey] = useState(0);
 
   const result = useMemo(() => buildQuizResult(answers), [answers]);
+  const visibleCatalogPicks = useMemo(() => {
+    if (!result) return [];
+    const q = catalogQuery.trim().toLowerCase();
+    return result.catalogPicks.filter((pick) => {
+      const p = getCatalogProductById(pick.productId);
+      if (!p) return false;
+      if (catalogRetailer !== "all" && !p.retailers?.includes(catalogRetailer)) {
+        return false;
+      }
+      if (!q) return true;
+      const hay = [
+        p.brand,
+        p.name,
+        ...p.aliases,
+        ...p.keyActives,
+        ...p.mainIngredients,
+        ...pick.reasons,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    });
+  }, [catalogQuery, catalogRetailer, result]);
 
   const filteredBrands = useMemo(() => {
     const q = brandQuery.trim().toLowerCase();
@@ -143,6 +168,8 @@ export function SkinQuizClient() {
       favoriteBrands: [],
     });
     setBrandQuery("");
+    setCatalogQuery("");
+    setCatalogRetailer("all");
     setPlannerKey((k) => k + 1);
   }
 
@@ -193,8 +220,55 @@ export function SkinQuizClient() {
             priorities, sensitivity, and SPF; Step 5 is favorite brands when you picked
             any. Not medical advice.
           </p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
+            <label className="sr-only" htmlFor="catalog-picks-search">
+              Search catalog picks
+            </label>
+            <input
+              id="catalog-picks-search"
+              type="search"
+              value={catalogQuery}
+              onChange={(e) => setCatalogQuery(e.target.value)}
+              placeholder="Search picks by brand, active, or reason..."
+              className="w-full rounded-xl border border-sand/90 bg-linen/70 px-4 py-2.5 text-sm text-offblack outline-none transition placeholder:text-offblack/40 focus:border-sage focus:ring-2 focus:ring-sage/25"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setCatalogQuery("");
+                setCatalogRetailer("all");
+              }}
+              className="rounded-xl border border-sand/90 px-4 py-2.5 text-sm font-semibold text-earth transition hover:border-earth/40 hover:bg-linen/80"
+            >
+              Clear filters
+            </button>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {(["all", "ulta", "sephora"] as const).map((retailer) => {
+              const active = catalogRetailer === retailer;
+              const label =
+                retailer === "all" ? "All retailers" : retailer === "ulta" ? "Ulta" : "Sephora";
+              return (
+                <button
+                  key={retailer}
+                  type="button"
+                  onClick={() => setCatalogRetailer(retailer)}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    active
+                      ? "border-earth bg-earth text-linen"
+                      : "border-sand/80 bg-linen/60 text-earth hover:border-earth/40"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-xs text-offblack/55">
+            Showing {visibleCatalogPicks.length} of {result.catalogPicks.length} picks
+          </p>
           <ul className="mt-6 space-y-4">
-            {result.catalogPicks.map((pick) => {
+            {visibleCatalogPicks.map((pick) => {
               const p = getCatalogProductById(pick.productId);
               if (!p) return null;
               return (
@@ -228,6 +302,11 @@ export function SkinQuizClient() {
               );
             })}
           </ul>
+          {visibleCatalogPicks.length === 0 ? (
+            <p className="mt-4 rounded-xl border border-dashed border-sand/90 bg-linen/50 px-4 py-6 text-center text-sm text-offblack/65">
+              No catalog picks match those filters. Clear filters to see all recommendations.
+            </p>
+          ) : null}
         </section>
 
         <div className="flex flex-wrap gap-3">

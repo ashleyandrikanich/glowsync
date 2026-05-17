@@ -401,14 +401,8 @@ export function RoutineTracker() {
     <div className="space-y-10">
       <p className="text-[0.9375rem] leading-relaxed text-offblack/75">
         Add what you use, mark today’s products, and adjust your AM/PM order.
-        GlowSync reads names and notes for quick active checks using the{" "}
-        <Link
-          href="/"
-          className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
-        >
-          Safety Checker
-        </Link>
-        .
+        GlowSync reads names and notes for quick active checks and practical
+        layering nudges.
       </p>
 
       {hydrated ? (
@@ -820,14 +814,8 @@ export function RoutineTracker() {
               </h2>
               <p className="mt-2 text-xs leading-relaxed text-offblack/65 sm:text-sm">
                 We scan product names and notes for ingredients, then apply the
-                same pairing rules as the{" "}
-                <Link
-                  href="/"
-                  className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
-                >
-                  Home checker
-                </Link>
-                . Misses are possible if notes are vague.
+                same conservative ingredient rules used across GlowSync. Misses
+                are possible if notes are vague.
               </p>
               <ul className="mt-4 space-y-3">
                 {insights.sameSession.map((row: SessionPairingAlert) => (

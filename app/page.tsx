@@ -1,59 +1,11 @@
-"use client";
-
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import {
-  INGREDIENTS,
-  evaluatePairing,
-  type IngredientId,
-} from "@/src/lib/ingredients";
 import { BrandTitle } from "./components/BrandTitle";
 import { HomeSideDressing } from "./components/HomeSideDressing";
-
-const empty = "" as const;
-
-const selectClassName =
-  "w-full cursor-pointer appearance-none rounded-xl border border-sand/90 bg-linen/65 px-4 py-3 pr-10 text-offblack shadow-sm outline-none transition " +
-  "hover:border-blossom/50 hover:bg-linen/85 focus:border-sage focus:ring-2 focus:ring-sage/25 " +
-  "bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat " +
-  "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23CA8A04'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")]";
 
 const heroPrimaryCtaClass =
   "inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-dawn hover:text-offblack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/45 sm:min-w-[10.5rem]";
 
 export default function Home() {
-  const [first, setFirst] = useState<IngredientId | typeof empty>(empty);
-  const [second, setSecond] = useState<IngredientId | typeof empty>(empty);
-
-  const result = useMemo(
-    () => evaluatePairing(first, second),
-    [first, second]
-  );
-
-  const verdictStyles: Record<
-    NonNullable<typeof result.verdict>,
-    { panel: string; label: string }
-  > = {
-    safe: {
-      panel: "border-sage/35 bg-sage/15",
-      label: "text-earth",
-    },
-    caution: {
-      panel: "border-blossom/45 bg-dawn/50",
-      label: "text-offblack",
-    },
-    avoid: {
-      panel: "border-blossom/55 bg-blossom/20",
-      label: "text-offblack",
-    },
-  };
-
-  const verdictLabel: Record<NonNullable<typeof result.verdict>, string> = {
-    safe: "Looks compatible",
-    caution: "Use with care",
-    avoid: "Not recommended together",
-  };
-
   return (
     <div className="relative flex min-h-dvh flex-1 flex-col">
       <div
@@ -81,7 +33,7 @@ export default function Home() {
           <BrandTitle as="h1" size="lg" className="mx-auto mt-4 block" />
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-offblack/80 sm:text-xl">
             Explore your skin with a quick quiz, keep a simple routine log, and
-            learn how common actives play together—all in one place.
+            learn the basics of common actives—all in one place.
           </p>
           <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:mx-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
             <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
@@ -94,15 +46,6 @@ export default function Home() {
               Ingredients & Actives
             </Link>
           </div>
-          <p className="mx-auto mt-8 max-w-md text-sm leading-relaxed text-offblack/55">
-            <a
-              href="#routine-safety-checker"
-              className="font-medium text-earth underline decoration-sand/70 underline-offset-4 transition hover:decoration-earth"
-            >
-              Jump to the Pairing Checker
-            </a>{" "}
-            when you are ready to compare two actives.
-          </p>
         </div>
       </header>
 
@@ -195,127 +138,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Primary tool — clearly a section below the fold */}
-      <main className="relative flex flex-1 flex-col px-4 pb-20 pt-14 sm:px-8 sm:pt-16">
-        <div className="mx-auto w-full max-w-6xl">
-          <div className="mb-8 text-center sm:mb-10">
-            <p className="text-[0.65rem] font-semibold tracking-[0.1em] text-earth/80">
-              Tool
-            </p>
-            <h2
-              id="routine-safety-checker"
-              className="mt-2 scroll-mt-28 font-serif text-3xl font-medium tracking-tight text-offblack sm:text-4xl"
-            >
-              Routine Safety Checker
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-[0.9375rem] leading-relaxed text-offblack/70">
-              Choose two actives for conservative layering notes. For education
-              only—not medical advice.
-            </p>
-          </div>
-
-          <div className="glow-card-sheen rounded-3xl border border-dawn/50 bg-gradient-to-br from-linen/92 via-blush/38 to-dawn/28 p-8 backdrop-blur-sm sm:p-10">
-            <section className="space-y-8">
-              <div className="space-y-2">
-                <label
-                  htmlFor="ingredient-a"
-                  className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90"
-                >
-                  First ingredient
-                </label>
-                <select
-                  id="ingredient-a"
-                  value={first}
-                  onChange={(e) =>
-                    setFirst(e.target.value as IngredientId | typeof empty)
-                  }
-                  className={selectClassName}
-                >
-                  <option value={empty}>Select an active…</option>
-                  {INGREDIENTS.map((ing) => (
-                    <option key={ing.id} value={ing.id}>
-                      {ing.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="relative py-1">
-                <div
-                  className="absolute inset-x-0 top-1/2 border-t border-sand/90"
-                  aria-hidden
-                />
-                <div className="relative flex justify-center">
-                  <span className="bg-linen/85 px-4 font-serif text-sm italic text-earth/75 backdrop-blur-sm">
-                    with
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="ingredient-b"
-                  className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90"
-                >
-                  Second ingredient
-                </label>
-                <select
-                  id="ingredient-b"
-                  value={second}
-                  onChange={(e) =>
-                    setSecond(e.target.value as IngredientId | typeof empty)
-                  }
-                  className={selectClassName}
-                >
-                  <option value={empty}>Select an active…</option>
-                  {INGREDIENTS.map((ing) => (
-                    <option key={ing.id} value={ing.id}>
-                      {ing.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div
-                className={`rounded-2xl border px-5 py-5 transition-colors ${
-                  result.verdict
-                    ? verdictStyles[result.verdict].panel
-                    : "border-dashed border-dawn/70 bg-blush/25 text-offblack/65"
-                }`}
-              >
-                {result.verdict && (
-                  <p
-                    className={`mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] ${verdictStyles[result.verdict].label}`}
-                  >
-                    {verdictLabel[result.verdict]}
-                  </p>
-                )}
-                <p className="text-[0.9375rem] leading-relaxed text-offblack/90">
-                  {result.message}
-                </p>
-              </div>
-
-              {(first || second) && (
-                <ul className="space-y-4 border-t border-sand/70 pt-8">
-                  {INGREDIENTS.filter((i) => i.id === first || i.id === second).map(
-                    (ing) => (
-                      <li
-                        key={ing.id}
-                        className="rounded-xl border-l-2 border-earth/35 bg-sand/20 py-3 pl-4 pr-3"
-                      >
-                        <p className="font-medium text-earth">{ing.name}</p>
-                        <p className="mt-1 text-sm leading-relaxed text-offblack/75">
-                          {ing.notes}
-                        </p>
-                      </li>
-                    )
-                  )}
-                </ul>
-              )}
-            </section>
-          </div>
-        </div>
-      </main>
       </div>
     </div>
   );

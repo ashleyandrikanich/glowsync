@@ -5,7 +5,7 @@ import { PageScaffold } from "../components/PageScaffold";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "What GlowSync is: quizzes, routines, actives, and a pairing checker—friendly, clear, and not medical advice.",
+    "What GlowSync is: quizzes, routines, and actives education—friendly, clear, and not medical advice.",
 };
 
 const linkBtn =
@@ -64,12 +64,12 @@ export default function AboutPage() {
           </li>
           <li className="rounded-xl border border-sand/70 bg-linen/70 p-4 shadow-sm">
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-earth/85">
-              Checker
+              Actives
             </p>
-            <p className="mt-2 font-medium text-offblack">Actives pairing helper</p>
+            <p className="mt-2 font-medium text-offblack">Ingredient notes</p>
             <p className="mt-1 text-sm leading-relaxed text-offblack/70">
-              Pick two actives on the home page for conservative layering notes.
-              Think of it as a cautious friend, not a chemistry final.
+              Browse common actives in plain language so labels feel less
+              mysterious.
             </p>
           </li>
           <li className="rounded-xl border border-sand/70 bg-linen/70 p-4 shadow-sm">
@@ -125,7 +125,7 @@ export default function AboutPage() {
             </span>
             <span>
               <strong className="text-offblack">You stay in the driver’s seat.</strong>{" "}
-              Accounts are optional for the routine log; the quiz and checker
+              Accounts are optional for the routine log; the quiz and library
               are here whenever you want to poke around.
             </span>
           </li>
@@ -162,9 +162,6 @@ export default function AboutPage() {
           </Link>
           <Link href="/actives" className={linkOutline}>
             Browse actives
-          </Link>
-          <Link href="/" className={linkOutline}>
-            Try the pairing checker
           </Link>
         </div>
         <p className="text-sm text-offblack/60">

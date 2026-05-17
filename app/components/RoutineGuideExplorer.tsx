@@ -206,12 +206,6 @@ export function RoutineGuideExplorer() {
             Browse actives A–Z →
           </Link>
           <Link
-            href="/"
-            className="inline-flex text-sm font-semibold text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
-          >
-            Open Pairing Checker on Home →
-          </Link>
-          <Link
             href="/routine"
             className="inline-flex text-sm font-semibold text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
           >
