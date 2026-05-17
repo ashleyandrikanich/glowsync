@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import {
   loadRoutineProducts,
   newProductId,
   saveRoutineProducts,
   type RoutineProduct,
   type RoutineSlot,
+  type RoutineProductStatus,
 } from "@/src/lib/routine";
 import {
   formatProductNotes,
@@ -43,21 +43,49 @@ function chipLabel(id: IngredientId): string {
   return full.length > 26 ? `${full.slice(0, 24)}…` : full;
 }
 
+function statusLabel(status: RoutineProductStatus | undefined): string {
+  if (status === "using") return "In Rotation";
+  if (status === "love") return "Love";
+  if (status === "irritating") return "Irritating";
+  if (status === "finished") return "Finished";
+  return "In Rotation";
+}
+
+function statusTone(status: RoutineProductStatus | undefined): string {
+  if (status === "love") return "border-sage/40 bg-sage/15 text-earth";
+  if (status === "irritating") return "border-blossom/45 bg-blossom/15 text-earth";
+  if (status === "finished") return "border-sand/80 bg-sand/35 text-offblack/60";
+  return "border-dawn/50 bg-dawn/25 text-earth";
+}
+
 function RoutineColumn({
   columnId,
   title,
   eyebrow,
   products,
   onRemove,
+  onMove,
+  onMarkUsed,
+  onStatusChange,
   insightById,
+  today,
 }: {
   columnId: "am" | "pm";
   title: string;
   eyebrow: string;
   products: RoutineProduct[];
   onRemove: (id: string) => void;
+  onMove: (id: string, direction: -1 | 1, columnId: "am" | "pm") => void;
+  onMarkUsed: (id: string) => void;
+  onStatusChange: (id: string, status: RoutineProductStatus) => void;
   insightById: Map<string, ProductRoutineInsight>;
+  today: string;
 }) {
+  const emptyHint =
+    columnId === "am"
+      ? "Start with cleanser, moisturizer, and SPF. Add one treatment only if your skin already feels steady."
+      : "Start with cleanser and moisturizer. Keep stronger actives here so mornings stay SPF-focused.";
+
   return (
     <section className="flex flex-col rounded-2xl border border-dawn/40 bg-gradient-to-b from-linen/75 via-blush/25 to-dawn/15 p-5 sm:p-6">
       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-earth/90">
@@ -66,12 +94,15 @@ function RoutineColumn({
       <h2 className="mt-2 font-serif text-xl font-medium text-offblack">{title}</h2>
       <ul className="mt-5 flex flex-1 flex-col gap-3">
         {products.length === 0 ? (
-          <li className="rounded-xl border border-dashed border-sand/90 bg-linen/40 py-8 text-center text-sm text-offblack/55">
-            Nothing here yet.
+          <li className="rounded-xl border border-dashed border-sand/90 bg-linen/45 px-4 py-8 text-center text-sm leading-relaxed text-offblack/60">
+            <span className="block font-medium text-offblack">Nothing here yet.</span>
+            <span className="mt-1 block">{emptyHint}</span>
           </li>
         ) : (
-          products.map((p) => {
+          products.map((p, index) => {
             const insight = insightById.get(p.id);
+            const usedToday = p.lastUsedDate === today;
+            const status = p.status ?? "using";
             return (
             <li
               key={`${p.id}-${columnId}`}
@@ -79,10 +110,27 @@ function RoutineColumn({
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="font-medium text-offblack">{p.name}</p>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-earth/75">
+                    Step {index + 1}
+                  </p>
+                  <p className="mt-1 font-medium text-offblack">{p.name}</p>
                   {p.brand ? (
                     <p className="mt-0.5 text-sm text-earth/90">{p.brand}</p>
                   ) : null}
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <span
+                      className={`rounded-md border px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide ${statusTone(
+                        status
+                      )}`}
+                    >
+                      {statusLabel(status)}
+                    </span>
+                    {usedToday ? (
+                      <span className="rounded-md border border-earth/20 bg-earth/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-earth">
+                        Used today
+                      </span>
+                    ) : null}
+                  </div>
                   {insight && insight.detected.length > 0 ? (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {insight.detected.map((id) => (
@@ -112,14 +160,65 @@ function RoutineColumn({
                     </p>
                   ) : null}
                 </div>
+                <details className="relative shrink-0">
+                  <summary className="list-none rounded-lg border border-sand/80 bg-linen/70 px-3 py-1.5 text-xs font-semibold text-earth transition hover:border-earth/40 hover:bg-linen [&::-webkit-details-marker]:hidden">
+                    Actions
+                  </summary>
+                  <div className="absolute right-0 z-20 mt-1 flex w-44 flex-col rounded-xl border border-sand/90 bg-linen/95 p-1 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={() => onMove(p.id, -1, columnId)}
+                      disabled={index === 0}
+                      className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-earth transition hover:bg-sand/45 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Move up in routine
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onMove(p.id, 1, columnId)}
+                      disabled={index === products.length - 1}
+                      className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-earth transition hover:bg-sand/45 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Move down in routine
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onRemove(p.id)}
+                      className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-earth transition hover:bg-blossom/15"
+                    >
+                      Remove product
+                    </button>
+                  </div>
+                </details>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-sand/55 pt-3">
                 <button
                   type="button"
-                  onClick={() => onRemove(p.id)}
-                  className="shrink-0 rounded-lg px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-earth/80 transition hover:bg-sand/60 hover:text-offblack"
-                  aria-label={`Remove ${p.name}`}
+                  onClick={() => onMarkUsed(p.id)}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                    usedToday
+                      ? "bg-sage/20 text-earth"
+                      : "border border-earth/25 bg-linen/70 text-earth hover:border-earth/45"
+                  }`}
                 >
-                  Remove
+                  {usedToday ? "Used today" : "Mark used today"}
                 </button>
+                <label className="sr-only" htmlFor={`${columnId}-${p.id}-status`}>
+                  Product status
+                </label>
+                <select
+                  id={`${columnId}-${p.id}-status`}
+                  value={status}
+                  onChange={(e) =>
+                    onStatusChange(p.id, e.target.value as RoutineProductStatus)
+                  }
+                  className="rounded-lg border border-sand/80 bg-linen/70 px-3 py-1.5 text-xs font-semibold text-earth outline-none transition hover:border-earth/40 focus:border-sage focus:ring-2 focus:ring-sage/25"
+                >
+                  <option value="using">In Rotation</option>
+                  <option value="love">Love</option>
+                  <option value="irritating">Irritating</option>
+                  <option value="finished">Finished</option>
+                </select>
               </div>
             </li>
             );
@@ -133,6 +232,7 @@ function RoutineColumn({
 export function RoutineTracker() {
   const [products, setProducts] = useState<RoutineProduct[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [activeOverview, setActiveOverview] = useState<"today" | "shelf" | null>(null);
 
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
@@ -142,6 +242,7 @@ export function RoutineTracker() {
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
   const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const suggestions = useMemo(() => searchCatalog(name, 15), [name]);
 
   const applyCatalogProduct = useCallback((p: CatalogProduct) => {
@@ -204,6 +305,28 @@ export function RoutineTracker() {
     [products]
   );
   const { rating, insights } = scorecard;
+  const usedTodayCount = useMemo(
+    () => products.filter((p) => p.lastUsedDate === today).length,
+    [products, today]
+  );
+  const usedTodayProducts = useMemo(
+    () => products.filter((p) => p.lastUsedDate === today),
+    [products, today]
+  );
+  const attentionCount = useMemo(
+    () => products.filter((p) => p.status === "irritating").length,
+    [products]
+  );
+  const statusGroups = useMemo(
+    () =>
+      (["using", "love", "irritating", "finished"] as RoutineProductStatus[]).map(
+        (status) => ({
+          status,
+          products: products.filter((p) => (p.status ?? "using") === status),
+        })
+      ),
+    [products]
+  );
 
   const insightById = useMemo(() => {
     const m = new Map<string, ProductRoutineInsight>();
@@ -222,6 +345,7 @@ export function RoutineTracker() {
         brand: brand.trim(),
         notes: notes.trim(),
         slot,
+        status: "using",
       },
     ]);
     setName("");
@@ -232,6 +356,35 @@ export function RoutineTracker() {
 
   const removeProduct = useCallback((id: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
+  }, []);
+
+  const markUsedToday = useCallback(
+    (id: string) => {
+      setProducts((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, lastUsedDate: today } : p))
+      );
+    },
+    [today]
+  );
+
+  const changeStatus = useCallback((id: string, status: RoutineProductStatus) => {
+    setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
+  }, []);
+
+  const moveProduct = useCallback((id: string, direction: -1 | 1, columnId: "am" | "pm") => {
+    setProducts((prev) => {
+      const visible = prev.filter((p) =>
+        columnId === "am" ? p.slot === "am" || p.slot === "both" : p.slot === "pm" || p.slot === "both"
+      );
+      const visibleIndex = visible.findIndex((p) => p.id === id);
+      const target = visible[visibleIndex + direction];
+      if (!target) return prev;
+      const index = prev.findIndex((p) => p.id === id);
+      const nextIndex = prev.findIndex((p) => p.id === target.id);
+      const next = [...prev];
+      [next[index], next[nextIndex]] = [next[nextIndex]!, next[index]!];
+      return next;
+    });
   }, []);
 
   const clearAll = useCallback(() => {
@@ -246,18 +399,124 @@ export function RoutineTracker() {
   return (
     <div className="space-y-10">
       <p className="text-[0.9375rem] leading-relaxed text-offblack/75">
-        Add the products you actually reach for. Everything stays in this
-        browser — nothing is sent to a server. We scan names and notes for
-        common actives, score coverage (cleanser, SPF, moisture, notes), and
-        flag same-session combos using the same rules as the{" "}
-        <Link
-          href="/"
-          className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
-        >
-          Safety Checker on Home
-        </Link>
-        . For a deliberate two-ingredient check, open it anytime.
+        Add what you use, mark today’s products, and adjust your AM/PM order.
+        GlowSync reads names and notes for quick active checks and practical
+        layering nudges.
       </p>
+
+      {hydrated ? (
+        <section className="space-y-3" aria-label="Routine overviews">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() =>
+                setActiveOverview((cur) => (cur === "today" ? null : "today"))
+              }
+              className={`rounded-2xl border px-4 py-4 text-left transition ${
+                activeOverview === "today"
+                  ? "border-earth/45 bg-gradient-to-br from-dawn/35 to-linen shadow-sm"
+                  : "border-dawn/45 bg-gradient-to-br from-linen/80 to-dawn/20 hover:border-earth/35"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-earth/80">
+                    Used Today
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-offblack/65">
+                    See which routine products you marked for today.
+                  </p>
+                </div>
+                <span className="rounded-full bg-earth/10 px-2.5 py-1 text-xs font-semibold text-earth">
+                  {usedTodayCount}/{products.length}
+                </span>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setActiveOverview((cur) => (cur === "shelf" ? null : "shelf"))
+              }
+              className={`rounded-2xl border px-4 py-4 text-left transition ${
+                activeOverview === "shelf"
+                  ? "border-earth/45 bg-gradient-to-br from-blush/35 to-linen shadow-sm"
+                  : "border-dawn/45 bg-gradient-to-br from-linen/80 to-blush/25 hover:border-earth/35"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-earth/80">
+                    Shelf Status
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-offblack/65">
+                    Review what is in rotation, loved, irritating, or finished.
+                  </p>
+                </div>
+                <span className="rounded-full bg-earth/10 px-2.5 py-1 text-xs font-semibold text-earth">
+                  {attentionCount} flagged
+                </span>
+              </div>
+            </button>
+          </div>
+
+          {activeOverview ? (
+            <div className="rounded-2xl border border-sand/80 bg-linen/65 px-4 py-4">
+              {activeOverview === "today" ? (
+                <>
+                  <p className="font-serif text-lg font-medium text-offblack">
+                    Products Used Today
+                  </p>
+                  {usedTodayProducts.length > 0 ? (
+                    <ul className="mt-3 space-y-2 text-sm text-offblack/75">
+                      {usedTodayProducts.map((p) => (
+                        <li
+                          key={p.id}
+                          className="rounded-lg border border-sand/70 bg-white/35 px-3 py-2"
+                        >
+                          <span className="font-medium text-offblack">{p.name}</span>
+                          {p.brand ? (
+                            <span className="text-earth/85"> · {p.brand}</span>
+                          ) : null}
+                          <span className="text-offblack/50"> · {slotLabel(p.slot)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-sm text-offblack/65">
+                      Nothing marked yet. Tap “Mark used today” on any routine card.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <p className="font-serif text-lg font-medium text-offblack">
+                    Shelf Status Overview
+                  </p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {statusGroups.map((group) => (
+                      <div
+                        key={group.status}
+                        className="rounded-lg border border-sand/70 bg-white/35 px-3 py-2"
+                      >
+                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-earth/80">
+                          {statusLabel(group.status)} ({group.products.length})
+                        </p>
+                        {group.products.length > 0 ? (
+                          <p className="mt-1 text-sm text-offblack/75">
+                            {group.products.map((p) => p.name).join(", ")}
+                          </p>
+                        ) : (
+                          <p className="mt-1 text-sm text-offblack/45">None</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
       <div className="glow-card-sheen rounded-2xl border border-dawn/45 bg-gradient-to-br from-linen/88 via-blush/35 to-dawn/22 p-6 sm:p-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
@@ -554,14 +813,8 @@ export function RoutineTracker() {
               </h2>
               <p className="mt-2 text-xs leading-relaxed text-offblack/65 sm:text-sm">
                 We scan product names and notes for ingredients, then apply the
-                same pairing rules as the{" "}
-                <Link
-                  href="/"
-                  className="font-medium text-earth underline decoration-sand/80 underline-offset-2"
-                >
-                  Home checker
-                </Link>
-                . Misses are possible if notes are vague.
+                same conservative ingredient rules used across GlowSync. Misses
+                are possible if notes are vague.
               </p>
               <ul className="mt-4 space-y-3">
                 {insights.sameSession.map((row: SessionPairingAlert) => (
@@ -623,7 +876,11 @@ export function RoutineTracker() {
             eyebrow="A.M."
             products={amProducts}
             onRemove={removeProduct}
+            onMove={moveProduct}
+            onMarkUsed={markUsedToday}
+            onStatusChange={changeStatus}
             insightById={insightById}
+            today={today}
           />
           <RoutineColumn
             columnId="pm"
@@ -631,7 +888,11 @@ export function RoutineTracker() {
             eyebrow="P.M."
             products={pmProducts}
             onRemove={removeProduct}
+            onMove={moveProduct}
+            onMarkUsed={markUsedToday}
+            onStatusChange={changeStatus}
             insightById={insightById}
+            today={today}
           />
         </div>
       )}

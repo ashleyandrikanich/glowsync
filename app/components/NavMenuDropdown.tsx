@@ -185,11 +185,11 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
 
             <div className="border-t border-sand/50 px-4 py-3">
               <Link
-                href="/"
+                href="/actives"
                 onClick={close}
                 className="text-xs font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
               >
-                Open Pairing Checker →
+                Browse Actives →
               </Link>
             </div>
           </div>

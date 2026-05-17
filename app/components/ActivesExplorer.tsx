@@ -199,10 +199,10 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
                     </div>
                   ) : null}
                   <Link
-                    href="/"
+                    href="/guide"
                     className="inline-flex text-sm font-semibold text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
                   >
-                    Open the Pairing Checker on Home →
+                    Read layering guidance →
                   </Link>
                 </div>
               ) : null}
@@ -219,15 +219,14 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
       ) : null}
 
       <p className="border-t border-sand/80 pt-8 text-offblack/70">
-        Compare any two from the checker on{" "}
+        Want help turning ingredients into routine order? Read the{" "}
         <Link
-          href="/"
+          href="/guide"
           className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
         >
-          Home
+          Routine Guide
         </Link>
-        —pick them from the dropdowns (search this page first if you need a
-        refresher on vibes).
+        , then log products in My Routine.
       </p>
     </div>
   );

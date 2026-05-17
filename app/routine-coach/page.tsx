@@ -25,13 +25,12 @@ export default function RoutineCoachPage() {
         >
           My Routine
         </Link>{" "}
-        from this browser only. Nothing is uploaded. For ingredient safety
-        between two actives, use the{" "}
+        from this browser only. Nothing is uploaded. For ingredient context, browse{" "}
         <Link
-          href="/"
+          href="/actives"
           className="font-medium text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
         >
-          Pairing Checker on Home
+          Actives Library
         </Link>
         .
       </p>

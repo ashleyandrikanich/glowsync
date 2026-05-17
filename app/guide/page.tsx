@@ -6,32 +6,25 @@ import { RoutineGuideExplorer } from "../components/RoutineGuideExplorer";
 export const metadata: Metadata = {
   title: "Routine Guide",
   description:
-    "Interactive layering guide by skin type — oily, dry, combination, balanced — plus checker tips and patch-test reminders.",
+    "Interactive layering guide by skin type — oily, dry, combination, balanced — plus patch-test reminders.",
 };
 
 export default function GuidePage() {
   return (
     <PageScaffold
       title="Routine Guide"
-      description="Pick a skin feel to see AM/PM templates, layering habits, and ingredient angles — then cross-check actives on Home. For learning only, not a diagnosis."
+      description="Pick a skin feel to see AM/PM templates, layering habits, and ingredient angles. For learning only, not a diagnosis."
     >
       <RoutineGuideExplorer />
 
       <section className="space-y-4 border-t border-sand/80 pt-8">
         <h2 className="font-serif text-xl font-medium text-offblack">
-          How the Pairing Checker Fits In
+          How Ingredient Notes Fit In
         </h2>
         <p>
-          After you sketch a routine here, choose two ingredients from the{" "}
-          <Link
-            href="/"
-            className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"
-          >
-            home page
-          </Link>{" "}
-          dropdowns. GlowSync compares them against a small, conservative rule
-          set for same-day layering — not percentages, buffers, or prescriptions.
-          Prefer the cozy extended list? Browse{" "}
+          After you sketch a routine here, use ingredient notes as a second
+          pass: strong actives usually deserve slower ramps, recovery nights,
+          and sunscreen support. Prefer the cozy extended list? Browse{" "}
           <Link
             href="/actives"
             className="text-earth underline decoration-sand/80 underline-offset-4 transition hover:decoration-earth"

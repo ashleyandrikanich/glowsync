@@ -16,10 +16,16 @@ import {
 import type { QuizRoutineStep } from "@/src/lib/quiz-routine-steps";
 
 export type StepChoice = "undecided" | "keep" | "swap";
+type RetailerFilter = "all" | "ulta" | "sephora";
 
 type StepState = {
   choice: StepChoice;
   productId: string;
+};
+
+type SwapFilterState = {
+  query: string;
+  retailer: RetailerFilter;
 };
 
 type QuizRoutinePlannerProps = {
@@ -48,6 +54,11 @@ function ProductMini({
         {p.brand} — {p.name}
       </p>
       <p className="mt-0.5 text-xs text-earth/90">{p.keyActives.join(" · ")}</p>
+      {p.retailers?.length ? (
+        <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-offblack/45">
+          {p.retailers.map((r) => (r === "ulta" ? "Ulta" : "Sephora")).join(" · ")}
+        </p>
+      ) : null}
     </>
   );
 
@@ -84,6 +95,7 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
   }, [steps]);
 
   const [stepState, setStepState] = useState<Record<string, StepState>>(initial);
+  const [swapFilters, setSwapFilters] = useState<Record<string, SwapFilterState>>({});
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
 
   const amSteps = steps.filter((s) => s.session === "am");
@@ -108,6 +120,26 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
       [stepId]: { choice: "swap", productId },
     }));
     setSaveMsg(null);
+  }, []);
+
+  const updateSwapFilter = useCallback(
+    (stepId: string, patch: Partial<SwapFilterState>) => {
+      setSwapFilters((prev) => ({
+        ...prev,
+        [stepId]: {
+          ...(prev[stepId] ?? { query: "", retailer: "all" }),
+          ...patch,
+        },
+      }));
+    },
+    []
+  );
+
+  const clearSwapFilter = useCallback((stepId: string) => {
+    setSwapFilters((prev) => ({
+      ...prev,
+      [stepId]: { query: "", retailer: "all" },
+    }));
   }, []);
 
   function saveKeptToRoutine() {
@@ -157,6 +189,26 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
       st.productId,
       ...step.alternativeProductIds.filter((id) => id !== st.productId),
     ];
+    const filters = swapFilters[step.id] ?? { query: "", retailer: "all" };
+    const filteredAltIds = altIds.filter((id) => {
+      const p = getCatalogProductById(id);
+      if (!p) return false;
+      if (filters.retailer !== "all" && !p.retailers?.includes(filters.retailer)) {
+        return false;
+      }
+      const q = filters.query.trim().toLowerCase();
+      if (!q) return true;
+      const hay = [
+        p.brand,
+        p.name,
+        ...p.aliases,
+        ...p.keyActives,
+        ...p.mainIngredients,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    });
 
     return (
       <li
@@ -232,14 +284,61 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
         </div>
 
         {showingSwap ? (
-          <div className="mt-4 space-y-2 border-t border-sand/60 pt-4">
+          <div className="mt-4 space-y-3 border-t border-sand/60 pt-4">
             <p className="text-xs font-medium text-offblack/70">
               Pick another product for this step, then tap{" "}
               <strong className="font-medium text-offblack">Keep in my routine</strong> to
               save your choice:
             </p>
+            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+              <label className="sr-only" htmlFor={`${step.id}-swap-search`}>
+                Search product alternatives
+              </label>
+              <input
+                id={`${step.id}-swap-search`}
+                type="search"
+                value={filters.query}
+                onChange={(e) =>
+                  updateSwapFilter(step.id, { query: e.target.value })
+                }
+                placeholder="Search this step by brand, active, or texture..."
+                className="w-full rounded-xl border border-sand/80 bg-linen/70 px-3 py-2 text-sm text-offblack outline-none transition placeholder:text-offblack/40 focus:border-sage focus:ring-2 focus:ring-sage/25"
+              />
+              <button
+                type="button"
+                onClick={() => clearSwapFilter(step.id)}
+                className="rounded-xl border border-sand/80 px-3 py-2 text-xs font-semibold text-earth transition hover:border-earth/40 hover:bg-linen/80"
+              >
+                Clear
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(["all", "ulta", "sephora"] as RetailerFilter[]).map((retailer) => {
+                const active = filters.retailer === retailer;
+                const label =
+                  retailer === "all"
+                    ? "All"
+                    : retailer === "ulta"
+                      ? "Ulta"
+                      : "Sephora";
+                return (
+                  <button
+                    key={retailer}
+                    type="button"
+                    onClick={() => updateSwapFilter(step.id, { retailer })}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                      active
+                        ? "border-earth bg-earth text-linen"
+                        : "border-sand/80 bg-linen/60 text-earth hover:border-earth/40"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
             <div className="grid gap-2 sm:grid-cols-2">
-              {altIds.map((id) => (
+              {filteredAltIds.map((id) => (
                 <ProductMini
                   key={id}
                   productId={id}
@@ -248,6 +347,12 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
                 />
               ))}
             </div>
+            {filteredAltIds.length === 0 ? (
+              <p className="rounded-xl border border-dashed border-sand/80 bg-linen/50 px-3 py-4 text-center text-xs leading-relaxed text-offblack/60">
+                No alternatives match those filters. Try clearing search or switching
+                retailer.
+              </p>
+            ) : null}
             <p className="text-xs text-offblack/55">
               Want more options?{" "}
               <Link
@@ -277,10 +382,15 @@ export function QuizRoutinePlanner({ steps }: QuizRoutinePlannerProps) {
         Build Your Routine Step by Step
       </h3>
       <p className="mt-2 text-sm leading-relaxed text-offblack/70">
-        For each step, choose whether to keep the suggested product in{" "}
-        <strong className="font-medium text-offblack">My routine</strong> or explore a
-        different pick for that same step. You can skip steps you are not ready to commit
-        to yet.
+        Start with the steps that match your biggest concern, then save only the
+        products you actually want in{" "}
+        <strong className="font-medium text-offblack">My routine</strong>. Use swap when
+        the step feels right but the product does not.
+      </p>
+      <p className="mt-4 rounded-xl border border-sand/70 bg-linen/60 px-4 py-3 text-xs leading-relaxed text-offblack/65">
+        Safety note: these are routine ideas, not treatment instructions. Start new
+        actives slowly, keep SPF in the morning, and pause anything that burns or
+        worsens irritation.
       </p>
 
       {amSteps.length > 0 ? (
