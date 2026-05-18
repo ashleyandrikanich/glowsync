@@ -21,8 +21,10 @@ export function WishlistClient() {
   const [items, setItems] = useState<WishlistItem[]>([]);
 
   useEffect(() => {
-    setItems(loadWishlist());
-    setHydrated(true);
+    queueMicrotask(() => {
+      setItems(loadWishlist());
+      setHydrated(true);
+    });
   }, []);
 
   useEffect(() => {

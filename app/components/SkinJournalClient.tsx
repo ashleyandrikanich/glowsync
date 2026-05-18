@@ -31,8 +31,10 @@ export function SkinJournalClient() {
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
-    setEntries(loadSkinJournalEntries());
-    setHydrated(true);
+    queueMicrotask(() => {
+      setEntries(loadSkinJournalEntries());
+      setHydrated(true);
+    });
   }, []);
 
   useEffect(() => {

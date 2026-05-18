@@ -38,8 +38,10 @@ export function RoutineHistoryClient() {
   const [events, setEvents] = useState<RoutineUsageEvent[]>([]);
 
   useEffect(() => {
-    setProducts(loadRoutineProducts());
-    setEvents(loadRoutineUsageHistory());
+    queueMicrotask(() => {
+      setProducts(loadRoutineProducts());
+      setEvents(loadRoutineUsageHistory());
+    });
   }, []);
 
   const recentDays = useMemo(
