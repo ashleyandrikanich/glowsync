@@ -10,6 +10,7 @@ import {
   type RoutineSlot,
   type RoutineProductStatus,
 } from "@/src/lib/routine";
+import { logRoutineUsage } from "@/src/lib/routine-history";
 import {
   formatProductNotes,
   searchCatalog,
@@ -375,9 +376,21 @@ export function RoutineTracker() {
 
   const markUsedToday = useCallback(
     (id: string) => {
-      setProducts((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, lastUsedDate: today } : p))
-      );
+      setProducts((prev) => {
+        const product = prev.find((p) => p.id === id);
+        if (product) {
+          logRoutineUsage({
+            productId: product.id,
+            productName: product.name,
+            brand: product.brand,
+            slot: product.slot,
+            usedDate: today,
+          });
+        }
+        return prev.map((p) =>
+          p.id === id ? { ...p, lastUsedDate: today } : p
+        );
+      });
     },
     [today]
   );

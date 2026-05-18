@@ -13,19 +13,25 @@ export const NAV_GROUPS = [
       { href: "/skin-quiz", label: "Skin Quiz" },
       { href: "/guide", label: "Routine Guide" },
       { href: "/actives", label: "Actives Library" },
+      { href: "/education", label: "Education Hub" },
     ],
   },
   {
     label: "Tools",
     items: [
       { href: "/routine", label: "My Routine" },
+      { href: "/routine-history", label: "Routine History" },
+      { href: "/skin-journal", label: "Skin Journal" },
       { href: "/routine-coach", label: "Routine Coach" },
+      { href: "/compare", label: "Product Compare" },
+      { href: "/wishlist", label: "Wishlist" },
     ],
   },
   {
     label: "More",
     items: [
       { href: "/about", label: "About" },
+      { href: "/faq", label: "FAQ" },
       { href: "/settings", label: "Settings" },
     ],
   },

@@ -49,6 +49,29 @@ const startHere = [
   },
 ];
 
+const newTools = [
+  {
+    title: "Skin Journal",
+    body: "Log skin feel, irritation, breakouts, and notes so changes are easier to connect over time.",
+    href: "/skin-journal",
+  },
+  {
+    title: "Routine History",
+    body: "Review recent product usage and see how your saved frequency plan lines up with your week.",
+    href: "/routine-history",
+  },
+  {
+    title: "Product Compare",
+    body: "Place catalog products side by side to compare actives, ingredients, role, and retailer notes.",
+    href: "/compare",
+  },
+  {
+    title: "Wishlist",
+    body: "Save products you want to research, compare, or try later without adding them to your routine yet.",
+    href: "/wishlist",
+  },
+];
+
 export default function Home() {
   return (
     <div className="relative flex min-h-dvh flex-1 flex-col">
@@ -184,6 +207,45 @@ export default function Home() {
                     </span>
                     <span className="mt-5 text-sm font-semibold text-earth">
                       {item.cta} -&gt;
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <BubbleDivider />
+
+          <section
+            className="mx-auto max-w-6xl"
+            aria-labelledby="home-tools-heading"
+          >
+            <div className="text-center">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-earth/80">
+                New Tools
+              </p>
+              <h2
+                id="home-tools-heading"
+                className="mt-2 font-serif text-2xl font-medium text-offblack sm:text-3xl"
+              >
+                Track, compare, and save more thoughtfully
+              </h2>
+            </div>
+            <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {newTools.map((item) => (
+                <li key={item.title}>
+                  <Link
+                    href={item.href}
+                    className="group flex h-full flex-col rounded-2xl border border-sand/70 bg-gradient-to-br from-linen/88 to-blush/32 p-5 shadow-sm transition hover:border-earth/35 hover:shadow-md"
+                  >
+                    <span className="font-serif text-xl font-medium text-offblack group-hover:text-earth">
+                      {item.title}
+                    </span>
+                    <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/68">
+                      {item.body}
+                    </span>
+                    <span className="mt-5 text-sm font-semibold text-earth">
+                      Open -&gt;
                     </span>
                   </Link>
                 </li>
