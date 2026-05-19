@@ -128,10 +128,6 @@ export default function Home() {
                 Browse Actives
               </Link>
             </div>
-            <p className="mx-auto mt-6 max-w-lg text-xs leading-relaxed text-offblack/55 sm:text-sm">
-              Educational only. Stored locally unless you sign in. No diagnosis,
-              no fear-mongering.
-            </p>
           </div>
         </header>
 
