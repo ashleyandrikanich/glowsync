@@ -6,22 +6,49 @@ import {
   passwordPolicyErrorMessage,
 } from "@/src/lib/password-policy";
 import { prisma } from "@/src/lib/prisma";
+import {
+  REQUEST_LIMITS,
+  rateLimit,
+  readLimitedJson,
+  sameOriginGuard,
+} from "@/src/lib/request-security";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as {
+    const originBlocked = sameOriginGuard(req);
+    if (originBlocked) return originBlocked;
+
+    const body = await readLimitedJson<{
       email?: string;
       password?: string;
       name?: string;
-    };
+    }>(req);
+    if (!body) {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    }
+
     const emailRaw = body.email?.trim().toLowerCase();
     const password = body.password ?? "";
     const name = body.name?.trim() || null;
+    const limited = rateLimit(req, "register", 5, 60 * 60 * 1000, [
+      emailRaw ?? "missing",
+    ]);
+    if (limited) return limited;
 
-    if (!emailRaw || !EMAIL_RE.test(emailRaw)) {
+    if (
+      !emailRaw ||
+      emailRaw.length > REQUEST_LIMITS.emailMax ||
+      !EMAIL_RE.test(emailRaw)
+    ) {
       return NextResponse.json({ error: "Valid email required." }, { status: 400 });
+    }
+    if (password.length > REQUEST_LIMITS.passwordMax) {
+      return NextResponse.json({ error: "Password is too long." }, { status: 400 });
+    }
+    if (name && name.length > REQUEST_LIMITS.nameMax) {
+      return NextResponse.json({ error: "Display name is too long." }, { status: 400 });
     }
     if (!passwordMeetsAllRules(password)) {
       return NextResponse.json(
@@ -32,7 +59,7 @@ export async function POST(req: Request) {
 
     const existing = await prisma.user.findUnique({ where: { email: emailRaw } });
     if (existing) {
-      return NextResponse.json({ error: "An account with that email already exists." }, { status: 409 });
+      return NextResponse.json({ error: "Unable to create account." }, { status: 400 });
     }
 
     const passwordHash = await bcrypt.hash(password, 12);

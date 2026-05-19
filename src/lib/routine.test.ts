@@ -26,7 +26,7 @@ describe("parseRoutineProductsJson", () => {
     ]);
   });
 
-  it("keeps valid status and last-used metadata", () => {
+  it("keeps valid frequency, status, and last-used metadata", () => {
     const parsed = parseRoutineProductsJson(
       JSON.stringify([
         {
@@ -35,6 +35,7 @@ describe("parseRoutineProductsJson", () => {
           brand: "Test Brand",
           notes: "Ceramides",
           slot: "pm",
+          frequency: "every_other_day",
           status: "love",
           lastUsedDate: "2026-05-17",
         },
@@ -42,6 +43,7 @@ describe("parseRoutineProductsJson", () => {
     );
 
     expect(parsed?.[0]).toMatchObject({
+      frequency: "every_other_day",
       status: "love",
       lastUsedDate: "2026-05-17",
     });

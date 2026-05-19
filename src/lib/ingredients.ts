@@ -211,6 +211,96 @@ export const INGREDIENTS = [
       "Extract quality varies wildly—CAMellia sinensis leaf extract could be a whisper or a shout.",
     tags: ["Antioxidant", "Soothing", "AM"],
   },
+  {
+    id: "panthenol",
+    name: "Panthenol (pro-vitamin B5)",
+    notes:
+      "Humectant and barrier-support ingredient often used in soothing moisturizers and recovery serums.",
+    teaser: "Barrier-supporting hydration.",
+    funFact:
+      "Panthenol converts to pantothenic acid in skin, which is why it often appears in formulas marketed for comfort and repair.",
+    tags: ["Barrier", "Hydration", "Soothing", "AM", "PM"],
+  },
+  {
+    id: "allantoin",
+    name: "Allantoin",
+    notes:
+      "Soothing ingredient that helps reduce the feel of dryness and irritation in gentle formulas.",
+    teaser: "A calm-skin staple.",
+    funFact:
+      "Allantoin is often included at low percentages, but it can still make a formula feel more comfortable.",
+    tags: ["Soothing", "Barrier", "Sensitive-friendly", "AM", "PM"],
+  },
+  {
+    id: "licorice-root",
+    name: "Licorice root extract",
+    notes:
+      "Botanical brightening and soothing ingredient often used for uneven tone and visible redness support.",
+    teaser: "Tone support with a calming angle.",
+    funFact:
+      "Look for names like glycyrrhiza glabra or dipotassium glycyrrhizate on labels.",
+    tags: ["Brightening", "Soothing", "Redness", "AM", "PM"],
+  },
+  {
+    id: "squalane",
+    name: "Squalane",
+    notes:
+      "Lightweight emollient that helps soften skin and reduce water loss without feeling as heavy as many oils.",
+    teaser: "Lightweight moisture support.",
+    funFact:
+      "Modern skincare squalane is commonly plant-derived, often from sugarcane or olives.",
+    tags: ["Moisture", "Barrier", "AM", "PM"],
+  },
+  {
+    id: "urea",
+    name: "Urea",
+    notes:
+      "Humectant at lower percentages and smoothing keratolytic at higher percentages; useful for dry, rough skin.",
+    teaser: "Dry-skin smoothing support.",
+    funFact:
+      "Urea is part of skin’s natural moisturizing factor, which is why it appears in many body and barrier formulas.",
+    tags: ["Hydration", "Texture", "Barrier", "PM"],
+  },
+  {
+    id: "sulfur",
+    name: "Sulfur",
+    notes:
+      "Acne-focused ingredient that can help with oil and blemishes, but may be drying or have a distinct scent.",
+    teaser: "Targeted blemish support.",
+    funFact:
+      "Sulfur appears in masks, spot treatments, and some cleanser formats; contact time can change how drying it feels.",
+    tags: ["Acne", "Oil balance", "PM"],
+  },
+  {
+    id: "oat",
+    name: "Colloidal oat / oat extract",
+    notes:
+      "Soothing, barrier-friendly ingredient often used in formulas for dry or sensitive-feeling skin.",
+    teaser: "Comfort for dry, reactive skin.",
+    funFact:
+      "Colloidal oatmeal is recognized as a skin protectant in some over-the-counter contexts.",
+    tags: ["Soothing", "Barrier", "Sensitive-friendly", "AM", "PM"],
+  },
+  {
+    id: "zinc-oxide",
+    name: "Zinc oxide",
+    notes:
+      "Mineral UV filter used in sunscreens; can be helpful for sensitive skin but may leave a cast depending on formula.",
+    teaser: "Mineral SPF filter.",
+    funFact:
+      "Particle size, tint, and base formula make a major difference in how wearable zinc oxide feels.",
+    tags: ["SPF", "Sensitive-friendly", "AM"],
+  },
+  {
+    id: "caffeine",
+    name: "Caffeine",
+    notes:
+      "Antioxidant often used in eye products and body formulas for temporary de-puffing or firming effects.",
+    teaser: "Temporary de-puffing support.",
+    funFact:
+      "Caffeine does not replace sleep, but it can make some eye-area formulas feel more refreshing.",
+    tags: ["Antioxidant", "Eye area", "AM"],
+  },
 ] as const;
 
 export type Ingredient = (typeof INGREDIENTS)[number];

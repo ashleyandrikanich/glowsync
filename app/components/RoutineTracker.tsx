@@ -6,9 +6,11 @@ import {
   newProductId,
   saveRoutineProducts,
   type RoutineProduct,
+  type RoutineFrequency,
   type RoutineSlot,
   type RoutineProductStatus,
 } from "@/src/lib/routine";
+import { logRoutineUsage } from "@/src/lib/routine-history";
 import {
   formatProductNotes,
   searchCatalog,
@@ -16,6 +18,7 @@ import {
 } from "@/src/lib/product-catalog";
 import {
   buildRoutineScorecard,
+  type ActiveLoadAlert,
   type ProductRoutineInsight,
   type SessionPairingAlert,
 } from "@/src/lib/routine-rating";
@@ -36,6 +39,13 @@ function slotLabel(slot: RoutineSlot): string {
   if (slot === "am") return "Morning";
   if (slot === "pm") return "Evening";
   return "Morning & evening";
+}
+
+function frequencyLabel(frequency: RoutineFrequency | undefined): string {
+  if (frequency === "every_other_day") return "Every other day";
+  if (frequency === "weekly") return "Weekly";
+  if (frequency === "as_needed") return "As needed";
+  return "Daily";
 }
 
 function chipLabel(id: IngredientId): string {
@@ -159,6 +169,9 @@ function RoutineColumn({
                       {slotLabel(p.slot)}
                     </p>
                   ) : null}
+                  <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-earth/75">
+                    {frequencyLabel(p.frequency)}
+                  </p>
                 </div>
                 <details className="relative shrink-0">
                   <summary className="list-none rounded-lg border border-sand/80 bg-linen/70 px-3 py-1.5 text-xs font-semibold text-earth transition hover:border-earth/40 hover:bg-linen [&::-webkit-details-marker]:hidden">
@@ -238,6 +251,7 @@ export function RoutineTracker() {
   const [brand, setBrand] = useState("");
   const [notes, setNotes] = useState("");
   const [slot, setSlot] = useState<RoutineSlot>("am");
+  const [frequency, setFrequency] = useState<RoutineFrequency>("daily");
   const [suggestOpen, setSuggestOpen] = useState(false);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
   const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -345,6 +359,7 @@ export function RoutineTracker() {
         brand: brand.trim(),
         notes: notes.trim(),
         slot,
+        frequency,
         status: "using",
       },
     ]);
@@ -352,7 +367,8 @@ export function RoutineTracker() {
     setBrand("");
     setNotes("");
     setSlot("am");
-  }, [name, brand, notes, slot]);
+    setFrequency("daily");
+  }, [name, brand, notes, slot, frequency]);
 
   const removeProduct = useCallback((id: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
@@ -360,9 +376,21 @@ export function RoutineTracker() {
 
   const markUsedToday = useCallback(
     (id: string) => {
-      setProducts((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, lastUsedDate: today } : p))
-      );
+      setProducts((prev) => {
+        const product = prev.find((p) => p.id === id);
+        if (product) {
+          logRoutineUsage({
+            productId: product.id,
+            productName: product.name,
+            brand: product.brand,
+            slot: product.slot,
+            usedDate: today,
+          });
+        }
+        return prev.map((p) =>
+          p.id === id ? { ...p, lastUsedDate: today } : p
+        );
+      });
     },
     [today]
   );
@@ -523,13 +551,13 @@ export function RoutineTracker() {
           Add a Product
         </h2>
         <form
-          className="mt-6 grid gap-4 sm:grid-cols-2"
+          className="mt-6 grid gap-4 sm:grid-cols-3"
           onSubmit={(e) => {
             e.preventDefault();
             addProduct();
           }}
         >
-          <div className="relative sm:col-span-2 space-y-2">
+          <div className="relative sm:col-span-3 space-y-2">
             <label
               htmlFor="routine-name"
               className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90"
@@ -677,7 +705,26 @@ export function RoutineTracker() {
               <option value="both">Morning & evening</option>
             </select>
           </div>
-          <div className="sm:col-span-2 space-y-2">
+          <div className="space-y-2">
+            <label
+              htmlFor="routine-frequency"
+              className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90"
+            >
+              How often you use it
+            </label>
+            <select
+              id="routine-frequency"
+              value={frequency}
+              onChange={(e) => setFrequency(e.target.value as RoutineFrequency)}
+              className={selectClass}
+            >
+              <option value="daily">Daily</option>
+              <option value="every_other_day">Every other day</option>
+              <option value="weekly">Weekly</option>
+              <option value="as_needed">As needed</option>
+            </select>
+          </div>
+          <div className="sm:col-span-3 space-y-2">
             <label
               htmlFor="routine-notes"
               className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90"
@@ -693,7 +740,7 @@ export function RoutineTracker() {
               className={`${inputClass} resize-y min-h-[6.5rem]`}
             />
           </div>
-          <div className="sm:col-span-2 flex flex-wrap items-center gap-3 pt-1">
+          <div className="sm:col-span-3 flex flex-wrap items-center gap-3 pt-1">
             <button
               type="submit"
               className="rounded-xl bg-gradient-to-r from-earth via-earth to-blossom px-6 py-2.5 text-sm font-medium text-linen shadow-md transition hover:from-offblack hover:via-earth hover:to-sage disabled:cursor-not-allowed disabled:opacity-40"
@@ -800,6 +847,44 @@ export function RoutineTracker() {
 
       {hydrated && products.length > 0 ? (
         <div className="space-y-6">
+          {insights.activeLoad.length > 0 ? (
+            <section
+              className="rounded-2xl border border-blossom/35 bg-blossom/10 px-5 py-5 sm:px-6"
+              aria-labelledby="routine-active-load-heading"
+            >
+              <h2
+                id="routine-active-load-heading"
+                className="font-serif text-lg font-medium text-offblack"
+              >
+                Active Intensity Check
+              </h2>
+              <p className="mt-2 text-xs leading-relaxed text-offblack/65 sm:text-sm">
+                GlowSync checks whether stronger actives look concentrated in one
+                session or marked too frequently. Use this as a prompt to slow down,
+                alternate days, or add recovery nights.
+              </p>
+              <ul className="mt-4 space-y-3">
+                {insights.activeLoad.map((row: ActiveLoadAlert) => (
+                  <li
+                    key={row.id}
+                    className="rounded-xl border border-blossom/45 bg-linen/55 px-4 py-3 text-sm"
+                  >
+                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-earth/85">
+                      {row.slot === "am" ? "Morning" : "Evening"} · Active load
+                    </p>
+                    <p className="mt-1 font-medium text-offblack">{row.title}</p>
+                    <p className="mt-0.5 text-xs text-offblack/70">
+                      {row.productNames}
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed text-offblack/80">
+                      {row.detail}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           {insights.sameSession.length > 0 ? (
             <section
               className="rounded-2xl border border-earth/25 bg-earth/[0.06] px-5 py-5 sm:px-6"

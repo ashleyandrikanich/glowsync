@@ -14,7 +14,7 @@ export default function ActivesPage() {
   return (
     <PageScaffold
       title="Actives Library"
-      description="Meet the crew: search, tap a vibe, peek inside for facts, or hit “surprise me” when you want a random rabbit hole."
+      description="Search common skincare ingredients, filter by topic, and open concise notes when you want more context."
     >
       <ActivesExplorer ingredients={INGREDIENTS} />
 

@@ -13,7 +13,7 @@ export type RoutineGuideBlock = {
   am: string[];
   pm: string[];
   layeringTips: string[];
-  /** Ingredient angles to explore on Actives / Home checker */
+  /** Ingredient angles to explore in the Actives Library */
   activeAngles: string[];
 };
 
@@ -99,7 +99,7 @@ export const ROUTINE_GUIDE_BY_SKIN: Record<SkinFeel, RoutineGuideBlock> = {
     activeAngles: [
       "Salicylic on T-zone vs gentler exfoliants on cheeks",
       "Niacinamide as a shared middle ground",
-      "Check pairs on Home if you mix zone-specific actives same day",
+      "Keep zone-specific actives on a simple schedule if you use more than one the same day",
     ],
   },
   balanced: {
@@ -125,7 +125,7 @@ export const ROUTINE_GUIDE_BY_SKIN: Record<SkinFeel, RoutineGuideBlock> = {
     activeAngles: [
       "Vitamin C + SPF synergy in AM",
       "Retinoids paced for maintenance",
-      "Use the pairing checker before stacking two strong actives",
+      "Avoid stacking two strong actives until your skin has adjusted",
     ],
   },
 };

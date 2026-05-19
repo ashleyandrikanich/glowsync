@@ -18,28 +18,27 @@ export default function AboutPage() {
   return (
     <PageScaffold
       title="About GlowSync"
-      description="Pull up a chair—here’s what this app loves helping you with, and how we keep things honest and low-stress."
+      description="A clear overview of what GlowSync helps with, how your data is handled, and where its guidance has limits."
     >
       <div className="rounded-2xl border border-dawn/60 bg-gradient-to-br from-blush/50 via-linen/60 to-dawn/30 px-5 py-6 sm:px-7 sm:py-8">
         <p className="font-serif text-lg font-medium leading-snug text-offblack sm:text-xl">
-          Hi! GlowSync is a small toolkit for curious skincare people—not a
-          clinic, not a brand, and definitely not a place for doom-scroll
-          anxiety.
+          GlowSync is a small skincare toolkit for building routines, tracking
+          products, and learning ingredient basics. It is not a clinic or a
+          replacement for professional care.
         </p>
         <p className="mt-4 text-[0.9375rem] leading-relaxed text-offblack/75">
-          Whether you are just starting a routine or you already have a shelf
-          full of serums, we want you to feel invited to explore, jot things
-          down, and peek at how ingredients get along—at your own pace.
+          Whether you are starting fresh or organizing products you already own,
+          the goal is to make routine decisions easier to understand and easier
+          to maintain.
         </p>
       </div>
 
       <section className="space-y-5 pt-10">
         <h2 className="font-serif text-2xl font-medium text-offblack">
-          So… what does the app actually do?
+          What the app does
         </h2>
         <p className="text-[0.9375rem] leading-relaxed text-offblack/80">
-          GlowSync brings a few simple pieces together so you do not have to
-          jump between ten tabs:
+          GlowSync brings a few practical tools together in one place:
         </p>
         <ul className="grid gap-4 sm:grid-cols-2">
           <li className="rounded-xl border border-sand/70 bg-linen/70 p-4 shadow-sm">
@@ -58,8 +57,8 @@ export default function AboutPage() {
             </p>
             <p className="mt-2 font-medium text-offblack">Your product log</p>
             <p className="mt-1 text-sm leading-relaxed text-offblack/70">
-              Track what you use morning and night, with notes—saved in your
-              browser so it feels like a notebook, not homework.
+              Track what you use morning and night, with notes saved in your
+              browser.
             </p>
           </li>
           <li className="rounded-xl border border-sand/70 bg-linen/70 p-4 shadow-sm">
@@ -87,7 +86,7 @@ export default function AboutPage() {
 
       <section className="space-y-4 border-t border-sand/70 pt-10">
         <h2 className="font-serif text-2xl font-medium text-offblack">
-          Why it feels a little “cozy” on purpose
+          How GlowSync approaches guidance
         </h2>
         <ul className="space-y-3 text-[0.9375rem] leading-relaxed text-offblack/80">
           <li className="flex gap-3">
@@ -126,7 +125,7 @@ export default function AboutPage() {
             <span>
               <strong className="text-offblack">You stay in the driver’s seat.</strong>{" "}
               Accounts are optional for the routine log; the quiz and library
-              are here whenever you want to poke around.
+              can be used without signing in.
             </span>
           </li>
         </ul>
@@ -134,24 +133,25 @@ export default function AboutPage() {
 
       <section className="space-y-4 border-t border-sand/70 pt-10">
         <h2 className="font-serif text-2xl font-medium text-offblack">
-          Quick heads-up (the serious bit)
+          Important limits
         </h2>
         <div className="rounded-xl border border-blossom/40 bg-blossom/10 px-4 py-4 sm:px-5">
           <p className="text-[0.9375rem] leading-relaxed text-offblack/85">
             Nothing on GlowSync is medical advice, diagnosis, or treatment.
             Pregnancy, prescriptions, allergies, and anything that hurts or
             worries you belongs with a qualified clinician who can see your skin
-            in person. We love curiosity—we just do not replace your care team.
+            in person. GlowSync is for organization and education, not medical
+            care.
           </p>
         </div>
       </section>
 
       <section className="space-y-6 border-t border-sand/70 pt-10">
         <h2 className="font-serif text-2xl font-medium text-offblack">
-          Ready to wander?
+          Where to start
         </h2>
         <p className="text-[0.9375rem] leading-relaxed text-offblack/75">
-          Pick whatever sounds fun first—there is no wrong door.
+          Choose the section that best matches what you want to do next.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link href="/skin-quiz" className={linkBtn}>

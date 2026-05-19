@@ -70,8 +70,8 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
     <div className="space-y-8">
       <div className="rounded-2xl border border-dawn/50 bg-gradient-to-br from-blush/40 via-linen/70 to-dawn/25 px-5 py-5 sm:px-6 sm:py-6">
         <p className="font-serif text-lg font-medium text-offblack sm:text-xl">
-          Pick an ingredient, peek at the nerdy bits, or filter by vibe—no pop
-          quiz at the end, we promise.
+          Choose an ingredient, filter by topic, or open a concise explanation
+          before adding a product to your routine.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <button
@@ -79,7 +79,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
             onClick={surpriseMe}
             className="inline-flex items-center rounded-xl bg-earth px-4 py-2 text-sm font-semibold text-linen shadow-sm transition hover:bg-offblack"
           >
-            Surprise me ✦
+            Suggest an active
           </button>
           <button
             type="button"
@@ -111,7 +111,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
 
       <div className="space-y-3">
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-earth/90">
-          Filter by vibe (any match)
+          Filter by topic (any match)
         </p>
         <div className="flex flex-wrap gap-2">
           {allTags.map((tag) => {

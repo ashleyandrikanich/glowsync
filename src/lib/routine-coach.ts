@@ -89,7 +89,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "notes",
       title: "Notes Help Future-You",
       detail:
-        "Several products have no notes. Jot actives, frequency, or what layer it is — it makes the pairing checker and dermatology visits easier to prep for.",
+        "Several products have no notes. Jot actives, frequency, or what layer it is — it makes routine review and dermatology visits easier to prep for.",
       tone: "tip",
       links: [{ href: "/routine", label: "Add Notes in My Routine" }],
     });
