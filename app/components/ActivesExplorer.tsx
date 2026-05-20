@@ -164,7 +164,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
                 {ing.name}
               </h2>
               {ing.teaser ? (
-                <p className="mt-1 text-sm font-medium italic text-earth/90">
+                <p className="mt-1 text-sm font-medium text-earth/90">
                   {ing.teaser}
                 </p>
               ) : null}
@@ -176,7 +176,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
                 onClick={() => setOpenId((cur) => (cur === ing.id ? null : ing.id))}
                 className="mt-4 inline-flex w-fit items-center gap-2 rounded-lg border border-earth/25 bg-white/40 px-3 py-2 text-sm font-semibold text-earth transition hover:bg-linen/90"
               >
-                {open ? "Hide the deep dive ▲" : "Peek inside — learn more ▼"}
+                {open ? "Hide details ▲" : "View details ▼"}
               </button>
               {open ? (
                 <div
@@ -191,7 +191,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
                   {ing.funFact ? (
                     <div className="rounded-xl border border-sage/30 bg-sage/10 px-4 py-3">
                       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-earth/80">
-                        Fun fact
+                        Note
                       </p>
                       <p className="mt-1 text-sm leading-relaxed text-offblack/80">
                         {ing.funFact}
@@ -213,8 +213,7 @@ export function ActivesExplorer({ ingredients }: ActivesExplorerProps) {
 
       {filtered.length === 0 ? (
         <p className="rounded-xl border border-dashed border-sand/90 bg-linen/50 px-4 py-6 text-center text-offblack/70">
-          Nothing matches—loosen a filter or clear search to see the full shelf
-          again.
+          No matches. Clear search or filters to see all actives again.
         </p>
       ) : null}
 

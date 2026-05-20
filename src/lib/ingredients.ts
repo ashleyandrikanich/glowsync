@@ -6,7 +6,7 @@ export const INGREDIENTS = [
     name: "Retinol",
     notes:
       "Vitamin A derivative that increases cell turnover. Usually PM; increases sun sensitivity.",
-    teaser: "The famous PM overachiever.",
+    teaser: "PM vitamin A derivative that supports cell turnover.",
     funFact:
       "Retinol has been studied for decades—part of its charm is how much we actually know about it (and how gently your skin prefers to meet it).",
     tags: ["PM", "Anti-aging", "Cell turnover"],
@@ -16,7 +16,7 @@ export const INGREDIENTS = [
     name: "Vitamin C (L-ascorbic & friends)",
     notes:
       "Antioxidant; many forms exist. L-ascorbic acid loves a low, acidic pH. Pairs thoughtfully with SPF in the AM.",
-    teaser: "Brightening’s brunch friend.",
+    teaser: "Morning antioxidant often used for brightening and SPF support.",
     funFact:
       "Not all “vitamin C” serums use L-ascorbic acid—tetrasodium ascorbate and others can behave differently, so the label is always the real tea.",
     tags: ["AM", "Brightening", "Antioxidant"],
@@ -26,7 +26,7 @@ export const INGREDIENTS = [
     name: "AHAs (glycolic, lactic, mandelic…)",
     notes:
       "Alpha-hydroxy acids exfoliate the surface. Can tingle; respect barrier and SPF.",
-    teaser: "Surface polish crew.",
+    teaser: "Surface exfoliants that improve texture and radiance.",
     funFact:
       "Glycolic is the social butterfly (small molecule), while mandelic tends to be gentler and larger—same family, different party volume.",
     tags: ["Exfoliating", "Texture", "PM"],
@@ -36,7 +36,7 @@ export const INGREDIENTS = [
     name: "Niacinamide (vitamin B3)",
     notes:
       "Supports barrier, oil balance, and tone over time. Often well tolerated AM or PM.",
-    teaser: "The versatile one everyone invites back.",
+    teaser: "Versatile barrier and tone support for AM or PM.",
     funFact:
       "Studies often land around 2–5% for a sweet spot—more isn’t always merrier if your skin says “nope.”",
     tags: ["AM", "PM", "Barrier", "Oil balance"],
@@ -46,7 +46,7 @@ export const INGREDIENTS = [
     name: "BHA (salicylic acid)",
     notes:
       "Oil-soluble exfoliant; loves pores and oilier zones. Can be drying if overused.",
-    teaser: "Oil-friendly pore detective.",
+    teaser: "Oil-soluble exfoliant for pores and blemish-prone areas.",
     funFact:
       "Salicylic is related to aspirin—if you’re aspirin-allergic, flag it with a clinician before going all-in.",
     tags: ["Exfoliating", "Acne", "Pores"],
@@ -56,7 +56,7 @@ export const INGREDIENTS = [
     name: "Benzoyl peroxide",
     notes:
       "Acne bacteria–busting classic. Can bleach fabrics and stress barrier; start low and slow.",
-    teaser: "Acne’s loud but effective cousin.",
+    teaser: "Acne treatment that targets blemish-causing bacteria.",
     funFact:
       "It can oxidize some other actives (like certain retinoids or vitamin C formulas)—timing and formulation matter more than drama threads.",
     tags: ["Acne", "AM", "PM"],
@@ -66,7 +66,7 @@ export const INGREDIENTS = [
     name: "Azelaic acid",
     notes:
       "Brightening and redness-friendly multitasker; often prescription-strength or OTC depending on region.",
-    teaser: "The multitasker with a PhD vibe.",
+    teaser: "Multitasker for tone, redness, and blemishes.",
     funFact:
       "Dermatologists sometimes pair azelaic with other actives—your label % and formula still run the show.",
     tags: ["Brightening", "Redness", "AM", "PM"],
@@ -76,7 +76,7 @@ export const INGREDIENTS = [
     name: "PHAs (gluconolactone, lactobionic…)",
     notes:
       "Poly-hydroxy acids: gentler, larger molecules than many AHAs—humectant perks too.",
-    teaser: "Exfoliation with training wheels (in a good way).",
+    teaser: "Gentler exfoliation with added hydration support.",
     funFact:
       "PHAs can grab water while they work—helpful when you want glow without feeling sandpapered.",
     tags: ["Exfoliating", "Sensitive-friendly", "Hydration"],
@@ -86,7 +86,7 @@ export const INGREDIENTS = [
     name: "Ceramides",
     notes:
       "Lipids that help mortar your barrier. Play well with almost everything.",
-    teaser: "Barrier group hug.",
+    teaser: "Lipids that help strengthen the skin barrier.",
     funFact:
       "Your skin already makes ceramides—topical ones are like sending reinforcements when the wall feels wobbly.",
     tags: ["Barrier", "AM", "PM"],
@@ -96,7 +96,7 @@ export const INGREDIENTS = [
     name: "Hyaluronic acid",
     notes:
       "Humectant that draws water into the skin; loves damp skin and a cream on top in dry climates.",
-    teaser: "A tall drink of water (literally).",
+    teaser: "Humectant that draws water into the skin.",
     funFact:
       "HA comes in different molecular weights—some sit on top for plumpness, others aim deeper; marketing loves to brag about both.",
     tags: ["Hydration", "AM", "PM"],
@@ -106,7 +106,7 @@ export const INGREDIENTS = [
     name: "Peptides",
     notes:
       "Signal fragments; lines vary from firming marketing to interesting research—patch test new formulas.",
-    teaser: "Tiny protein texts to your skin.",
+    teaser: "Short protein fragments used in firming formulas.",
     funFact:
       "There isn’t one “peptide”—copper peptides, matrixyl family, etc. all RSVP to the party differently.",
     tags: ["Anti-aging", "PM", "AM"],
@@ -116,7 +116,7 @@ export const INGREDIENTS = [
     name: "Bakuchiol",
     notes:
       "Plant-derived retinol alternative buzzword; generally gentler, still introduce slowly.",
-    teaser: "Retinol’s plant-based pen pal.",
+    teaser: "Plant-based retinol alternative; generally milder.",
     funFact:
       "Studies are smaller than retinol’s scrapbook—exciting, but your skin’s opinion still counts most.",
     tags: ["PM", "Anti-aging", "Sensitive-friendly"],
@@ -126,7 +126,7 @@ export const INGREDIENTS = [
     name: "Adapalene",
     notes:
       "Synthetic retinoid (often OTC gel). PM; strong photosensitivity; follow label spacing.",
-    teaser: "Derm aisle retinoid energy.",
+    teaser: "OTC retinoid often used for acne; best at night.",
     funFact:
       "Adapalene is often studied for acne specifically—still a real retinoid with real rules about irritation.",
     tags: ["PM", "Acne", "Cell turnover"],
@@ -136,7 +136,7 @@ export const INGREDIENTS = [
     name: "Snail mucin",
     notes:
       "Humectant-rich filtrate; popular in K-beauty for bounce and repair feel.",
-    teaser: "Slime science (the cute kind).",
+    teaser: "Humectant-rich filtrate for hydration and bounce.",
     funFact:
       "Not vegan—snails are unharmed in many farmed processes, but ethics vary; patch test if you’re protein-sensitive.",
     tags: ["Hydration", "Barrier", "PM"],
@@ -146,7 +146,7 @@ export const INGREDIENTS = [
     name: "Centella / cica (asiatica)",
     notes:
       "Soothing botanical suite; common after sun or in “recovery” formulas.",
-    teaser: "The cool compress of ingredients.",
+    teaser: "Soothing botanical for calm, irritated-feeling skin.",
     funFact:
       "Madecassoside, asiaticoside, and friends are all centella’s little hype squad—labels love to name-drop them.",
     tags: ["Soothing", "Redness", "AM", "PM"],
@@ -156,7 +156,7 @@ export const INGREDIENTS = [
     name: "Tranexamic acid",
     notes:
       "Brightening helper for tone and post-blemish marks; often in serums or Rx contexts.",
-    teaser: "Marks and uneven tone’s study buddy.",
+    teaser: "Supports even tone and post-blemish marks.",
     funFact:
       "Originally an oral medication for bleeding—dermatology borrowed it for pigment pathways; strength matters.",
     tags: ["Brightening", "PM"],
@@ -166,7 +166,7 @@ export const INGREDIENTS = [
     name: "Kojic acid",
     notes:
       "Brightening agent from fungi fermentation; can irritate sensitive skin at higher %.",
-    teaser: "Fermentation’s glow-up story.",
+    teaser: "Brightening agent from fermentation; may irritate sensitive skin.",
     funFact:
       "Often appears with vitamin C or AHAs in brightening cocktails—layering patience is the real MVP.",
     tags: ["Brightening", "PM"],
@@ -176,7 +176,7 @@ export const INGREDIENTS = [
     name: "Arbutin (alpha / beta)",
     notes:
       "Tyrosinase-pathway brightener; cousin stories to hydroquinone exist—concentration and form matter.",
-    teaser: "Pigment’s soft-focus filter.",
+    teaser: "Brightening ingredient that targets uneven pigment.",
     funFact:
       "Alpha-arbutin is often pitched as gentler than beta—either way, SPF is still the headline act.",
     tags: ["Brightening", "PM", "AM"],
@@ -186,7 +186,7 @@ export const INGREDIENTS = [
     name: "Tretinoin (Rx)",
     notes:
       "Prescription retinoid—stronger than cosmetic retinol. PM; strict sun protection; clinician-directed.",
-    teaser: "The Rx retinoid with main-character energy.",
+    teaser: "Prescription-strength retinoid; use as directed at night.",
     funFact:
       "Purging and peeling get memed a lot—your prescriber’s schedule beats any TikTok “sandwich” hack.",
     tags: ["PM", "Acne", "Anti-aging", "Rx"],
@@ -196,7 +196,7 @@ export const INGREDIENTS = [
     name: "Vitamin E (tocopherol)",
     notes:
       "Antioxidant oil-soluble vitamin; stabilizing sidekick in many vitamin C serums.",
-    teaser: "Vitamin C’s chill bodyguard.",
+    teaser: "Antioxidant that often stabilizes vitamin C formulas.",
     funFact:
       "Tocopherol vs tocopheryl acetate isn’t the same activity—formulation chemistry strikes again.",
     tags: ["Antioxidant", "AM", "PM"],
@@ -206,7 +206,7 @@ export const INGREDIENTS = [
     name: "Green tea (EGCG)",
     notes:
       "Polyphenol antioxidant; soothing in many formulas—rarely the “star %” on the label.",
-    teaser: "Calm in a teacup.",
+    teaser: "Antioxidant botanical with soothing benefits.",
     funFact:
       "Extract quality varies wildly—CAMellia sinensis leaf extract could be a whisper or a shout.",
     tags: ["Antioxidant", "Soothing", "AM"],
@@ -226,7 +226,7 @@ export const INGREDIENTS = [
     name: "Allantoin",
     notes:
       "Soothing ingredient that helps reduce the feel of dryness and irritation in gentle formulas.",
-    teaser: "A calm-skin staple.",
+    teaser: "Soothing support for dry or irritated-feeling skin.",
     funFact:
       "Allantoin is often included at low percentages, but it can still make a formula feel more comfortable.",
     tags: ["Soothing", "Barrier", "Sensitive-friendly", "AM", "PM"],
@@ -276,7 +276,7 @@ export const INGREDIENTS = [
     name: "Colloidal oat / oat extract",
     notes:
       "Soothing, barrier-friendly ingredient often used in formulas for dry or sensitive-feeling skin.",
-    teaser: "Comfort for dry, reactive skin.",
+    teaser: "Soothing support for sensitive-feeling skin.",
     funFact:
       "Colloidal oatmeal is recognized as a skin protectant in some over-the-counter contexts.",
     tags: ["Soothing", "Barrier", "Sensitive-friendly", "AM", "PM"],
