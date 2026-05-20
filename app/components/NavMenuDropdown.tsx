@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { createPortal } from "react-dom";
 import { NAV_GROUPS } from "@/src/lib/site-nav";
 import { LogoutButton } from "./LogoutButton";
@@ -16,6 +23,14 @@ type NavMenuDropdownProps = {
   userEmail: string | null;
 };
 
+function useIsMounted() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
+
 /** Remount on route change so the menu closes without syncing state in an effect. */
 export function NavMenuDropdown(props: NavMenuDropdownProps) {
   const pathname = usePathname();
@@ -25,7 +40,7 @@ export function NavMenuDropdown(props: NavMenuDropdownProps) {
 function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const btnRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
@@ -35,8 +50,6 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
     e.stopPropagation();
     setOpen((o) => !o);
   }, []);
-
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
