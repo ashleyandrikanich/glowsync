@@ -7,7 +7,7 @@ export async function SiteChrome() {
   const session = await getSession();
 
   return (
-    <header className="sticky top-0 z-50 overflow-hidden border-b border-sand/45 bg-gradient-to-r from-linen/95 via-dawn/40 to-blush/55 shadow-[0_2px_18px_-8px_rgba(39,30,26,0.12)] backdrop-blur-sm">
+    <header className="sticky top-0 z-50 overflow-visible border-b border-sand/45 bg-gradient-to-r from-linen/95 via-dawn/40 to-blush/55 shadow-[0_2px_18px_-8px_rgba(39,30,26,0.12)] backdrop-blur-sm">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <span className="absolute -left-2 top-1/2 h-8 w-8 -translate-y-1/2 rounded-full border border-dawn/45 bg-gradient-to-br from-linen/80 to-dawn/30 shadow-sm sm:h-10 sm:w-10" />
         <span className="absolute left-14 top-2 hidden h-3 w-3 rounded-full bg-sand/40 shadow-sm sm:block" />
