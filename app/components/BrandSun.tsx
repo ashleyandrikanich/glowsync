@@ -10,7 +10,7 @@ type BrandSunProps = {
 };
 
 /**
- * Abstract sun mark — soft rays + warm core for GlowSync.
+ * Abstract sun mark, soft rays + warm core for GlowSync.
  */
 export function BrandSun({
   className = "h-9 w-9 sm:h-10 sm:w-10",

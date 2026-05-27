@@ -14,7 +14,7 @@ import {
 import { buildQuizRoutineSteps, expandProductPool } from "./quiz-routine-steps";
 import type { QuizRoutineStep } from "./quiz-routine-steps";
 
-/** Four buckets — shared with routine guide & coach picker */
+/** Four buckets, shared with routine guide & coach picker */
 export type SkinFeel = "oily" | "dry" | "combo" | "balanced";
 
 /** Finer skin description used only in the quiz flow */
@@ -61,7 +61,7 @@ export type QuizAnswers = {
   concerns: Concern[];
   sensitivity: Sensitivity | null;
   spfHabit: SpfHabit | null;
-  /** Optional — biases catalog picks toward these brands */
+  /** Optional, biases catalog picks toward these brands */
   favoriteBrands: string[];
 };
 
@@ -122,22 +122,22 @@ export const QUIZ_SKIN_PROFILE_OPTIONS: {
   },
   {
     value: "dry_tight",
-    label: "Dry — tight, not much flaking",
+    label: "Dry, tight, not much flaking",
     hint: "Needs cream; flakes are rare",
   },
   {
     value: "dry_flaky",
-    label: "Dry — visible flakes or rough patches",
+    label: "Dry, visible flakes or rough patches",
     hint: "Peeling around nose/mouth or after cleansing",
   },
   {
     value: "combo_classic",
-    label: "Combination — oily T-zone, drier cheeks",
+    label: "Combination, oily T-zone, drier cheeks",
     hint: "The usual “split personality” map",
   },
   {
     value: "combo_reverse",
-    label: "Combination — dry or normal T-zone, oilier cheeks",
+    label: "Combination, dry or normal T-zone, oilier cheeks",
     hint: "Less common pattern; still treat zones separately",
   },
   {
@@ -173,7 +173,7 @@ export const CONCERN_OPTIONS: {
   },
   { value: "lines", label: "Fine lines / firmness", hint: "Crepiness, less bounce, expression lines" },
   { value: "tone", label: "Dark spots or uneven tone", hint: "PIH, sun spots, or patchy color" },
-  { value: "dehydration", label: "Dehydration", hint: "Water loss — tight but can be any skin type" },
+  { value: "dehydration", label: "Dehydration", hint: "Water loss, tight but can be any skin type" },
 ];
 
 export const SENSITIVITY_OPTIONS: {
@@ -204,7 +204,7 @@ export const SENSITIVITY_OPTIONS: {
   {
     value: "iron_barrier",
     label: "Rarely irritated",
-    hint: "Can layer more without drama — still not invincible",
+    hint: "Can layer more without drama, still not invincible",
   },
 ];
 
@@ -217,7 +217,7 @@ export const SPF_OPTIONS: {
   { value: "most_days", label: "Most days (5+ per week)", hint: "Miss occasionally but generally consistent" },
   { value: "sometimes", label: "Sometimes / seasonally", hint: "Sunny days, summer, or when outdoors" },
   { value: "rare", label: "Rarely", hint: "A few times a month or less" },
-  { value: "never", label: "Almost never", hint: "Honest baseline — we will emphasize SPF picks" },
+  { value: "never", label: "Almost never", hint: "Honest baseline, we will emphasize SPF picks" },
 ];
 
 const STRONG_ACTIVES = new Set([
@@ -459,7 +459,7 @@ function formatFavoriteBrandsReason(brands: readonly string[]): string {
     brands.length <= 3
       ? brands.join(", ")
       : `${brands.slice(0, 3).join(", ")} +${brands.length - 3} more`;
-  return `Step 5 — Favorite brands: we prioritized ${list} where they fit your profile`;
+  return `Step 5: Favorite brands: we prioritized ${list} where they fit your profile`;
 }
 
 const CONCERN_LABEL: Record<Concern, string> = {
@@ -489,7 +489,7 @@ function profileCopy(
   const titleBits = concerns.map((c) => CONCERN_LABEL[c]).join(" · ");
   return {
     title: `${PROFILE_LABEL[profile]} · ${titleBits}`,
-    body: `You chose ${PROFILE_LABEL[profile].toLowerCase()} with ${formatConcernPhrase(concerns)} as your top ${concerns.length === 1 ? "focus" : "focuses"}. The routine lines and catalog picks below blend those priorities—patch test, add one new product at a time, and adjust with a professional if you use prescriptions.`,
+    body: `You chose ${PROFILE_LABEL[profile].toLowerCase()} with ${formatConcernPhrase(concerns)} as your top ${concerns.length === 1 ? "focus" : "focuses"}. The routine lines and catalog picks below blend those priorities, patch test, add one new product at a time, and adjust with a professional if you use prescriptions.`,
   };
 }
 
@@ -552,7 +552,7 @@ function pmLinesForConcern(concern: Concern): string[] {
     case "hormonal_acne":
       return [
         "Double cleanse if using SPF/makeup",
-        "Treatment (BHA or adapalene where appropriate)—avoid stacking two strong actives night one",
+        "Treatment (BHA or adapalene where appropriate), avoid stacking two strong actives night one",
         "Barrier moisturizer; spot treat inflamed areas",
       ];
     case "congestion":
@@ -610,12 +610,12 @@ function routineLines(
 ): { am: string[]; pm: string[] } {
   const spfLine =
     spf === "never" || spf === "rare"
-      ? "SPF every day is the biggest upgrade—try 2–3 textures until one feels wearable daily."
+      ? "SPF every day is the biggest upgrade, try 2–3 textures until one feels wearable daily."
       : spf === "sometimes"
         ? "Aim for daily SPF; reapply on active outdoor days."
         : spf === "most_days"
-          ? "You are close—closing the gap to daily SPF protects tone and any retinoid work."
-          : "Keep your consistent SPF—it protects tone and supports any treatment steps.";
+          ? "You are close, closing the gap to daily SPF protects tone and any retinoid work."
+          : "Keep your consistent SPF, it protects tone and supports any treatment steps.";
 
   const coarse = quizProfileToGuideFeel(profile);
 
@@ -626,7 +626,7 @@ function routineLines(
         ? [
             "Gentle low-foam cleanser",
             "Humectant toner or essence (no alcohol splash)",
-            "Gel-cream hydrator—oil is not the same as water",
+            "Gel-cream hydrator, oil is not the same as water",
             "SPF 30+ (gel or fluid often layers best)",
           ]
         : profile === "oily_tzone"
@@ -728,8 +728,8 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
     for (const id of ids) touch(id, reason);
   };
 
-  const rSkinBase = `Step 1 — How your skin feels: base ideas for ${skinFeelDisplayLabel(coarseFeel)} skin`;
-  const rSkinDetail = `Step 1 — How your skin feels: tuned for “${quizProfileDisplayLabel(skinProfile)}”`;
+  const rSkinBase = `Step 1: How your skin feels: base ideas for ${skinFeelDisplayLabel(coarseFeel)} skin`;
+  const rSkinDetail = `Step 1: How your skin feels: tuned for “${quizProfileDisplayLabel(skinProfile)}”`;
 
   touchMany(baseByFeel(coarseFeel), rSkinBase);
   touchMany(profileProductBoost(skinProfile), rSkinDetail);
@@ -737,14 +737,14 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
   for (const c of concerns) {
     touchMany(
       concernBoost(c),
-      `Step 2 — What you want help with: ${concernDisplayLabel(c)}`
+      `Step 2: What you want help with: ${concernDisplayLabel(c)}`
     );
   }
 
   if (spfHabit === "rare" || spfHabit === "never" || spfHabit === "sometimes") {
     touchMany(
       ["supergoop-unseen", "la-roche-anthelios", "fenty-hydra-vizor"],
-      "Step 4 — SPF habit: added sunscreen textures to try (per your answers)"
+      "Step 4: SPF habit: added sunscreen textures to try (per your answers)"
     );
   }
 
@@ -763,14 +763,14 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
         "tower28-sos",
         "origins-mega-mushroom",
       ],
-      "Step 3 — Reactions to new actives: gentler picks after a reactive-skin pass"
+      "Step 3: Reactions to new actives: gentler picks after a reactive-skin pass"
     );
   }
 
   if (sensitivity === "burns_easily") {
     touchMany(
       ["drjart-cicapair", "vanicream-gentle"],
-      "Step 3 — Reactions to new actives: extra soothing for very reactive skin"
+      "Step 3: Reactions to new actives: extra soothing for very reactive skin"
     );
   }
 
@@ -780,7 +780,7 @@ export function buildQuizResult(answers: QuizAnswers): QuizResult | null {
   ) {
     touchMany(
       ["to-glycolic-toner", "sunday-good-genes"],
-      "Step 3 — Reactions to new actives: you tolerate more — optional stronger renewers"
+      "Step 3: Reactions to new actives: you tolerate more, optional stronger renewers"
     );
   }
 

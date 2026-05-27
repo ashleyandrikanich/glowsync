@@ -35,7 +35,7 @@ export function SettingsPanel() {
     URL.revokeObjectURL(url);
     setStatus(
       products.length === 0
-        ? "Exported an empty list — you can still keep the file as a template."
+        ? "Exported an empty list, you can still keep the file as a template."
         : `Exported ${products.length} product row(s).`
     );
   }, []);
@@ -64,7 +64,7 @@ export function SettingsPanel() {
         const text = typeof reader.result === "string" ? reader.result : "";
         const parsed = parseRoutineProductsJson(text);
         if (!parsed) {
-          setStatus("Could not read that file — use JSON exported from GlowSync.");
+          setStatus("Could not read that file, use JSON exported from GlowSync.");
           return;
         }
         const ok = window.confirm(
@@ -90,7 +90,7 @@ export function SettingsPanel() {
           GlowSync routines and quiz-style answers live in{" "}
           <strong className="font-medium text-offblack">this browser only</strong>
           . Nothing is uploaded to our servers. Clearing site data in the
-          browser will remove it — use export below if you want a backup.
+          browser will remove it, use export below if you want a backup.
         </p>
       </section>
 
@@ -160,7 +160,7 @@ export function SettingsPanel() {
             >
               About GlowSync
             </Link>{" "}
-            — what the app does and does not promise.
+           , what the app does and does not promise.
           </li>
           <li>
             <Link
@@ -169,7 +169,7 @@ export function SettingsPanel() {
             >
               Actives Library
             </Link>{" "}
-            — look up common ingredients when labels confuse you.
+           , look up common ingredients when labels confuse you.
           </li>
           <li>
             <Link
@@ -178,7 +178,7 @@ export function SettingsPanel() {
             >
               Routine Guide
             </Link>{" "}
-            — layering habits by skin feel.
+           , layering habits by skin feel.
           </li>
         </ul>
       </section>
@@ -186,7 +186,7 @@ export function SettingsPanel() {
       <section className="rounded-2xl border border-dashed border-sand/90 bg-linen/40 px-5 py-5 sm:px-6">
         <h2 className="font-serif text-lg font-medium text-offblack">Appearance</h2>
         <p className="mt-2 text-sm leading-relaxed text-offblack/65">
-          Only the warm light theme is available right now — built to match the
+          Only the warm light theme is available right now, built to match the
           apricot wash across the app. If you would like a dark mode later, we
           can add it from here.
         </p>

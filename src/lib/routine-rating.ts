@@ -1,5 +1,5 @@
 /**
- * Routine rating + insights — re-exported from routine-analysis (single source).
+ * Routine rating + insights, re-exported from routine-analysis (single source).
  */
 export type {
   CrossDayTip,

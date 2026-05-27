@@ -51,7 +51,7 @@ function ProductMini({
   const inner = (
     <>
       <p className="font-medium text-offblack">
-        {p.brand} — {p.name}
+        {p.brand}: {p.name}
       </p>
       <p className="mt-0.5 text-xs text-earth/90">{p.keyActives.join(" · ")}</p>
       {p.retailers?.length ? (

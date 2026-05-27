@@ -105,7 +105,7 @@ function NavMenuDropdownInner({ userEmail }: NavMenuDropdownProps) {
                   GlowSync
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-offblack/60">
-                  Jump anywhere — routes, tools, and your account live in this
+                  Jump anywhere, routes, tools, and your account live in this
                   panel.
                 </p>
               </div>

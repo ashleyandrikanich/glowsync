@@ -29,7 +29,7 @@ export function RoutineGuideExplorer() {
     <div className="space-y-8">
       <div className="rounded-2xl border border-dawn/50 bg-gradient-to-br from-blush/40 via-linen/70 to-dawn/25 px-5 py-5 sm:px-6 sm:py-6">
         <p className="font-serif text-lg font-medium text-offblack sm:text-xl">
-          Tap how your skin usually behaves — we will sketch AM/PM habits and
+          Tap how your skin usually behaves, we will sketch AM/PM habits and
           layering angles you can adapt. Use the profiles as starting points,
           then adjust based on your own routine.
         </p>
@@ -75,7 +75,7 @@ export function RoutineGuideExplorer() {
         </div>
         {skinMeta ? (
           <p className="text-sm text-offblack/65">
-            <span className="font-medium text-earth">{skinMeta.label}</span> —{" "}
+            <span className="font-medium text-earth">{skinMeta.label}</span> , {" "}
             {skinMeta.hint}
           </p>
         ) : null}

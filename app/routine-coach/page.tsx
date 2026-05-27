@@ -6,14 +6,14 @@ import { RoutineCoachFrame } from "../components/RoutineCoachFrame";
 export const metadata: Metadata = {
   title: "Routine Coach",
   description:
-    "Build a starter routine by skin type or get gentle suggestions on what you already logged — all from your browser.",
+    "Build a starter routine by skin type or get gentle suggestions on what you already logged, all from your browser.",
 };
 
 export default function RoutineCoachPage() {
   return (
     <PageScaffold
       title="Routine Coach"
-      description="Two modes in one frame: sketch a beginner-friendly AM/PM shape from your skin feel, or let us read your saved shelf and surface practical nudges. Educational only — not medical advice."
+      description="Two modes in one frame: sketch a beginner-friendly AM/PM shape from your skin feel, or let us read your saved shelf and surface practical nudges. Educational only, not medical advice."
     >
       <RoutineCoachFrame />
 

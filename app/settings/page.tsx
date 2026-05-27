@@ -12,7 +12,7 @@ export default function SettingsPage() {
   return (
     <PageScaffold
       title="Settings"
-      description="Everything here runs in your browser — backups, resets, and reminders about how GlowSync handles your routine data."
+      description="Everything here runs in your browser, backups, resets, and reminders about how GlowSync handles your routine data."
     >
       <SettingsPanel />
     </PageScaffold>

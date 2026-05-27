@@ -25,7 +25,7 @@ export async function SiteChrome() {
           <Link
             href="/"
             className="inline-flex max-w-full min-w-0 rounded-xl outline-none ring-offset-2 ring-offset-linen/90 focus-visible:ring-2 focus-visible:ring-earth/35"
-            aria-label="GlowSync — home"
+            aria-label="GlowSync, home"
           >
             <BrandTitle as="span" size="lg" variant="default" />
           </Link>

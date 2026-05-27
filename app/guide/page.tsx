@@ -6,7 +6,7 @@ import { RoutineGuideExplorer } from "../components/RoutineGuideExplorer";
 export const metadata: Metadata = {
   title: "Routine Guide",
   description:
-    "Interactive layering guide by skin type — oily, dry, combination, balanced — plus patch-test reminders.",
+    "Interactive layering guide by skin type, oily, dry, combination, balanced, plus patch-test reminders.",
 };
 
 export default function GuidePage() {
@@ -42,7 +42,7 @@ export default function GuidePage() {
         <p>
           A guide cannot replace your own patch test. Try new products on a
           small area for several days before full-face use, especially with
-          acids and retinoids — even more important when{" "}
+          acids and retinoids, even more important when{" "}
           <span className="font-medium text-earth">sensitive / reactive mode</span>{" "}
           above is on.
         </p>

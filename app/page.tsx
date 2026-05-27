@@ -51,6 +51,11 @@ const startHere = [
 
 const newTools = [
   {
+    title: "Skin Quiz + Scan",
+    body: "Use one combined page for quiz answers and photo scan recommendations (educational only).",
+    href: "/skin-quiz",
+  },
+  {
     title: "Skin Journal",
     body: "Log skin feel, irritation, breakouts, and notes so changes are easier to connect over time.",
     href: "/skin-journal",
