@@ -36,7 +36,7 @@ export function BrandTitle({
       : "text-offblack";
   const sync =
     variant === "onDark"
-      ? "text-[#fecdd3]"
+      ? "text-[#fdba74]"
       : "text-earth";
 
   return (

@@ -202,7 +202,7 @@ export function SkinIntakeHub() {
         quizDone ? (
           <SkinScanClient hub onScanComplete={handleScanComplete} />
         ) : (
-          <p className="rounded-xl border border-amber-200/80 bg-amber-50/90 px-4 py-3 text-sm text-amber-950/90">
+          <p className="rounded-xl border border-earth/30 bg-blush/70 px-4 py-3 text-sm text-offblack/88">
             Finish the skin quiz first, then add your photo scan.
           </p>
         )

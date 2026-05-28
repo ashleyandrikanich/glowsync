@@ -4,11 +4,97 @@ import { BubbleDivider } from "./components/BubbleDivider";
 import { HomeRoutineTeaser } from "./components/HomeRoutineTeaser";
 import { HomeSideDressing } from "./components/HomeSideDressing";
 
+function iconForTool(title: string) {
+  const iconClass = "h-6 w-6 shrink-0 text-earth";
+
+  if (title === "Skin Quiz + Scan") {
+    return (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M4 6h10M4 12h10M4 18h7M16.5 14.5l1.8 1.8 3.7-3.7"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (title === "Product Compare") {
+    return (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M9 4h6"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+        <path
+          d="M14.8 4h1.8M16.6 4v2"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+        <path
+          d="M10 6h4v2h-4z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M8.2 8h7.6c1.2 0 2.2 1 2.2 2.2V19c0 .8-.7 1.5-1.5 1.5h-9c-.8 0-1.5-.7-1.5-1.5v-8.8C6 9 7 8 8.2 8Z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9.4 12.2h5.2M9.4 14.8h5.2"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+
+  if (title === "Wishlist") {
+    return (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M12 20s-6.5-4-8.5-7.4A4.7 4.7 0 0 1 12 7a4.7 4.7 0 0 1 8.5 5.6C18.5 16 12 20 12 20Z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (title === "Skin Journal") {
+    return (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" strokeWidth="1.7" />
+        <path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (title === "Routine History") {
+    return (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path d="M12 8v5l3 2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        <circle cx="12" cy="12" r="7.5" stroke="currentColor" strokeWidth="1.7" />
+      </svg>
+    );
+  }
+
+  return null;
+}
+
 const heroPrimaryCtaClass =
   "inline-flex min-h-12 items-center justify-center rounded-xl bg-earth px-6 py-3 text-sm font-semibold text-linen shadow-md transition hover:bg-dawn hover:text-offblack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/45 sm:min-w-[10.5rem]";
-
-const heroSecondaryCtaClass =
-  heroPrimaryCtaClass;
 
 const howItWorks = [
   {
@@ -28,52 +114,41 @@ const howItWorks = [
   },
 ];
 
-const startHere = [
+const toolGroups = [
   {
-    title: "New to Skincare?",
-    body: "Start with the quiz and let GlowSync suggest a simple AM/PM shape.",
-    href: "/skin-quiz",
-    cta: "Take the quiz",
+    title: "Build your plan",
+    tools: [
+      {
+        title: "Skin Quiz + Scan",
+        body: "Use one combined page for quiz answers and photo scan recommendations (educational only).",
+        href: "/skin-quiz",
+      },
+      {
+        title: "Product Compare",
+        body: "Place catalog products side by side to compare actives, ingredients, role, and retailer notes.",
+        href: "/compare",
+      },
+      {
+        title: "Wishlist",
+        body: "Save products you want to research, compare, or try later without adding them to your routine yet.",
+        href: "/wishlist",
+      },
+    ],
   },
   {
-    title: "Already Have Products?",
-    body: "Log your shelf, arrange the order, and track what you used today.",
-    href: "/routine",
-    cta: "Open My Routine",
-  },
-  {
-    title: "Confused by Ingredients?",
-    body: "Browse actives first, then use the guide to understand layering habits.",
-    href: "/actives",
-    cta: "Browse Actives",
-  },
-];
-
-const newTools = [
-  {
-    title: "Skin Quiz + Scan",
-    body: "Use one combined page for quiz answers and photo scan recommendations (educational only).",
-    href: "/skin-quiz",
-  },
-  {
-    title: "Skin Journal",
-    body: "Log skin feel, irritation, breakouts, and notes so changes are easier to connect over time.",
-    href: "/skin-journal",
-  },
-  {
-    title: "Routine History",
-    body: "Review recent product usage and see how your saved frequency plan lines up with your week.",
-    href: "/routine-history",
-  },
-  {
-    title: "Product Compare",
-    body: "Place catalog products side by side to compare actives, ingredients, role, and retailer notes.",
-    href: "/compare",
-  },
-  {
-    title: "Wishlist",
-    body: "Save products you want to research, compare, or try later without adding them to your routine yet.",
-    href: "/wishlist",
+    title: "Track your progress",
+    tools: [
+      {
+        title: "Skin Journal",
+        body: "Log skin feel, irritation, breakouts, and notes so changes are easier to connect over time.",
+        href: "/skin-journal",
+      },
+      {
+        title: "Routine History",
+        body: "Review recent product usage and see how your saved frequency plan lines up with your week.",
+        href: "/routine-history",
+      },
+    ],
   },
 ];
 
@@ -122,16 +197,24 @@ export default function Home() {
               quiz your skin, save your products, and learn what belongs in AM
               vs PM.
             </p>
-            <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:mx-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
+            <div className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-3">
               <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
-                Take the Skin Quiz
+                Start Skin Quiz
               </Link>
-              <Link href="/routine" className={heroSecondaryCtaClass}>
-                Open My Routine
-              </Link>
-              <Link href="/actives" className={heroSecondaryCtaClass}>
-                Browse Actives
-              </Link>
+              <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-semibold text-earth/90">
+                <Link
+                  href="/routine"
+                  className="underline decoration-earth/45 underline-offset-4 transition hover:text-offblack hover:decoration-earth"
+                >
+                  Open My Routine
+                </Link>
+                <Link
+                  href="/actives"
+                  className="underline decoration-earth/45 underline-offset-4 transition hover:text-offblack hover:decoration-earth"
+                >
+                  Browse Actives
+                </Link>
+              </div>
             </div>
           </div>
         </header>
@@ -172,51 +255,6 @@ export default function Home() {
 
           <BubbleDivider />
 
-          <section className="mx-auto max-w-6xl">
-            <HomeRoutineTeaser />
-          </section>
-
-          <BubbleDivider />
-
-          <section
-            className="mx-auto max-w-6xl rounded-3xl border border-sand/60 bg-linen/50 px-5 py-8 backdrop-blur-sm sm:px-8"
-            aria-labelledby="home-start-heading"
-          >
-            <div className="text-center">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-earth/80">
-                Start Here
-              </p>
-              <h2
-                id="home-start-heading"
-                className="mt-2 font-serif text-2xl font-medium text-offblack sm:text-3xl"
-              >
-                Choose the best starting point
-              </h2>
-            </div>
-            <ul className="mt-8 grid gap-4 md:grid-cols-3">
-              {startHere.map((item) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.href}
-                    className="group flex h-full flex-col rounded-2xl border border-sand/70 bg-gradient-to-br from-linen/88 to-blush/32 p-5 text-left shadow-sm transition hover:border-earth/35 hover:shadow-md"
-                  >
-                    <span className="font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                      {item.title}
-                    </span>
-                    <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/68">
-                      {item.body}
-                    </span>
-                    <span className="mt-5 text-sm font-semibold text-earth">
-                      {item.cta} -&gt;
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <BubbleDivider />
-
           <section
             className="mx-auto max-w-6xl"
             aria-labelledby="home-tools-heading"
@@ -232,46 +270,49 @@ export default function Home() {
                 Track, compare, and save more thoughtfully
               </h2>
             </div>
-            <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {newTools.map((item) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.href}
-                    className="group flex h-full flex-col rounded-2xl border border-sand/70 bg-gradient-to-br from-linen/88 to-blush/32 p-5 shadow-sm transition hover:border-earth/35 hover:shadow-md"
-                  >
-                    <span className="font-serif text-xl font-medium text-offblack group-hover:text-earth">
-                      {item.title}
-                    </span>
-                    <span className="mt-2 flex-1 text-sm leading-relaxed text-offblack/68">
-                      {item.body}
-                    </span>
-                    <span className="mt-5 text-sm font-semibold text-earth">
-                      Open -&gt;
-                    </span>
-                  </Link>
-                </li>
+            <div className="mt-8 space-y-6">
+              {toolGroups.map((group) => (
+                <section key={group.title} className="rounded-2xl border border-sand/60 bg-linen/45 p-4 sm:p-5">
+                  <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-earth/75">
+                    {group.title}
+                  </h3>
+                  <ul className="mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {group.tools.map((item) => (
+                      <li key={item.title}>
+                        <Link
+                          href={item.href}
+                          className="group flex h-full flex-col rounded-2xl border border-sand/70 bg-gradient-to-br from-linen/88 to-blush/32 p-5 shadow-sm transition hover:border-earth/35 hover:shadow-md"
+                        >
+                          <div className="flex items-start gap-3">
+                            <span
+                              className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-earth/25 bg-blush/45 shadow-sm"
+                              aria-hidden
+                            >
+                              {iconForTool(item.title)}
+                            </span>
+                            <span className="min-w-0 font-serif text-lg font-medium leading-snug text-offblack group-hover:text-earth sm:text-xl">
+                              {item.title}
+                            </span>
+                          </div>
+                          <p className="mt-3 flex-1 text-sm leading-relaxed text-offblack/68">
+                            {item.body}
+                          </p>
+                          <span className="mt-4 text-sm font-semibold text-earth">
+                            Open →
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               ))}
-            </ul>
+            </div>
           </section>
 
           <BubbleDivider />
 
-          <section className="mx-auto max-w-6xl rounded-3xl border border-dawn/50 bg-gradient-to-br from-blush/42 via-linen/78 to-dawn/28 px-6 py-8 text-center shadow-sm sm:px-10 sm:py-10">
-            <p className="font-serif text-2xl font-medium text-offblack sm:text-3xl">
-              Ready to build your routine?
-            </p>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-offblack/68">
-              Start with the quiz if you want guidance, or jump straight into
-              My Routine if you already know what is on your shelf.
-            </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <Link href="/skin-quiz" className={heroPrimaryCtaClass}>
-                Take the Skin Quiz
-              </Link>
-              <Link href="/routine" className={heroSecondaryCtaClass}>
-                Build Your Routine
-              </Link>
-            </div>
+          <section className="mx-auto max-w-6xl">
+            <HomeRoutineTeaser />
           </section>
         </main>
       </div>

@@ -146,7 +146,7 @@ export function SkinScanClient({ hub = false, onScanComplete }: SkinScanClientPr
     <div className="space-y-8">
       {!hub ? <SkinProfileBridge mode="scan" /> : null}
 
-      <div className="rounded-2xl border border-amber-200/80 bg-amber-50/90 px-4 py-3 text-sm leading-relaxed text-amber-950/90">
+      <div className="rounded-2xl border border-earth/30 bg-blush/70 px-4 py-3 text-sm leading-relaxed text-offblack/90">
         <strong className="font-semibold">Educational only.</strong> This tool is not
         medical advice, diagnosis, or treatment. AI reads visible patterns in a single
         photo; lighting, makeup, and camera quality affect results. Patch test new
@@ -222,7 +222,7 @@ export function SkinScanClient({ hub = false, onScanComplete }: SkinScanClientPr
           </div>
 
           {error ? (
-            <p className="mt-4 rounded-xl border border-red-200/80 bg-red-50/90 px-4 py-3 text-sm text-red-900/90">
+            <p className="mt-4 rounded-xl border border-earth/30 bg-blush/75 px-4 py-3 text-sm text-offblack/88">
               {error}
             </p>
           ) : null}

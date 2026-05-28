@@ -6,20 +6,20 @@ export default {
       colors: {
         /** Warm cream — cards, header wash */
         linen: "#FFFBF7",
-        /** Warm tan — borders & UI chrome */
-        sand: "#D4A574",
-        /** Deep orange-red — primary buttons & key actions */
+        /** Light orange-tan — borders & UI chrome */
+        sand: "#FDBA74",
+        /** Primary deep orange — key actions */
         earth: "#C2410C",
         /** Warm charcoal — body text */
         offblack: "#271E1A",
         /** Bright orange — hovers, highlights */
         blossom: "#EA580C",
-        /** Amber / golden — focus rings, secondary emphasis */
-        sage: "#CA8A04",
-        /** Soft peach — panels, selection washes */
-        dawn: "#FDBA74",
-        /** Pale yellow cream — subtle fills */
-        blush: "#FEF3C7",
+        /** Secondary orange emphasis */
+        sage: "#F97316",
+        /** Soft peach-orange — panel washes */
+        dawn: "#FB923C",
+        /** Pale orange cream — subtle fills */
+        blush: "#FFEDD5",
       },
     },
   },
