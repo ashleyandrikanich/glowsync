@@ -1,5 +1,5 @@
 /**
- * Primary navigation — grouped for the header menu (core → learn → tools → meta).
+ * Primary navigation, grouped for the header menu (core → learn → tools → meta).
  * Flat list derived for sitemap-style consumers.
  */
 export const NAV_GROUPS = [
@@ -10,7 +10,7 @@ export const NAV_GROUPS = [
   {
     label: "Learn",
     items: [
-      { href: "/skin-quiz", label: "Skin Quiz" },
+      { href: "/skin-quiz", label: "Skin Profile" },
       { href: "/guide", label: "Routine Guide" },
       { href: "/actives", label: "Actives Library" },
       { href: "/education", label: "Education Hub" },

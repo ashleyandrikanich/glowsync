@@ -631,7 +631,7 @@ export function RoutineTracker() {
                     role="presentation"
                     className="px-4 py-3 text-sm leading-relaxed text-offblack/65"
                   >
-                    No catalog match. Keep typing to add a custom product — your
+                    No catalog match. Keep typing to add a custom product, your
                     notes stay yours.
                   </li>
                 ) : (
@@ -668,7 +668,7 @@ export function RoutineTracker() {
               Suggestions include many staples carried at Ulta and Sephora (US);
               inventory changes, so always confirm on your own label. Pick a row
               to auto-fill brand and notes with key actives and representative
-              bases — or ignore the list and add anything manually.
+              bases, or ignore the list and add anything manually.
             </p>
           </div>
           <div className="space-y-2">
@@ -735,7 +735,7 @@ export function RoutineTracker() {
               id="routine-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Filled automatically when you pick a catalog match — edit freely."
+              placeholder="Filled automatically when you pick a catalog match, edit freely."
               rows={4}
               className={`${inputClass} resize-y min-h-[6.5rem]`}
             />

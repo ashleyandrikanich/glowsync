@@ -168,7 +168,7 @@ function perProductTip(
   const retinoid =
     has("tretinoin") || has("adapalene") || has("retinol");
   if (retinoid && (p.slot === "am" || p.slot === "both")) {
-    tips.push("Retinoids are usually PM-only — confirm your label if this is truly a morning step.");
+    tips.push("Retinoids are usually PM-only, confirm your label if this is truly a morning step.");
   }
 
   if (has("vitamin-c") && /\b(?:spf|sunscreen)\b/i.test(t) === false && p.slot === "pm") {
@@ -176,17 +176,17 @@ function perProductTip(
   }
 
   if ((has("ahas") || has("bha") || has("pha")) && retinoid) {
-    tips.push("Exfoliant + retinoid in one product stack is easy to overdo — watch for stinging or flakes.");
+    tips.push("Exfoliant + retinoid in one product stack is easy to overdo, watch for stinging or flakes.");
   }
 
   if (detected.length === 0 && t.length > 8) {
     tips.push(
-      "No major actives detected from text — add key ingredients to notes for smarter pairing tips."
+      "No major actives detected from text, add key ingredients to notes for smarter pairing tips."
     );
   }
 
   if (detected.length >= 4) {
-    tips.push("Many actives flagged in one row — check whether any also appear in another step.");
+    tips.push("Many actives flagged in one row, check whether any also appear in another step.");
   }
 
   return tips.length ? tips.join(" ") : null;
@@ -443,7 +443,7 @@ function tierFromScore(score: number, n: number): Pick<RoutineRating, "tier" | "
     return {
       stars: 0,
       tier: "Not started",
-      blurb: "Add products with honest notes — the coach reads text to guess actives and how steps play together.",
+      blurb: "Add products with honest notes, the coach reads text to guess actives and how steps play together.",
     };
   }
   const stars =
@@ -454,7 +454,7 @@ function tierFromScore(score: number, n: number): Pick<RoutineRating, "tier" | "
       stars,
       tier: "Building the foundation",
       blurb:
-        "Score reflects coverage, SPF in AM, notes, and whether detected actives clash in the same session. Keep logging — specificity unlocks better tips.",
+        "Score reflects coverage, SPF in AM, notes, and whether detected actives clash in the same session. Keep logging, specificity unlocks better tips.",
     };
   }
   if (score < 50) {
@@ -485,7 +485,7 @@ function tierFromScore(score: number, n: number): Pick<RoutineRating, "tier" | "
     stars,
     tier: "Routine architect",
     blurb:
-      "Top marks for completeness and low conflict signals — still patch-test anything new.",
+      "Top marks for completeness and low conflict signals, still patch-test anything new.",
   };
 }
 
@@ -500,27 +500,27 @@ function insightBullets(
 
   if (sessionAlerts.length === 0 && activeLoad.length === 0) {
     bullets.push(
-      "No major same-session conflicts surfaced from detected actives — introduce new bottles one at a time anyway."
+      "No major same-session conflicts surfaced from detected actives, introduce new bottles one at a time anyway."
     );
   }
 
   if (activeLoad.length > 0) {
     bullets.push(
-      `${activeLoad.length} active-intensity check${activeLoad.length === 1 ? "" : "s"} flagged a potentially harsh stack — reduce frequency or alternate strong treatments if skin feels stressed.`
+      `${activeLoad.length} active-intensity check${activeLoad.length === 1 ? "" : "s"} flagged a potentially harsh stack, reduce frequency or alternate strong treatments if skin feels stressed.`
     );
   }
 
   const avoid = sessionAlerts.filter((x) => x.verdict === "avoid");
   if (avoid.length > 0) {
     bullets.push(
-      `${avoid.length} same-session pairing(s) look high-risk on paper — separate nights or buffer with moisturizer.`
+      `${avoid.length} same-session pairing(s) look high-risk on paper, separate nights or buffer with moisturizer.`
     );
   }
 
   const caution = sessionAlerts.filter((x) => x.verdict === "caution");
   if (caution.length > 0 && avoid.length === 0) {
     bullets.push(
-      "Some same-session combos may irritate — alternate evenings or move one active to the other half of the day."
+      "Some same-session combos may irritate, alternate evenings or move one active to the other half of the day."
     );
   }
 
@@ -534,7 +534,7 @@ function insightBullets(
     /\bspf\b|sunscreen|broad\s*spectrum|spf\s*\d/i.test(productHaystack(p))
   );
   if (!anySpf && products.some((p) => p.slot === "am" || p.slot === "both")) {
-    bullets.push("SPF not obvious in AM rows — if you wear it, name it so feedback stays accurate.");
+    bullets.push("SPF not obvious in AM rows, if you wear it, name it so feedback stays accurate.");
   }
 
   return bullets;

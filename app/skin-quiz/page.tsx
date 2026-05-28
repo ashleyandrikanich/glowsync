@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageScaffold } from "../components/PageScaffold";
-import { SkinQuizClient } from "../components/SkinQuizClient";
+import { SkinIntakeHub } from "../components/SkinIntakeHub";
 
 export const metadata: Metadata = {
-  title: "Skin Quiz",
+  title: "Skin Profile",
   description:
-    "Short quiz to explore skin type and concerns, with routine ideas and catalog product suggestions.",
+    "Complete the skin quiz and photo scan for combined product recommendations.",
 };
 
 export default function SkinQuizPage() {
   return (
     <PageScaffold
-      title="What's My Skin Type?"
-      description="A short quiz on skin feel, priorities, sensitivity, SPF, and optional favorite brands — then AM/PM ideas and catalog picks matched to your answers. For learning only, not a diagnosis."
+      title="Skin Profile"
+      description="Do both the quiz and a photo scan for your best recommendations. Quiz answers cover habits and preferences; the scan refines what we see on your face. Both are required before we show your full routine and catalog picks."
     >
-      <SkinQuizClient />
+      <Suspense fallback={<p className="text-sm text-offblack/65">Loading quiz…</p>}>
+        <SkinIntakeHub />
+      </Suspense>
     </PageScaffold>
   );
 }

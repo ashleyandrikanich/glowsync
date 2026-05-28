@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { QuizRoutinePlanner } from "./QuizRoutinePlanner";
+import { SkinProfileBridge } from "./SkinProfileBridge";
 import {
   formatProductNotes,
   getCatalogBrands,
@@ -22,11 +24,18 @@ import {
   type Sensitivity,
   type SpfHabit,
 } from "@/src/lib/skin-quiz";
+import {
+  SKIN_PROFILE_STORAGE_KEY,
+  describeProfileBlend,
+  firstIncompleteQuizStep,
+  loadSkinProfile,
+  saveSkinProfileFromQuiz,
+} from "@/src/lib/skin-profile";
 
 const choiceClass =
   "flex w-full flex-col rounded-xl border border-sand/90 bg-linen/60 px-4 py-3.5 text-left shadow-sm transition hover:border-earth/40 hover:bg-linen/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth/40";
 
-/** Selected answer — warm orange fill + ring */
+/** Selected answer, warm orange fill + ring */
 const choiceSelected =
   "border-earth bg-gradient-to-br from-dawn/75 via-dawn/55 to-blossom/20 ring-2 ring-earth/40 shadow-md";
 
@@ -40,7 +49,7 @@ const STEPS = [
   {
     key: "skinProfile" as const,
     title: "How Does Your Skin Feel Most Days?",
-    subtitle: "Pick the closest match—finer choices help us shape AM/PM ideas.",
+    subtitle: "Pick the closest match, finer choices help us shape AM/PM ideas.",
   },
   {
     key: "concern" as const,
@@ -60,25 +69,61 @@ const STEPS = [
   {
     key: "favoriteBrands" as const,
     title: "Any Favorite Brands?",
-    subtitle: `Optional — pick up to ${MAX_FAVORITE_BRANDS} brands you already trust. We will favor them in catalog picks when they still fit your skin profile.`,
+    subtitle: `Optional, pick up to ${MAX_FAVORITE_BRANDS} brands you already trust. We will favor them in catalog picks when they still fit your skin profile.`,
   },
 ];
 
 const ALL_CATALOG_BRANDS = getCatalogBrands();
 
-export function SkinQuizClient() {
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<QuizAnswers>({
-    skinProfile: null,
-    concerns: [],
-    sensitivity: null,
-    spfHabit: null,
-    favoriteBrands: [],
-  });
+const EMPTY_ANSWERS: QuizAnswers = {
+  skinProfile: null,
+  concerns: [],
+  sensitivity: null,
+  spfHabit: null,
+  favoriteBrands: [],
+};
+
+function readInitialQuizState(fromScan: boolean): { answers: QuizAnswers; step: number } {
+  if (typeof window === "undefined") {
+    return { answers: EMPTY_ANSWERS, step: 0 };
+  }
+  const saved = loadSkinProfile();
+  if (!saved?.answers) {
+    return { answers: EMPTY_ANSWERS, step: 0 };
+  }
+  let step = 0;
+  if (fromScan) {
+    const incomplete = firstIncompleteQuizStep(saved.answers);
+    step = incomplete >= STEPS.length ? STEPS.length : incomplete;
+  }
+  return { answers: saved.answers, step };
+}
+
+type SkinQuizClientProps = {
+  hub?: boolean;
+  onQuizComplete?: () => void;
+};
+
+export function SkinQuizClient({ hub = false, onQuizComplete }: SkinQuizClientProps = {}) {
+  const searchParams = useSearchParams();
+  const fromScan = searchParams.get("from") === "scan";
+
+  const [step, setStep] = useState(() => readInitialQuizState(fromScan).step);
+  const [answers, setAnswers] = useState(() => readInitialQuizState(fromScan).answers);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const [brandQuery, setBrandQuery] = useState("");
   const [catalogQuery, setCatalogQuery] = useState("");
   const [catalogRetailer, setCatalogRetailer] = useState<"all" | "ulta" | "sephora">("all");
   const [plannerKey, setPlannerKey] = useState(0);
+
+  useEffect(() => {
+    if (!mounted) return;
+    saveSkinProfileFromQuiz(answers);
+  }, [answers, mounted]);
 
   const result = useMemo(() => buildQuizResult(answers), [answers]);
   const visibleCatalogPicks = useMemo(() => {
@@ -118,7 +163,7 @@ export function SkinQuizClient() {
     answers.spfHabit;
 
   const current = STEPS[step];
-  const isResults = step >= STEPS.length && allAnswered;
+  const isResults = step >= STEPS.length && allAnswered && !hub;
 
   function selectSkinProfile(v: QuizSkinProfile) {
     setAnswers((a) => ({ ...a, skinProfile: v }));
@@ -171,6 +216,9 @@ export function SkinQuizClient() {
     setCatalogQuery("");
     setCatalogRetailer("all");
     setPlannerKey((k) => k + 1);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(SKIN_PROFILE_STORAGE_KEY);
+    }
   }
 
   const canNext =
@@ -180,9 +228,17 @@ export function SkinQuizClient() {
     (current?.key === "spfHabit" && answers.spfHabit) ||
     current?.key === "favoriteBrands";
 
+  const blendNote = describeProfileBlend(loadSkinProfile());
+
   if (isResults && result) {
     return (
       <div className="space-y-10">
+        <SkinProfileBridge mode="quiz" />
+        {blendNote ? (
+          <p className="rounded-xl border border-earth/20 bg-dawn/25 px-4 py-3 text-sm text-offblack/80">
+            {blendNote}
+          </p>
+        ) : null}
         <div className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/88 via-blush/32 to-dawn/22 p-6 sm:p-8">
           <p className="text-[0.65rem] font-semibold tracking-[0.08em] text-earth/85">
             Your Snapshot
@@ -216,7 +272,7 @@ export function SkinQuizClient() {
         <section className="rounded-2xl border border-sand/90 bg-gradient-to-br from-linen/82 via-blush/30 to-dawn/20 p-6 sm:p-8">
           <h3 className="font-serif text-xl font-medium text-offblack">Catalog Picks to Explore</h3>
           <p className="mt-2 text-sm text-offblack/65">
-            Each row lists which quiz answers nudged it in—Steps 1–4 are skin feel,
+            Each row lists which quiz answers nudged it in, Steps 1–4 are skin feel,
             priorities, sensitivity, and SPF; Step 5 is favorite brands when you picked
             any. Treat picks as starting points: patch test, introduce one change at a
             time, and confirm prescriptions, pregnancy, allergies, or painful irritation
@@ -279,7 +335,7 @@ export function SkinQuizClient() {
                   className="rounded-xl border border-sand/80 bg-gradient-to-br from-linen/75 to-blush/25 px-4 py-3"
                 >
                   <p className="font-medium text-offblack">
-                    {p.brand} — {p.name}
+                    {p.brand}: {p.name}
                   </p>
                   <p className="mt-1 text-xs text-earth/90">
                     {p.keyActives.join(" · ")}
@@ -319,10 +375,10 @@ export function SkinQuizClient() {
             Browse Actives Library
           </Link>
           <Link
-            href="/"
+            href="/skin-quiz?tab=scan"
             className="rounded-xl border border-sand/90 px-5 py-2.5 text-sm font-medium text-earth transition hover:border-earth/40 hover:bg-sand/30"
           >
-            Check Actives on Home
+            Add Skin Scan
           </Link>
           <button
             type="button"
@@ -345,6 +401,13 @@ export function SkinQuizClient() {
 
   return (
     <div className="space-y-8">
+      {!hub ? <SkinProfileBridge mode="quiz" /> : null}
+      {fromScan && mounted && !hub ? (
+        <p className="rounded-xl border border-earth/20 bg-dawn/25 px-4 py-3 text-sm text-offblack/80">
+          Loaded your scan results. Confirm each step, add favorite brands, then view
+          combined recommendations.
+        </p>
+      ) : null}
       <div className="flex items-center justify-between gap-4">
         <p className="text-xs font-medium tracking-[0.08em] text-earth/80">
           Step {Math.min(step + 1, STEPS.length)} of {STEPS.length}
@@ -372,7 +435,7 @@ export function SkinQuizClient() {
               <p className="mt-2 text-xs font-medium text-earth/90">
                 {answers.concerns.length} of {MAX_QUIZ_PRIORITIES} selected
                 {answers.concerns.length >= MAX_QUIZ_PRIORITIES
-                  ? " — remove one to pick another"
+                  ? ", remove one to pick another"
                   : ""}
               </p>
             ) : null}
@@ -380,9 +443,9 @@ export function SkinQuizClient() {
               <p className="mt-2 text-xs font-medium text-earth/90">
                 {answers.favoriteBrands.length} of {MAX_FAVORITE_BRANDS} selected
                 {answers.favoriteBrands.length === 0
-                  ? " — skip is fine; tap Continue"
+                  ? ", skip is fine; tap Continue"
                   : answers.favoriteBrands.length >= MAX_FAVORITE_BRANDS
-                    ? " — remove one to pick another"
+                    ? ", remove one to pick another"
                     : ""}
               </p>
             ) : null}
@@ -496,12 +559,20 @@ export function SkinQuizClient() {
               type="button"
               disabled={!canNext}
               onClick={() => {
+                if (hub && step === STEPS.length - 1 && allAnswered) {
+                  onQuizComplete?.();
+                  return;
+                }
                 if (step === STEPS.length - 1) setStep(STEPS.length);
                 else next();
               }}
               className="rounded-xl bg-earth px-6 py-2.5 text-sm font-medium text-linen transition hover:bg-offblack disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {step === STEPS.length - 1 ? "See results" : "Continue"}
+              {step === STEPS.length - 1
+                ? hub
+                  ? "Continue to photo scan"
+                  : "See results"
+                : "Continue"}
             </button>
             <button
               type="button"

@@ -106,7 +106,7 @@ export function RoutineCoachFrame() {
           <div className="space-y-8">
             <div>
               <p className="text-[0.7rem] font-semibold tracking-[0.08em] text-earth/90">
-                Step 1 — How does your skin usually feel?
+                Step 1: How does your skin usually feel?
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {SKIN_FEEL_OPTIONS.map((opt) => {
@@ -207,7 +207,7 @@ export function RoutineCoachFrame() {
                   >
                     My Routine
                   </Link>
-                  . Switch tabs and come back — we refresh when you return.
+                  . Switch tabs and come back, we refresh when you return.
                 </p>
               </div>
               {hydrated ? (

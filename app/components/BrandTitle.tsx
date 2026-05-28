@@ -22,7 +22,7 @@ type BrandTitleProps = {
 };
 
 /**
- * Wordmark with abstract sun mark — used in header and hero.
+ * Wordmark with abstract sun mark, used in header and hero.
  */
 export function BrandTitle({
   as: Component = "span",
@@ -36,7 +36,7 @@ export function BrandTitle({
       : "text-offblack";
   const sync =
     variant === "onDark"
-      ? "text-[#fecdd3]"
+      ? "text-[#fdba74]"
       : "text-earth";
 
   return (

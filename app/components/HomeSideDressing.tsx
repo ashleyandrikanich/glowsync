@@ -1,5 +1,5 @@
 /**
- * Home-only side margins — soft wash, vertical rhythm, and warm blurs so
+ * Home-only side margins, soft wash, vertical rhythm, and warm blurs so
  * wide viewports feel intentional without affecting layout.
  */
 export function HomeSideDressing({ side }: { side: "left" | "right" }) {
@@ -10,7 +10,7 @@ export function HomeSideDressing({ side }: { side: "left" | "right" }) {
       className={`relative h-full overflow-hidden ${mirror}`}
       aria-hidden
     >
-      {/* Side wash — ties to page apricot / sand */}
+      {/* Side wash, ties to page apricot / sand */}
       <div className="absolute inset-0 bg-gradient-to-b from-dawn/15 via-transparent to-sand/10" />
       <div className="absolute -left-6 top-[12%] h-44 w-44 rounded-full bg-dawn/25 blur-3xl" />
       <div className="absolute -left-4 bottom-[18%] h-36 w-36 rounded-full bg-sand/20 blur-3xl" />
@@ -34,7 +34,7 @@ export function HomeSideDressing({ side }: { side: "left" | "right" }) {
           <div className="h-24 w-px bg-gradient-to-b from-transparent via-blossom/20 to-transparent" />
         </div>
 
-        {/* Light “ray” ticks — echo BrandSun without copying it */}
+        {/* Light “ray” ticks, echo BrandSun without copying it */}
         <div className="flex flex-col items-center gap-1.5 opacity-70">
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <div

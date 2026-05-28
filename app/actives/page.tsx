@@ -27,7 +27,7 @@ export default function ActivesPage() {
           What are actives?
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-offblack/70 sm:text-[0.9375rem]">
-          Actives are the ingredients that do the targeted work in a routine —
+          Actives are the ingredients that do the targeted work in a routine , 
           like retinol, niacinamide, vitamin C, salicylic acid, or SPF. Cleansers
           and moisturizers support your skin; actives are what you pick when you
           want to address texture, breakouts, brightness, or sun protection.

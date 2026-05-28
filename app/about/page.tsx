@@ -5,7 +5,7 @@ import { PageScaffold } from "../components/PageScaffold";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "What GlowSync is: quizzes, routines, and actives education—friendly, clear, and not medical advice.",
+    "What GlowSync is: quizzes, routines, and actives education that is friendly, clear, and not medical advice.",
 };
 
 const linkBtn =
@@ -48,7 +48,7 @@ export default function AboutPage() {
             <p className="mt-2 font-medium text-offblack">Skin profile snapshot</p>
             <p className="mt-1 text-sm leading-relaxed text-offblack/70">
               A short, low-pressure quiz that suggests ideas based on how you
-              describe your skin—more “starting points” than rules.
+              describe your skin. More “starting points” than rules.
             </p>
           </li>
           <li className="rounded-xl border border-sand/70 bg-linen/70 p-4 shadow-sm">
@@ -98,7 +98,7 @@ export default function AboutPage() {
             </span>
             <span>
               <strong className="text-offblack">Plain language first.</strong>{" "}
-              We bias toward clear explanations over jargon—without pretending
+              We bias toward clear explanations over jargon, without pretending
               skin is one-size-fits-all.
             </span>
           </li>

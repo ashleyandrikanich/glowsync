@@ -14,7 +14,7 @@ function haystack(p: RoutineProduct): string {
 }
 
 /**
- * Heuristic suggestions from the locally saved routine — education only.
+ * Heuristic suggestions from the locally saved routine, education only.
  */
 export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
   const out: CoachSuggestion[] = [];
@@ -45,7 +45,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "strong-shelf",
       title: "Shelf Is Looking Full",
       detail:
-        "You have a lot logged — great for memory. If anything stings or flakes, try removing one active before adding another, and spot-check pairs on Home.",
+        "You have a lot logged, great for memory. If anything stings or flakes, try removing one active before adding another, and spot-check pairs on Home.",
       tone: "celebrate",
       links: [{ href: "/", label: "Pairing Checker on Home" }],
     });
@@ -56,7 +56,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "no-am",
       title: "Add a Morning Lane",
       detail:
-        "We do not see anything tagged for morning. Even a simple cleanse + moisturizer + SPF counts — log what you actually use so reminders stay honest.",
+        "We do not see anything tagged for morning. Even a simple cleanse + moisturizer + SPF counts, log what you actually use so reminders stay honest.",
       tone: "nudge",
       links: [{ href: "/routine", label: "Edit My Routine" }],
     });
@@ -67,7 +67,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "no-pm",
       title: "Evening Is Empty",
       detail:
-        "No PM-only or twice-daily steps yet. Nights are when many people use retinoids or richer creams — add what you reach for after dinner.",
+        "No PM-only or twice-daily steps yet. Nights are when many people use retinoids or richer creams, add what you reach for after dinner.",
       tone: "nudge",
       links: [{ href: "/routine", label: "Edit My Routine" }],
     });
@@ -78,7 +78,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "thin-routine",
       title: "Room to Grow",
       detail:
-        "A tiny routine can be perfect — if you want more structure, add cleanser, moisturizer, and SPF as separate rows so the rating reflects each step.",
+        "A tiny routine can be perfect, if you want more structure, add cleanser, moisturizer, and SPF as separate rows so the rating reflects each step.",
       tone: "tip",
       links: [{ href: "/guide", label: "Routine Guide" }],
     });
@@ -89,7 +89,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "notes",
       title: "Notes Help Future-You",
       detail:
-        "Several products have no notes. Jot actives, frequency, or what layer it is — it makes routine review and dermatology visits easier to prep for.",
+        "Several products have no notes. Jot actives, frequency, or what layer it is, it makes routine review and dermatology visits easier to prep for.",
       tone: "tip",
       links: [{ href: "/routine", label: "Add Notes in My Routine" }],
     });
@@ -114,7 +114,7 @@ export function analyzeRoutine(products: RoutineProduct[]): CoachSuggestion[] {
       id: "vitaminc",
       title: "Vitamin C Habits",
       detail:
-        "Vitamin C serums are often AM-friendly under SPF. Low-pH formulas can tingle next to niacinamide or exfoliants in the same session — check compatibility on Home if you layer hard.",
+        "Vitamin C serums are often AM-friendly under SPF. Low-pH formulas can tingle next to niacinamide or exfoliants in the same session, check compatibility on Home if you layer hard.",
       tone: "tip",
       links: [{ href: "/", label: "Pairing Checker" }],
     });

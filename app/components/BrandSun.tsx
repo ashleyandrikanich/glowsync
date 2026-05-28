@@ -5,12 +5,12 @@ import { useId } from "react";
 type BrandSunProps = {
   /** Tailwind size classes, e.g. `h-9 w-9 sm:h-10 sm:w-10` */
   className?: string;
-  /** Header bar: yellow → rose/red instead of orange blossom. */
+  /** Header bar uses lighter orange stops than default. */
   palette?: "default" | "amberRose";
 };
 
 /**
- * Abstract sun mark — soft rays + warm core for GlowSync.
+ * Abstract sun mark, soft rays + warm core for GlowSync.
  */
 export function BrandSun({
   className = "h-9 w-9 sm:h-10 sm:w-10",
@@ -53,14 +53,14 @@ export function BrandSun({
         >
           {isAmberRose ? (
             <>
-              <stop stopColor="#facc15" />
-              <stop offset="0.55" stopColor="#fb7185" />
-              <stop offset="1" stopColor="#dc2626" />
+              <stop stopColor="#FDBA74" />
+              <stop offset="0.55" stopColor="#FB923C" />
+              <stop offset="1" stopColor="#EA580C" />
             </>
           ) : (
             <>
               <stop stopColor="#EA580C" />
-              <stop offset="1" stopColor="#CA8A04" />
+              <stop offset="1" stopColor="#C2410C" />
             </>
           )}
         </linearGradient>
@@ -71,14 +71,14 @@ export function BrandSun({
         cx="24"
         cy="24"
         r="5.5"
-        fill={isAmberRose ? "#fef9c3" : "#FFFBF7"}
+        fill={isAmberRose ? "#FFF7ED" : "#FFFBF7"}
         opacity={isAmberRose ? 0.5 : 0.45}
       />
       <circle
         cx="24"
         cy="24"
         r="2.8"
-        fill={isAmberRose ? "#fecaca" : "#FDBA74"}
+        fill="#FDBA74"
         opacity={isAmberRose ? 0.65 : 0.55}
       />
     </svg>

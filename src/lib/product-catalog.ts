@@ -1,7 +1,7 @@
 /**
  * Autocomplete catalog: representative key actives & bases (not label-perfect INCI).
  * Many entries are curated from SKUs commonly sold at Ulta and/or Sephora in the US;
- * stock and formulas change — always read your own packaging. Catalog is expanded over time.
+ * stock and formulas change, always read your own packaging. Catalog is expanded over time.
  */
 
 export type CatalogProduct = {
@@ -731,7 +731,7 @@ export const PRODUCT_CATALOG: CatalogProduct[] = [
     retailers: ["ulta", "sephora"],
   },
 
-  /* —— Expanded Ulta / Sephora skincare shelf (representative; formulas change) —— */
+  /* Expanded Ulta / Sephora skincare shelf (representative; formulas change) */
 
   {
     id: "anua-azelaic-acid-10",
