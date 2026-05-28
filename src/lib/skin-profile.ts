@@ -81,7 +81,6 @@ export function saveSkinProfileFromScan(
     ? mergeQuizAndScan(existing.answers, analysis)
     : answers;
 
-  const hadQuiz = Boolean(existing && isQuizAnswersComplete(existing.answers));
   const quizCompleted =
     isQuizAnswersComplete(merged) || Boolean(existing?.quizCompleted);
 

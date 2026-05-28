@@ -137,10 +137,10 @@ export function SkinScanClient({ hub = false, onScanComplete }: SkinScanClientPr
     } finally {
       setLoading(false);
     }
-  }, [pendingFile]);
+  }, [hub, onScanComplete, pendingFile]);
 
   const visiblePicks = useMemo(() => scan?.result.catalogPicks ?? [], [scan]);
-  const blendNote = useMemo(() => describeProfileBlend(loadSkinProfile()), [scan]);
+  const blendNote = describeProfileBlend(loadSkinProfile());
 
   return (
     <div className="space-y-8">

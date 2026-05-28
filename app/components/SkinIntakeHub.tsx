@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   isQuizComplete,
   isReadyForRecommendations,
@@ -153,37 +153,36 @@ export function SkinIntakeHub() {
   const scanDone = isScanComplete(profile);
   const recsReady = isReadyForRecommendations(profile);
 
-  const [step, setStep] = useState<HubStep>(() =>
-    deriveStep(quizDone, scanDone, preferScan)
+  const suggestedStep = useMemo(
+    () => deriveStep(quizDone, scanDone, preferScan),
+    [quizDone, scanDone, preferScan]
   );
-
-  useEffect(() => {
-    setStep(deriveStep(quizDone, scanDone, preferScan));
-  }, [quizDone, scanDone, preferScan]);
+  const [overrideStep, setOverrideStep] = useState<HubStep | null>(null);
+  const step = overrideStep ?? suggestedStep;
 
   const refreshProfile = useCallback(() => setProfileTick((t) => t + 1), []);
 
   const handleSelect = (next: HubStep) => {
     if (next === "scan" && !quizDone) return;
     if (next === "results" && !recsReady) return;
-    setStep(next);
+    setOverrideStep(next);
   };
 
   const handleQuizComplete = () => {
     refreshProfile();
-    setStep("scan");
+    setOverrideStep("scan");
   };
 
   const handleScanComplete = () => {
     refreshProfile();
     if (isQuizComplete(loadSkinProfile())) {
-      setStep("results");
+      setOverrideStep("results");
     }
   };
 
   const handleRetake = () => {
     refreshProfile();
-    setStep("quiz");
+    setOverrideStep("quiz");
   };
 
   return (
@@ -224,7 +223,7 @@ export function SkinIntakeHub() {
               {!quizDone ? (
                 <button
                   type="button"
-                  onClick={() => setStep("quiz")}
+                  onClick={() => setOverrideStep("quiz")}
                   className="rounded-xl bg-earth px-4 py-2 text-sm font-medium text-linen"
                 >
                   Go to quiz
@@ -233,7 +232,7 @@ export function SkinIntakeHub() {
               {!scanDone ? (
                 <button
                   type="button"
-                  onClick={() => setStep("scan")}
+                  onClick={() => setOverrideStep("scan")}
                   className="rounded-xl border border-sand/90 px-4 py-2 text-sm font-medium text-earth"
                 >
                   Go to photo scan

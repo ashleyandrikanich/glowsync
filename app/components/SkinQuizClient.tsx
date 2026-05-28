@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { QuizRoutinePlanner } from "./QuizRoutinePlanner";
 import { SkinProfileBridge } from "./SkinProfileBridge";
 import {
@@ -75,6 +75,30 @@ const STEPS = [
 
 const ALL_CATALOG_BRANDS = getCatalogBrands();
 
+const EMPTY_ANSWERS: QuizAnswers = {
+  skinProfile: null,
+  concerns: [],
+  sensitivity: null,
+  spfHabit: null,
+  favoriteBrands: [],
+};
+
+function readInitialQuizState(fromScan: boolean): { answers: QuizAnswers; step: number } {
+  if (typeof window === "undefined") {
+    return { answers: EMPTY_ANSWERS, step: 0 };
+  }
+  const saved = loadSkinProfile();
+  if (!saved?.answers) {
+    return { answers: EMPTY_ANSWERS, step: 0 };
+  }
+  let step = 0;
+  if (fromScan) {
+    const incomplete = firstIncompleteQuizStep(saved.answers);
+    step = incomplete >= STEPS.length ? STEPS.length : incomplete;
+  }
+  return { answers: saved.answers, step };
+}
+
 type SkinQuizClientProps = {
   hub?: boolean;
   onQuizComplete?: () => void;
@@ -84,36 +108,22 @@ export function SkinQuizClient({ hub = false, onQuizComplete }: SkinQuizClientPr
   const searchParams = useSearchParams();
   const fromScan = searchParams.get("from") === "scan";
 
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<QuizAnswers>({
-    skinProfile: null,
-    concerns: [],
-    sensitivity: null,
-    spfHabit: null,
-    favoriteBrands: [],
-  });
-  const [hydrated, setHydrated] = useState(false);
+  const [step, setStep] = useState(() => readInitialQuizState(fromScan).step);
+  const [answers, setAnswers] = useState(() => readInitialQuizState(fromScan).answers);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const [brandQuery, setBrandQuery] = useState("");
   const [catalogQuery, setCatalogQuery] = useState("");
   const [catalogRetailer, setCatalogRetailer] = useState<"all" | "ulta" | "sephora">("all");
   const [plannerKey, setPlannerKey] = useState(0);
 
   useEffect(() => {
-    const saved = loadSkinProfile();
-    if (saved?.answers) {
-      setAnswers(saved.answers);
-      if (fromScan) {
-        const incomplete = firstIncompleteQuizStep(saved.answers);
-        setStep(incomplete >= STEPS.length ? STEPS.length : incomplete);
-      }
-    }
-    setHydrated(true);
-  }, [fromScan]);
-
-  useEffect(() => {
-    if (!hydrated) return;
+    if (!mounted) return;
     saveSkinProfileFromQuiz(answers);
-  }, [answers, hydrated]);
+  }, [answers, mounted]);
 
   const result = useMemo(() => buildQuizResult(answers), [answers]);
   const visibleCatalogPicks = useMemo(() => {
@@ -392,7 +402,7 @@ export function SkinQuizClient({ hub = false, onQuizComplete }: SkinQuizClientPr
   return (
     <div className="space-y-8">
       {!hub ? <SkinProfileBridge mode="quiz" /> : null}
-      {fromScan && hydrated && !hub ? (
+      {fromScan && mounted && !hub ? (
         <p className="rounded-xl border border-earth/20 bg-dawn/25 px-4 py-3 text-sm text-offblack/80">
           Loaded your scan results. Confirm each step, add favorite brands, then view
           combined recommendations.
